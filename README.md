@@ -10,7 +10,7 @@ No build step. Open `index.html` locally, or serve the folder.
 Served by GitHub Pages from the default branch. Pushing to `main` redeploys.
 
 ## Custom domain
-None yet: the site serves on its github.io URL. To move it to
-beta.speciallogistics.net, add a `CNAME` file holding that hostname AND a matching
-DNS record at the registrar. Adding the file without the DNS record takes the site
-offline, so do both together.
+Serves at https://beta.speciallogistics.net. The `CNAME` file holds that hostname;
+the matching DNS record is a CNAME on `beta` pointing to `rpboucek.github.io`, held
+at Squarespace with the rest of the speciallogistics.net zone. Both must agree:
+deleting either one takes the site offline.

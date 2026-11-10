@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+<title>Services | Special Logistics Group</title>
+<meta name="description" content="Complex international freight and humanitarian logistics from origin to final delivery.">
+<style>
+  :root{--g:#282828;--y:#ffde59;--f:"Proxima Nova","Glacial Indifference",Montserrat,Arial,sans-serif}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  html,body{overflow-x:clip}
+  body{font-family:var(--f);font-weight:700;background:var(--g);color:var(--y);line-height:1.1}
+  a{color:inherit}
+  .up{text-transform:uppercase}
+
+  /* NAV */
+  nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;justify-content:space-between;align-items:center;padding:14px 20px;mix-blend-mode:normal}
+  nav .logo{display:flex;align-items:center;gap:10px;text-decoration:none;background:var(--g);color:var(--y);padding:8px 12px;border:3px solid var(--y)}
+  nav .logo svg{height:26px;fill:var(--y)}
+  nav .logo span{font-size:14px;text-transform:uppercase}
+  nav .right{display:flex;gap:10px}
+  nav .right a,nav button{font:inherit;font-size:14px;text-transform:uppercase;background:var(--y);color:var(--g);border:3px solid var(--g);padding:10px 16px;cursor:pointer;text-decoration:none;box-shadow:4px 4px 0 var(--g)}
+  nav .right a:hover,nav button:hover{background:var(--g);color:var(--y);border-color:var(--y);box-shadow:none}
+  @media(max-width:600px){nav .logo span{display:none}}
+
+  /* MENU OVERLAY */
+  #menu{position:fixed;inset:0;z-index:45;background:var(--y);color:var(--g);display:flex;flex-direction:column;justify-content:center;padding:0 20px;clip-path:inset(0 0 100% 0);transition:clip-path .5s cubic-bezier(.7,0,.2,1)}
+  #menu.open{clip-path:inset(0 0 0 0)}
+  #menu a{font-size:clamp(44px,12vw,160px);text-transform:uppercase;text-decoration:none;line-height:.95;display:block;border-bottom:4px solid var(--g);padding:6px 0}
+  #menu a:hover{background:var(--g);color:var(--y);padding-left:20px}
+  #menu a:last-child{border-bottom:0}
+
+  /* READOUT */
+  #readout{position:fixed;left:20px;bottom:16px;z-index:40;font-size:12px;text-transform:uppercase;background:var(--g);color:var(--y);padding:6px 10px;border:2px solid var(--y)}
+
+  /* HERO */
+  #hero{position:relative;height:100vh;min-height:620px;display:flex;flex-direction:column;justify-content:flex-end;padding:0 20px 70px;overflow:hidden;background:var(--g)}
+  #hero .stripes{position:absolute;inset:-50%;background:repeating-linear-gradient(-45deg,var(--g) 0 60px,#2f2f2f 60px 120px);will-change:transform}
+  #hero .sun{position:absolute;right:-8vw;top:12vh;width:42vw;height:42vw;max-width:560px;max-height:560px;border-radius:50%;background:var(--y);will-change:transform}
+  #hero>*:not(.stripes):not(.sun){position:relative}
+  .tag{align-self:flex-start;background:var(--y);color:var(--g);padding:6px 12px;font-size:14px;margin-bottom:18px}
+  #hero h1{font-size:clamp(52px,12.5vw,210px);line-height:.88;text-transform:uppercase;letter-spacing:-3px;max-width:14ch;text-shadow:6px 6px 0 var(--g)}
+  #hero p{max-width:560px;font-size:clamp(16px,1.6vw,20px);margin:24px 0;border-left:8px solid var(--y);padding-left:12px;background:var(--g)}
+  .cta-row{display:flex;gap:14px;flex-wrap:wrap}
+  .btn{display:inline-block;background:var(--y);color:var(--g);padding:16px 24px;font-size:18px;text-transform:uppercase;text-decoration:none;border:4px solid var(--y);box-shadow:8px 8px 0 #000a;transition:.1s}
+  .btn:hover{background:var(--g);color:var(--y);box-shadow:none;transform:translate(8px,8px)}
+  .btn.ghost{background:transparent;color:var(--y)}
+  .btn.ghost:hover{background:var(--y);color:var(--g)}
+
+  /* STACKING SERVICE CARDS */
+  .card{position:sticky;top:0;height:100vh;display:grid;grid-template-columns:1fr;align-content:space-between;padding:100px 20px 60px;border-top:8px solid var(--g);overflow:hidden}
+  .card:nth-of-type(odd){background:var(--y);color:var(--g)}
+  .card:nth-of-type(even){background:var(--g);color:var(--y);border-top-color:var(--y)}
+  .card .n{font-size:clamp(120px,30vw,520px);line-height:.75;color:transparent;-webkit-text-stroke:3px currentColor;position:absolute;right:-2vw;top:70px;opacity:.9}
+  .card .kicker{font-size:14px;text-transform:uppercase;border:3px solid currentColor;padding:5px 10px;justify-self:start;position:relative}
+  .card h2{font-size:clamp(44px,10vw,170px);text-transform:uppercase;line-height:.9;letter-spacing:-2px;position:relative}
+  .card p{max-width:520px;font-size:clamp(18px,2vw,26px);margin-top:18px;position:relative}
+  .card a.more{position:relative;justify-self:start;margin-top:22px;text-transform:uppercase;font-size:16px;border:4px solid currentColor;padding:12px 18px;text-decoration:none}
+  .card a.more:hover{background:currentColor}
+  .card a.more:hover span{color:var(--bg,#fff);mix-blend-mode:difference}
+
+  /* DELIVERED */
+  #delivered{position:relative;background:var(--y);color:var(--g);padding:100px 20px 80px;border-top:8px solid var(--g)}
+  #delivered .k{font-size:14px;text-transform:uppercase;background:var(--g);color:var(--y);padding:6px 12px;display:inline-block;margin-bottom:20px}
+  #delivered h2{font-size:clamp(40px,9vw,150px);text-transform:uppercase;line-height:.9;letter-spacing:-2px;max-width:16ch}
+  #delivered h2 em{font-style:normal;color:transparent;-webkit-text-stroke:3px var(--g)}
+  #delivered .meta{max-width:640px;font-size:18px;margin:24px 0 36px;border-left:8px solid var(--g);padding-left:12px}
+  .filters{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:24px}
+  .filters button{font:inherit;font-size:14px;text-transform:uppercase;background:transparent;color:var(--g);border:3px solid var(--g);padding:10px 14px;cursor:pointer}
+  .filters button.on,.filters button:hover{background:var(--g);color:var(--y)}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));border-top:3px solid var(--g);border-left:3px solid var(--g)}
+  .grid div{padding:16px 12px;border-right:3px solid var(--g);border-bottom:3px solid var(--g);font-size:16px;text-transform:uppercase;transition:.15s}
+  .grid div:hover{background:var(--g);color:var(--y)}
+  .grid div.off{opacity:.18}
+
+  /* CLOSE */
+  #close{background:var(--g);color:var(--y);padding:120px 20px;text-align:center;border-top:8px solid var(--y)}
+  #close h2{font-size:clamp(44px,11vw,180px);text-transform:uppercase;line-height:.88;letter-spacing:-3px;margin-bottom:36px}
+  footer{background:var(--y);color:var(--g);padding:20px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px;font-size:14px;text-transform:uppercase;border-top:8px solid var(--g)}
+  footer .l{display:flex;gap:18px;flex-wrap:wrap}
+  footer a{text-decoration:none}footer a:hover{text-decoration:underline}
+
+  .rv{opacity:0;transform:translateY(40px);transition:opacity .6s,transform .6s}
+  .rv.in{opacity:1;transform:none}
+  @media(prefers-reduced-motion:reduce){.card{position:relative;height:auto;min-height:80vh}.rv{opacity:1;transform:none}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<nav>
+  <a class="logo" href="#top">
+    <svg viewBox="0 0 253.65 219.81" xmlns="http://www.w3.org/2000/svg"><circle cx="126.82" cy="158.98" r="32.44"/><path d="m243.22,9.04H10.43v201.74h232.8v-103.59l-82.59-46.64L243.22,13.9v-4.87ZM15.29,13.9h106.67v93H15.29V13.9Zm223.07,98.15v93.86H15.29v-93.86h223.07Z"/></svg>
+    <span>Special Logistics Group</span>
+  </a>
+  <div class="right"><a href="#">mySLG</a><button id="mbtn" aria-expanded="false">Menu</button></div>
+</nav>
+
+<div id="menu">
+  <a href="#">Home</a><a href="#services">Services</a><a href="#">About Us</a><a href="#">Contact</a><a href="#">mySLG</a>
+</div>
+
+<div id="readout">00 / 04 &middot; Y 0000</div>
+
+<header id="hero">
+  <div class="stripes"></div><div class="sun"></div>
+  <span class="tag">WHAT WE DO</span>
+  <h1>Freight for the routes that matter.</h1>
+  <p>We coordinate international freight from origin through final delivery, especially when the route is complex, remote, or time-sensitive.</p>
+  <div class="cta-row"><a class="btn" href="#">Talk with our team</a><a class="btn ghost" href="#services">Explore services</a></div>
+</header>
+
+<main id="services">
+  <section class="card" data-sec="01">
+    <span class="n">01</span>
+    <span class="kicker">Service 01</span>
+    <div><h2>International freight</h2><p>Hands-on coordination across a trusted global network.</p><a class="more" href="#"><span>Talk with our team</span></a></div>
+  </section>
+  <section class="card" data-sec="02">
+    <span class="n">02</span>
+    <span class="kicker">Service 02</span>
+    <div><h2>Humanitarian logistics</h2><p>Reliable delivery for NGOs, charities, and ministries in high-need regions.</p><a class="more" href="#"><span>Talk with our team</span></a></div>
+  </section>
+  <section class="card" data-sec="03">
+    <span class="n">03</span>
+    <span class="kicker">Service 03</span>
+    <div><h2>Commercial cargo</h2><p>Precision, accountability, and clear communication at every handoff.</p><a class="more" href="#"><span>Talk with our team</span></a></div>
+  </section>
+</main>
+
+<section id="delivered" data-sec="04">
+  <span class="k rv">Where We've Delivered</span>
+  <h2 class="rv"><span data-to="85">85</span> countries served. <em><span data-to="59">59</span> reached in 2026.</em></h2>
+  <p class="meta rv">730 shipments in 2026, including 9 countries reached for the first time. Figures as of November 4, 2026. Explore the listed destinations by region.</p>
+  <div class="filters rv" id="filters"></div>
+  <div class="grid rv" id="grid"></div>
+</section>
+
+<section id="close">
+  <h2>Freight for the routes that matter.</h2>
+  <a class="btn" href="#">Talk with our team</a>
+</section>
+
+<footer>
+  <div class="l"><a href="#">Services</a><a href="#">About Us</a><a href="#">Contact</a></div>
+  <span>&copy; 2026 Special Logistics Group LLC. All rights reserved.</span>
+  <a href="https://www.speciallogistics.net/hbl">HBL &amp; NRA Terms</a>
+</footer>
+
+<script>
+const R={
+ "Africa":"Angola,Benin,Burkina Faso,Burundi,Central African Republic,Chad,Equatorial Guinea,Eswatini,Ghana,Guinea,Ivory Coast,Kenya,Lesotho,Liberia,Madagascar,Malawi,Mali,Mauritania,Mozambique,Nigeria,Sierra Leone,Somalia,South Africa,South Sudan,Tanzania,Togo,Uganda,Zambia",
+ "Latin America & Caribbean":"Colombia,Cuba,Dominican Republic,El Salvador,Grenada,Guatemala,Guyana,Haiti,Honduras,Jamaica,Nicaragua,Panama,Paraguay,Peru,Venezuela",
+ "Europe & Middle East":"Finland,Lebanon,Moldova,Romania,Turkey,Ukraine",
+ "Asia & Pacific":"Bangladesh,Cambodia,Pakistan,Papua New Guinea,Philippines,Timor-Leste,Vietnam",
+ "North America":"Mexico,United States"};
+const all=[];Object.entries(R).forEach(([r,s])=>s.split(",").forEach(c=>all.push([c,r])));
+all.sort((a,b)=>a[0].localeCompare(b[0]));
+const grid=document.getElementById("grid"),fl=document.getElementById("filters");
+grid.innerHTML=all.map(([c,r])=>`<div data-r="${r}">${c}</div>`).join("");
+["All",...Object.keys(R)].forEach((r,i)=>{const b=document.createElement("button");b.textContent=r;if(!i)b.className="on";
+  b.onclick=()=>{[...fl.children].forEach(x=>x.classList.toggle("on",x===b));[...grid.children].forEach(d=>d.classList.toggle("off",r!=="All"&&d.dataset.r!==r))};fl.appendChild(b)});
+
+const menu=document.getElementById("menu"),mb=document.getElementById("mbtn");
+mb.onclick=()=>{const o=menu.classList.toggle("open");mb.textContent=o?"Close":"Menu";mb.setAttribute("aria-expanded",o)};
+menu.addEventListener("click",e=>{if(e.target.tagName==="A"){menu.classList.remove("open");mb.textContent="Menu"}});
+
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target)}}),{threshold:.15});
+document.querySelectorAll(".rv").forEach(el=>io.observe(el));
+
+const counted=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;counted.unobserve(e.target);
+  const to=+e.target.dataset.to,t0=performance.now();
+  (function f(t){const p=Math.min(1,(t-t0)/1600);e.target.textContent=Math.round(to*(1-Math.pow(1-p,3)));if(p<1)requestAnimationFrame(f)})(t0)}),{threshold:.6});
+document.querySelectorAll("[data-to]").forEach(el=>{el.textContent="0";counted.observe(el)});
+
+const stripes=document.querySelector(".stripes"),sun=document.querySelector(".sun"),ro=document.getElementById("readout"),secs=[...document.querySelectorAll("[data-sec]")];
+let tk=false;
+function upd(){tk=false;const y=scrollY;
+  stripes.style.transform=`translate(${y*.2}px,${y*.2}px)`;
+  sun.style.transform=`translateY(${y*.35}px) scale(${1+y/2000})`;
+  let cur=0;secs.forEach((s,i)=>{if(s.getBoundingClientRect().top<innerHeight*.5)cur=i+1});
+  ro.innerHTML=`${String(cur).padStart(2,"0")} / 04 &middot; Y ${String(Math.round(y)).padStart(4,"0")}`}
+addEventListener("scroll",()=>{if(!tk){tk=true;requestAnimationFrame(upd)}},{passive:true});upd();
+</script>
+</body>
+</html>

@@ -883,7 +883,8 @@ initMap();route();
         whoEl=document.getElementById("fbWho"), hintEl=document.getElementById("fbHint"),
         closeEl=document.getElementById("fbClose"), countEl=document.getElementById("fbCount");
   if(!btn||!panel) return;
-  let db=null,user=null,me=null,canWrite=false,isOwner=false;
+  let db=null,user=null,me=null,canWrite=null,isOwner=false;
+  const draftRef=sec=>db.collection("data/users/"+me).doc("draft~"+sec.replace(/[^A-Za-z0-9_\-.~:@+]/g,"_"));
   let all=[], cur=null, names={}, draftT=null;
 
   const slug=t=>t.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"").slice(0,44);
@@ -958,37 +959,41 @@ initMap();route();
     if(!cur) return;
     let d="";
     try{ d=localStorage.getItem("fbdraft:"+cur.section)||""; }catch(_){}
-    textEl.value=d; sendEl.disabled=!d.trim();
-    if(db&&me) db.doc("data/users/"+me+"/drafts").get().then(doc=>{
-      const v=doc&&doc.data&&doc.data()&&doc.data()[cur.section];
-      if(v&&!textEl.value){textEl.value=v;sendEl.disabled=!v.trim();}
+    textEl.value=d; sendEl.disabled=!d.trim()||canWrite===false;
+    const sec=cur.section;
+    if(db&&me) draftRef(sec).get().then(doc=>{
+      const v=doc&&doc.exists&&doc.data()&&doc.data().text;
+      if(v&&cur&&cur.section===sec&&!textEl.value){textEl.value=v;sendEl.disabled=!v.trim()||canWrite===false;}
     }).catch(()=>{});
   }
   function saveDraft(){
     if(!cur) return;
-    const v=textEl.value;
-    try{ localStorage.setItem("fbdraft:"+cur.section,v); }catch(_){}
+    const v=textEl.value, sec=cur.section;
+    try{ localStorage.setItem("fbdraft:"+sec,v); }catch(_){}
     clearTimeout(draftT);
     draftT=setTimeout(()=>{
       if(!db||!me) return;
-      db.doc("data/users/"+me+"/drafts").set({[cur.section]:v},{merge:true})
+      draftRef(sec).set({text:v})
         .then(()=>{hintEl.textContent="Draft saved.";})
         .catch(()=>{hintEl.textContent="Draft saved on this device only.";});
     },800);
   }
-  function clearDraft(){
-    try{ localStorage.removeItem("fbdraft:"+cur.section); }catch(_){}
-    if(db&&me) db.doc("data/users/"+me+"/drafts").set({[cur.section]:""},{merge:true}).catch(()=>{});
+  function clearDraft(sec){
+    try{ localStorage.removeItem("fbdraft:"+sec); }catch(_){}
+    clearTimeout(draftT);
+    if(db&&me) draftRef(sec).delete().catch(()=>{});
   }
   async function send(){
     const text=textEl.value.trim(); if(!text||!cur||!db) return;
+    const c=cur;
     sendEl.disabled=true; hintEl.textContent="Sending…";
     const id=(crypto.randomUUID?crypto.randomUUID():String(Date.now())+Math.random().toString(36).slice(2));
     try{
       await db.collection("comments").doc(id).set({
-        id, section:cur.section, label:cur.label, page:cur.section.split(":")[0],
+        id, section:c.section, label:c.label, page:c.section.split(":")[0],
         text, authorId:me||"anon", createdAt:Date.now(), status:"open"});
-      textEl.value=""; clearDraft(); hintEl.textContent="Sent. Thank you.";
+      if(cur&&cur.section===c.section) textEl.value="";
+      clearDraft(c.section); hintEl.textContent="Sent. Thank you.";
     }catch(e){ hintEl.textContent="Could not send. You may not have edit access."; sendEl.disabled=false; }
   }
 
@@ -1009,13 +1014,19 @@ initMap();route();
     }catch(_){ return; }
     if(!db) return;
     try{ me=user&&user.id?await user.id():null; }catch(_){}
-    try{ isOwner=!!(user&&(user.isOwner()||user.canEdit())); }catch(_){}
+    try{ isOwner=!!user&&((await user.isOwner())||(await user.canEdit())); }catch(_){ isOwner=false; }
+    try{ canWrite=user?await user.can("data.write"):null; }catch(_){ canWrite=null; }
+    if(canWrite===false){
+      textEl.disabled=true; sendEl.disabled=true;
+      textEl.placeholder="You can read feedback here. Ask Robertson for Contributor access to add your own.";
+      hintEl.textContent="View-only access.";
+    }
     btn.hidden=false;
     try{
       db.collection("comments").onSnapshot(snap=>{
         all=(snap.docs||[]).map(d=>Object.assign({id:d.id},d.data?d.data():d));
         paintCounts(); if(panel.classList.contains("open")) renderList();
-      });
+      },()=>{ hintEl.textContent="Feedback stopped updating. Reload the page to see new comments."; });
     }catch(e){
       try{ const snap=await db.collection("comments").get();
         all=(snap.docs||[]).map(d=>Object.assign({id:d.id},d.data?d.data():d)); paintCounts(); }catch(_){}

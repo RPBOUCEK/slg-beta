@@ -70,7 +70,8 @@
   #mclose svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.7}
   #mclose:hover{background:var(--b);color:var(--onB);border-color:var(--b)}
   .tiles{display:flex;flex-direction:column;gap:6px}
-  .tile{position:relative;display:block;padding:15px 16px;text-decoration:none;transition:background .2s ease,filter .2s ease}
+  .tile{position:relative;display:block;padding:15px 16px;text-decoration:none;box-shadow:inset 3px 0 0 var(--b);transition:background .2s ease,filter .2s ease,box-shadow .22s ease}
+  .tile:hover,.tile:focus-visible,.tile.cur{box-shadow:inset 7px 0 0 var(--b)}
   .th{display:flex;align-items:center;justify-content:space-between;gap:12px}
   .tile .tt{font-size:clamp(17px,2.1vw,22px);font-weight:700;letter-spacing:-.01em;line-height:1.15}
   .tile .dot{width:7px;height:7px;border-radius:50%;background:var(--b2);opacity:0;transform:scale(.4);transition:.2s ease;flex:none}

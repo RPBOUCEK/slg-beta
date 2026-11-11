@@ -624,7 +624,7 @@
     <p class="lead rv">Our focus is shipping humanitarian aid, backed by a deep understanding of nonprofit organizations and their priorities. We bring that same expertise to commercial cargo.</p>
     
     <div class="stats two rv" style="margin-top:clamp(38px,5vw,60px)">
-      <div><b>Thousands</b><span>Humanitarian cargo shipments since 2020</span></div>
+      <div><b>Thousands</b><span>Humanitarian cargo shipments delivered</span></div>
       <div><b>100+</b><span>NGOs, charities &amp; ministries served</span></div>
     </div>
   </section>
@@ -702,7 +702,7 @@
 </figure>
   <section class="sec tint wrap" id="dest">
     <h2 class="rv">Destination index</h2>
-    <p class="lead rv">Every country we have shipped to since 2020. Search it, pick it from the board or the list, and go deeper.</p>
+    <p class="lead rv">Every country we&rsquo;ve shipped to. Search it, pick it from the board or the list, and go deeper.</p>
     <div class="lsearch rv">
       <label class="lbl" for="lsIn">Where are you shipping?</label>
       <div class="lsrow">
@@ -720,7 +720,7 @@
     <div class="filters rv" id="filters"></div>
     <div class="ixbar rv"><p class="tally" id="tally"></p></div>
     <div id="grid" class="rv"></div>
-    <p class="key rv">Tap any country for its ports and inland destinations &nbsp;&middot;&nbsp; <b>01&ndash;10</b> busiest lanes since 2020 &nbsp;&middot;&nbsp; Totals from the SLG master ledger, US domestic moves excluded</p>
+    <p class="key rv">Tap any country for its ports and inland destinations &nbsp;&middot;&nbsp; <b>01&ndash;10</b> our 10 busiest lanes &nbsp;&middot;&nbsp; Totals from the SLG master ledger, US domestic moves excluded</p>
   </section>
 
   <section class="cta"><div class="wrap">
@@ -735,7 +735,7 @@
     <div class="rule"></div>
     <p class="lbl">Credentials &amp; experience</p>
     <h1>Built for <em>complex cargo</em>.</h1>
-    <p class="sub">Since 2020 we have moved thousands of humanitarian cargo shipments to 85 countries, for more than 100 NGOs, charities and ministries.</p>
+    <p class="sub">We have moved thousands of humanitarian cargo shipments to 85 countries, for more than 100 NGOs, charities and ministries.</p>
     <div class="scrollcue lbl"><i></i>Scroll</div>
   </header>
 
@@ -1173,7 +1173,7 @@ initMap();route();
     const top=TOP[c]||0, rank=RANK[c]||0, ports=portsFor(c), inl=inlandOf(c).slice().sort((a,b)=>(b.km||0)-(a.km||0));
     const stats=[`<span>${esc(regionOf[c]||"")}</span>`,
       in26(c)?`<span class="y">${n26(c)?n26(c)+" shipments in 2026":"1 to 3 shipments in 2026"}</span>`:"",
-      top?`<span>${top.toLocaleString("en-US")} since 2020</span>`:"",
+      top?`<span>${top.toLocaleString("en-US")} shipments all time</span>`:"",
       rank?`<span class="stn"><b>${two(rank)}</b> busiest lane</span>`:"",
       NEW.has(c)?`<span class="y">Newest lane</span>`:""].filter(Boolean).join("");
     const inland=inl.length

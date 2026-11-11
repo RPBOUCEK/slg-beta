@@ -440,29 +440,20 @@
     #hero{height:auto}.hstick{position:relative;height:auto;min-height:0;padding-block:90px}.hcopy{opacity:1!important;transform:none!important}.rt{stroke-dashoffset:0}
     .hmap [data-s]{opacity:1}.pp,.scrollcue i{animation:none}}
 
-  /* ================= feature set: cursor, highlighter, container codes, lane search, lane cards, flip board ================= */
+  /* ================= feature set: cursor, container codes, lane search, lane cards, flip board ================= */
   :root{--mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;--board:#282828;--tile:#323232;--tileInk:#f3f1ea}
   :root[data-slg-theme="dark"]{--board:#1f1f1f;--tile:#2b2b2b}
 
-  /* container codes on the service cards (ISO 6346 format, check digit boxed as on a container door) */
-  .card .no.cc{display:inline-flex;align-items:baseline;flex-wrap:wrap;gap:.18em .34em;font-family:var(--mono);font-weight:700;
-    font-size:clamp(22px,3.2vw,44px);letter-spacing:.02em;line-height:1;padding:.32em .42em .3em}
-  .cc .cc-chk{display:inline-block;border:2px solid currentColor;padding:.02em .16em;line-height:1}
-  .cc .cc-iso{flex-basis:100%;font-size:.36em;letter-spacing:.24em;font-weight:500;margin-top:.35em;opacity:.8}
+  /* container codes on the service cards: a quiet stencil line, not a badge */
+  .card .no.cc{display:inline-flex;align-items:center;gap:.45em;background:none;color:var(--mut);padding:0;line-height:1;
+    font-family:var(--mono);font-weight:500;font-size:12px;letter-spacing:.14em}
+  .cc .cc-chk{border:1px solid currentColor;padding:1px 4px}
+  .cc .cc-iso::before{content:"·";margin-right:.45em}
 
-  /* hand-drawn highlighter: marker swash under headline words, circles round key numbers */
-  em{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 24' preserveAspectRatio='none'%3E%3Cpath d='M3 15C38 9 74 17 112 12S174 8 197 13' fill='none' stroke='%23ffde59' stroke-width='9' stroke-linecap='round'/%3E%3Cpath d='M8 18C52 14 96 19 150 15S186 14 194 16' fill='none' stroke='%23ffde59' stroke-width='4' stroke-linecap='round' opacity='.7'/%3E%3C/svg%3E");
-    background-size:0 .34em;background-position:0 104%}
-  em.mk{background-size:100% .34em}
-  .hlc{position:relative;display:inline-block}
-  .hlc svg{position:absolute;left:-22%;top:-26%;width:144%;height:152%;overflow:visible;pointer-events:none}
-  .hlc path{fill:none;stroke:var(--y);stroke-width:3.2;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 1s cubic-bezier(.5,.1,.3,1)}
-  .hlc.drawn path{stroke-dashoffset:0}
-  @media(prefers-reduced-motion:reduce){.hlc path{transition:none;stroke-dashoffset:0}}
-
-  /* smart cursor (mouse and trackpad only) */
+  /* smart cursor: mouse and trackpad only, not on the home page */
   #scur{position:fixed;left:0;top:0;z-index:90;pointer-events:none;display:none;align-items:center;gap:8px;
     transform:translate3d(-100px,-100px,0);will-change:transform}
+  html.scur-on #scur{display:flex}
   #scur .dot{width:12px;height:12px;border-radius:50%;background:var(--y);box-shadow:0 0 0 1.5px var(--g);flex:none;
     transform:translate(-50%,-50%);transition:width .18s,height .18s,background .18s,box-shadow .18s}
   #scur .lab{font:700 11px/1 var(--f);letter-spacing:.12em;text-transform:uppercase;white-space:nowrap;background:var(--g);color:var(--w);
@@ -473,8 +464,6 @@
   #scur.hide{opacity:0}
   html.scur-on, html.scur-on a, html.scur-on button, html.scur-on [role="button"], html.scur-on .cell{cursor:none}
   html.scur-on input, html.scur-on textarea{cursor:text}
-  .hmap path.hit{fill:none;stroke:transparent;stroke-width:9;pointer-events:stroke}
-  .hmap circle{pointer-events:all}
 
   /* lane search */
   .lsearch{margin:30px 0 6px;max-width:720px}
@@ -506,11 +495,11 @@
   #grid .cell{cursor:pointer}
   #grid .cell:focus-visible{outline:2px solid var(--g);outline-offset:-2px}
 
-  /* flip board */
+  /* flip board: every destination reads the same; 2026 lanes are lit yellow with their count */
   #board{background:var(--board);color:var(--tileInk);padding:clamp(14px,2.4vw,26px);overflow-x:auto;border:1px solid var(--g)}
   #board[hidden]{display:none}
   .fbd{width:max-content;min-width:100%;font-family:var(--mono);font-weight:700;--tw:calc(1.05em + 2px)}
-  .fbd-h,.fbd-r{display:grid;grid-template-columns:calc(var(--tw)*17) calc(var(--tw)*5) calc(var(--tw)*6) calc(var(--tw)*3);gap:0 1.4em;align-items:center;font-size:clamp(12px,1.25vw,16px)}
+  .fbd-h,.fbd-r{display:grid;grid-template-columns:calc(var(--tw)*17) calc(var(--tw)*4) calc(var(--tw)*3);gap:0 1.4em;align-items:center;font-size:clamp(12px,1.25vw,16px)}
   .fbd-h{color:var(--y);padding:0 4px 10px;border-bottom:1px solid rgba(243,241,234,.18);margin-bottom:6px}
   .fbd-h span{font-size:10px;letter-spacing:.2em}
   .fbd-r{width:100%;background:none;border:0;color:inherit;font-family:inherit;font-weight:inherit;text-align:left;padding:5px 4px;cursor:pointer}
@@ -519,23 +508,22 @@
   .ch{display:inline-grid;place-items:center;width:1.05em;height:1.45em;background:linear-gradient(var(--tile) 0 49%,rgba(0,0,0,.45) 49% 51%,var(--tile) 51%);
     border-radius:2px;flex:none;font-size:1em;line-height:1}
   .ch.sp{background:linear-gradient(rgba(255,255,255,.035) 0 49%,rgba(0,0,0,.3) 49% 51%,rgba(255,255,255,.035) 51%)}
-  .fbd-r .st-a .ch{color:var(--y)}
-  .fbd-r .st-s .ch{color:#9d9a92}
+  .fbd-r.y26 .ch{color:var(--y)}
+  .fbd-foot{margin-top:12px;font:500 11px var(--mono);letter-spacing:.12em;color:#9d9a92}
   @media(max-width:620px){
     #board{padding:12px 10px}
-    .fbd-h,.fbd-r{font-size:10px;grid-template-columns:calc(var(--tw)*13) calc(var(--tw)*5) calc(var(--tw)*6);gap:0 1.1em}
-    .fbd-h span:nth-child(4),.fbd-r>span:nth-child(4){display:none}
+    .fbd-h,.fbd-r{font-size:10.5px;grid-template-columns:calc(var(--tw)*13) calc(var(--tw)*4) calc(var(--tw)*3);gap:0 1.1em}
     .fbd-h span{font-size:8.5px}
   }
-  .fbd-foot{margin-top:12px;font:500 11px var(--mono);letter-spacing:.12em;color:#9d9a92}
 
   /* lane card */
   #lane{position:fixed;inset:0;z-index:75;display:grid;place-items:center;padding:16px;background:rgba(20,22,26,.55);backdrop-filter:blur(3px)}
   #lane[hidden]{display:none}
   body.lane-open{overflow:hidden}
-  .lcard{position:relative;width:min(640px,100%);max-height:calc(100svh - 32px);overflow-y:auto;background:var(--w);color:var(--g);
+  .lcard{position:relative;width:min(660px,100%);max-height:calc(100svh - 32px);overflow-y:auto;background:var(--w);color:var(--g);
     border:1px solid var(--g);border-top:6px solid var(--b);box-shadow:0 24px 70px rgba(0,0,0,.3)}
-  .lc-head{padding:clamp(20px,3.4vw,32px) clamp(20px,3.4vw,32px) 0}
+  .lc-pad{padding-inline:clamp(20px,3.4vw,32px)}
+  .lc-head{padding-top:clamp(20px,3.4vw,32px)}
   .lc-head h3{font-size:clamp(28px,4vw,44px);margin:10px 0 6px;letter-spacing:-.02em}
   .lc-head .rg{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--mut)}
   .lc-chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:14px}
@@ -543,21 +531,45 @@
   .lc-chips span.y{background:var(--b);color:var(--onB);border-color:var(--b)}
   .lc-map{margin:18px 0 0;border-block:1px solid var(--ln);background:var(--yl)}
   .lc-map svg{display:block;width:100%;height:auto}
-  .lc-map .route{fill:none;stroke:var(--g);stroke-width:2.2;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1;animation:lcdraw 1.1s .15s cubic-bezier(.5,.1,.3,1) forwards}
+  .lc-map .route{fill:none;stroke:var(--g);stroke-width:1.4;stroke-opacity:.8;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1;animation:lcdraw 1.1s cubic-bezier(.5,.1,.3,1) forwards}
   @keyframes lcdraw{to{stroke-dashoffset:0}}
   @media(prefers-reduced-motion:reduce){.lc-map .route{animation:none;stroke-dashoffset:0}}
-  .lc-facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));border-bottom:1px solid var(--ln)}
-  .lc-facts div{padding:16px clamp(20px,3.4vw,32px) 16px 0;margin-left:clamp(20px,3.4vw,32px)}
-  .lc-facts dt{font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--mut);margin-bottom:6px}
-  .lc-facts dd{margin:0;font-size:17px;font-weight:700}
-  .lc-facts dd small{display:block;font:500 11px var(--mono);letter-spacing:.08em;color:var(--mut);margin-top:3px}
-  .lc-todo{margin:16px clamp(20px,3.4vw,32px) 0;border:1px dashed var(--mut);padding:12px 14px;font-size:13px;color:var(--mut)}
-  .lc-todo b{display:block;font-size:10px;letter-spacing:.16em;text-transform:uppercase;margin-bottom:4px;color:var(--g)}
-  .lc-foot{display:flex;gap:12px;flex-wrap:wrap;align-items:center;padding:18px clamp(20px,3.4vw,32px) clamp(20px,3.4vw,28px)}
+  .lc-sec{padding-block:16px;border-bottom:1px solid var(--ln)}
+  .lc-sec h4{font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--mut);margin-bottom:10px}
+  .lc-nums{display:flex;gap:28px;flex-wrap:wrap}
+  .lc-nums div b{display:block;font-size:26px;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+  .lc-nums div span{font-size:12px;color:var(--mut)}
+  .lc-list{display:flex;flex-wrap:wrap;gap:6px}
+  .lc-list span{font-size:13px;font-weight:500;border:1px solid var(--ln);padding:6px 9px;background:var(--w)}
+  .lc-list span small{font:500 10.5px var(--mono);letter-spacing:.08em;color:var(--mut);margin-left:6px}
+  .lc-list span.more{border-style:dashed;color:var(--mut)}
+  .lc-in span{display:inline-flex;flex-direction:column;gap:2px}
+  .lc-in span small{margin-left:0}
+  .lc-in span.deep{background:var(--b);color:var(--onB);border-color:var(--b)}
+  .lc-in span.deep small{color:var(--onB);opacity:.8}
+
+  /* deepest inland strip */
+  .deep{margin:34px 0 8px}
+  .deep h3{font-size:clamp(20px,2.2vw,28px);margin:8px 0 4px}
+  .deep .lead2{font-size:14px;color:var(--mut);max-width:60ch}
+  .deep-row{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--g);border-left:1px solid var(--g);margin-top:16px}
+  .dp{display:flex;flex-direction:column;align-items:flex-start;gap:3px;text-align:left;font:inherit;color:var(--g);background:var(--w);cursor:pointer;
+    border:0;border-right:1px solid var(--g);border-bottom:1px solid var(--g);padding:14px 14px 13px;transition:background .18s}
+  .dp:hover,.dp:focus-visible{background:var(--b);color:var(--onB);outline:none}
+  @media(max-width:620px){.deep-row{grid-template-columns:repeat(2,minmax(0,1fr))}}
+  .dp b{font-size:clamp(26px,2.6vw,34px);letter-spacing:-.03em;line-height:1;font-variant-numeric:tabular-nums}
+  .dp b small{font-size:.42em;letter-spacing:.06em;margin-left:3px}
+  .dp .dp-p{font-size:14px;font-weight:700;margin-top:6px}
+  .dp .dp-c{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+  .dp .dp-f{font:500 11px var(--mono);letter-spacing:.04em;opacity:.7}
+  .lc-note{font-size:12.5px;color:var(--mut);margin-top:10px}
+  .lc-todo{border:1px dashed var(--mut);padding:12px 14px;font-size:13px;color:var(--mut)}
+  .lc-foot{display:flex;gap:12px;flex-wrap:wrap;align-items:center;padding-block:18px clamp(20px,3.4vw,28px)}
   .lc-foot .btn{font-family:inherit;cursor:pointer}
   #laneX{position:absolute;top:12px;right:12px;width:36px;height:36px;background:var(--w);border:1px solid var(--ln);color:var(--g);font-size:17px;line-height:1;cursor:pointer;z-index:2}
   #laneX:hover{background:var(--b);color:var(--onB)}
-  @media(max-width:620px){#lane{place-items:end center;padding:0}.lcard{max-height:92svh;border-left:0;border-right:0}}
+  @media(max-width:620px){#lane{place-items:end center;padding:0}.lcard{max-height:92svh;border-left:0;border-right:0}
+    .lc-foot{padding-bottom:calc(20px + env(safe-area-inset-bottom,0px))}}
   #grid[hidden],#dest .key[hidden]{display:none}
   @media(max-width:620px){.lc-foot{padding-bottom:calc(20px + env(safe-area-inset-bottom,0px))}}
 </style>
@@ -726,11 +738,14 @@
       </div>
       <div id="lsRes" class="lres" hidden aria-live="polite"></div>
     </div>
+    <div class="deep rv" id="deep"><p class="lbl">Deepest inland</p><h3>Far past the port.</h3>
+      <p class="lead2">The furthest delivery point in each country, measured in a straight line from the port where the cargo came off the ship.</p>
+      <div class="deep-row"></div></div>
     <div class="filters rv" id="filters"></div>
     <div class="ixbar rv"><p class="tally" id="tally"></p><div class="ixview" role="group" aria-label="Index view"><button type="button" id="vGrid" aria-pressed="true">Grid</button><button type="button" id="vBoard" aria-pressed="false">Board</button></div></div>
     <div id="grid" class="rv"></div>
     <div id="board" hidden><div class="fbd"><div class="fbd-h"><span>DESTINATION</span><span>FROM</span><span>STATUS</span><span>RANK</span></div><div class="fbd-rows"></div><p class="fbd-foot"></p></div></div>
-    <p class="key rv"><i></i> Active lane &nbsp;&middot;&nbsp; <b>#1&ndash;#10</b> busiest lanes since 2020 &nbsp;&middot;&nbsp; Totals from the SLG master ledger, US domestic moves excluded</p>
+    <p class="key rv"><i></i> Shipped to in 2026 &nbsp;&middot;&nbsp; <b>#1&ndash;#10</b> busiest lanes since 2020 &nbsp;&middot;&nbsp; Totals from the SLG master ledger, US domestic moves excluded</p>
   </section>
 
   <section class="cta"><div class="wrap">
@@ -957,12 +972,12 @@ grid.innerHTML=all.map(([c,r])=>{
   const cls=["cell",y?"y26":"",t?"top":"",n?"new":""].filter(Boolean).join(" ");
   return `<div class="${cls}" data-r="${r}" data-n="${c}"${t?` style="--o:${RANK[c]}"`:""}>
     <span class="cn">${c}${t?`<i class="rk">#${RANK[c]}</i>`:""}</span>
-    <span class="cm${t?"":" q"}">${t?`<b>${fmt(t)}</b> shipments since 2020`:(y?"Active lane":"Served since 2020")}</span>
+    <span class="cm">${y?(C26[c]?`<b>${fmt(C26[c])}</b> in 2026`:"1 to 3 in 2026"):"&nbsp;"}</span>
     ${n?'<span class="tag">Newest</span>':""}</div>`}).join("");
 const counts={};all.forEach(([,r])=>counts[r]=(counts[r]||0)+1);
 const FILT=[["All","",all.length,()=>true],
   ...Object.keys(R).map(r=>[r,r,counts[r],d=>d.dataset.r===r]),
-  ["Active lanes","Active lanes",59,d=>d.classList.contains("y26")],
+  ["Shipped in 2026","Shipped in 2026",59,d=>d.classList.contains("y26")],
   ["Newest lanes","Newest lanes",9,d=>d.classList.contains("new")],
   ["Top 10 lanes","Top 10 lanes",10,d=>d.classList.contains("top"),true]];
 const tally=document.getElementById("tally");
@@ -1089,81 +1104,89 @@ function initMap(){
 }
 initMap();route();
 </script>
+<script>window.SLG_LEDGER={"Chad":{"ports":["Norfolk","New York"],"inland":[{"p":"N'Djamena","km":1075,"from":"Douala"}]},"Mozambique":{"ports":["New York","Houston","Norfolk","Montreal"]},"Sierra Leone":{"ports":["Baltimore"]},"Jamaica":{"ports":["New York","Houston","Wilmington","Philadelphia"],"inland":[{"p":"Mandeville","km":76,"from":"Kingston"}]},"Ghana":{"ports":["Newark"]},"Zambia":{"ports":["Norfolk","Houston","Tacoma"],"inland":[{"p":"Lusaka","km":1534,"from":"Dar es Salaam"},{"p":"Kitwe","km":1383,"from":"Dar es Salaam"},{"p":"Ndola","km":1352,"from":"Dar es Salaam"},{"p":"Mansa","km":1241,"from":"Dar es Salaam"},{"p":"Luwingu","km":1098,"from":"Dar es Salaam"},{"p":"Kasama","km":968,"from":"Dar es Salaam"}]},"Togo":{"ports":["New York"]},"Tanzania":{"ports":["New York","Norfolk","Houston","Port Everglades","Baltimore"],"inland":[{"p":"Kamachumu","km":1029,"from":"Dar es Salaam"}]},"Uganda":{"ports":["Newark","Norfolk","New York","Houston","Montreal"],"inland":[{"p":"Kampala","km":927,"from":"Mombasa"}]},"Dominican Republic":{"ports":["New York","Norfolk","Houston","Miami","Philadelphia","Los Angeles","Newark","Charleston","Savannah"]},"Afghanistan":{"inland":[{"p":"Mazar-i-Sharif","km":1320,"from":"Karachi"}]},"Lebanon":{"ports":["Houston","Los Angeles","New York"]},"Guyana":{"ports":["Houston","New York"]},"Burkina Faso":{"ports":["Houston","Norfolk","New York","Montreal"],"inland":[{"p":"Ouagadougou","km":767,"from":"Tema"}]},"Nigeria":{"ports":["Norfolk","New York"]},"Burundi":{"ports":["Houston","Montreal","New York","Baltimore"],"inland":[{"p":"Bujumbura","km":1164,"from":"Dar es Salaam"},{"p":"Ngozi"}]},"South Sudan":{"ports":["Norfolk","New York"],"inland":[{"p":"Bor","km":1453,"from":"Mombasa"},{"p":"Juba","km":1338,"from":"Mombasa"}]},"Kenya":{"ports":["New York","Norfolk","Montreal","Newark"],"inland":[{"p":"Nairobi","km":441,"from":"Mombasa"}]},"Ukraine":{"ports":["New York","Norfolk","Houston","Montreal"],"inland":[{"p":"Lutsk","km":1430,"from":"Piraeus"},{"p":"Vinnytsia","km":1314,"from":"Piraeus"},{"p":"Lviv","km":721,"from":"Constanța"},{"p":"Mukachevo","km":658,"from":"Constanța"},{"p":"Zaporizhzhia","km":646,"from":"Constanța"}]},"Liberia":{"ports":["Newark","Houston","Norfolk","New York","Baltimore","Los Angeles","Montreal"],"inland":[{"p":"Gbarnga","km":164,"from":"Monrovia"},{"p":"Harbel","km":50,"from":"Monrovia"}]},"Panama":{"ports":["New York"],"inland":[{"p":"La Chorrera","km":54,"from":"Manzanillo"}]},"Madagascar":{"ports":["Houston"]},"Philippines":{"ports":["Los Angeles"]},"Colombia":{"ports":["Norfolk","Mobile"]},"UAE":{"ports":["Newark"]},"DR Congo":{"inland":[{"p":"Lubumbashi","km":1403,"from":"Dar es Salaam"},{"p":"Goma","km":1254,"from":"Dar es Salaam"},{"p":"Kinshasa","km":265,"from":"Matadi"}]},"Mali":{"ports":["Norfolk"],"inland":[{"p":"Bamako","km":1045,"from":"Dakar"}]},"Romania":{"ports":["Norfolk","Baltimore","New York"],"inland":[{"p":"Suceava","km":429,"from":"Constanța"},{"p":"Bucharest","km":205,"from":"Constanța"}]},"Cambodia":{"ports":["Los Angeles","Norfolk"]},"Eswatini":{"ports":["New York","Norfolk","Houston","Newark"],"inland":[{"p":"Manzini","km":377,"from":"Durban"},{"p":"Matsapha","km":374,"from":"Durban"}]},"Lesotho":{"ports":["Newark","Houston"],"inland":[{"p":"Maseru","km":349,"from":"Durban"}]},"Cuba":{"ports":["Los Angeles","Houston"]},"Honduras":{"ports":["New York","Houston","Long Beach","Philadelphia","Baltimore","Mobile","Newark","New Orleans","Savannah","Port Everglades","Jacksonville"],"inland":[{"p":"El Progreso","km":52,"from":"Puerto Cortés"},{"p":"San Pedro Sula","km":39,"from":"Puerto Cortés"}]},"Haiti":{"ports":["New York","Miami","Port Everglades"]},"Guatemala":{"ports":["Los Angeles","Houston","New York","Port Everglades","Philadelphia","Baltimore","New Orleans","Newark","Norfolk"],"inland":[{"p":"San Lucas Tolimán","km":299,"from":"Puerto Barrios"},{"p":"Mixco","km":244,"from":"Santo Tomás de Castilla"},{"p":"Guatemala City","km":85,"from":"Puerto Quetzal"}]},"Mauritania":{"ports":["Houston","Los Angeles"]},"Moldova":{"ports":["Savannah"],"inland":[{"p":"Chisinau","km":316,"from":"Constanța"}]},"Nicaragua":{"ports":["Los Angeles"]},"Zimbabwe":{"inland":[{"p":"Harare","km":457,"from":"Beira"}]},"Rwanda":{"inland":[{"p":"Kigali","km":1092,"from":"Mombasa"}]},"South Africa":{"ports":["Houston","Baltimore","Norfolk","Newark","New York","Charleston"]},"Greece":{"ports":["New York"]},"Vietnam":{"ports":["Newark"]},"Central African Republic":{"ports":["Norfolk"],"inland":[{"p":"Bangui","km":983,"from":"Douala"}]},"Bangladesh":{"ports":["Norfolk","Houston","Newark","New York","Los Angeles"]},"Peru":{"ports":["Philadelphia","Long Beach","Houston","New York","Norfolk"]},"Malawi":{"ports":["Montreal","Houston","New York","Baltimore"],"inland":[{"p":"Nsanje","km":1205,"from":"Dar es Salaam"},{"p":"Zomba","km":1046,"from":"Dar es Salaam"},{"p":"Karonga","km":683,"from":"Dar es Salaam"},{"p":"Lilongwe","km":662,"from":"Beira"},{"p":"Blantyre","km":450,"from":"Beira"},{"p":"Mzimba"},{"p":"Liwonde"}]},"Somalia":{"ports":["Norfolk","Baltimore","New York"]},"El Salvador":{"ports":["Los Angeles","Houston","Philadelphia","Boston","Norfolk","New Orleans","Savannah"],"inland":[{"p":"San Salvador","km":71,"from":"Acajutla"}]},"Paraguay":{"ports":["Philadelphia"]},"Angola":{"ports":["New York","Norfolk","Baltimore","Vancouver","Philadelphia"]},"Grenada":{"ports":["New York"]},"Mongolia":{"capital":{"p":"Ulaanbaatar","km":1317,"from":"Tianjin"}}};</script>
 <script>
-/* ================= feature set: lanes data, lane search, lane cards, flip board, smart cursor, highlighter ================= */
+/* ================= feature set: lanes data, lane search, lane cards, flip board, smart cursor ================= */
 (function(){
   const REDUCED=matchMedia("(prefers-reduced-motion: reduce)").matches;
   const esc=t=>{const d=document.createElement("div");d.textContent=t;return d.innerHTML;};
   const regionOf={}; all.forEach(([c,r])=>regionOf[c]=r);
+  const in26=c=>c in C26, n26=c=>C26[c]||0;
+  const count26=c=>!in26(c)?"":(n26(c)?String(n26(c)):"1-3");
 
-  /* ---- lanes from the hero map: which US gateway each country's arc leaves from, and its end point ---- */
+  /* ---- US ports of export (positions on the hero map's projection) ---- */
+  const PORTS={
+    "Houston":{loc:"USHOU",xy:[278.7,176.2]}, "New York":{loc:"USNYC",xy:[334.5,145.1]}, "Newark":{loc:"USEWR",xy:[333.6,146.4]},
+    "Norfolk":{loc:"USORF",xy:[325.4,156.0]}, "Savannah":{loc:"USSAV",xy:[312.5,169.4]}, "Miami":{loc:"USMIA",xy:[311.4,187.2]},
+    "Philadelphia":{loc:"USPHL",xy:[328.3,147.2]}, "Baltimore":{loc:"USBAL",xy:[324.6,149.1]}, "Montreal":{loc:"CAMTR",xy:[332.3,131.4]},
+    "Port Everglades":{loc:"USPEF",xy:[315.7,186.5]}, "New Orleans":{loc:"USMSY",xy:[290.5,175.6]}, "Mobile":{loc:"USMOB",xy:[295.6,173.5]},
+    "Charleston":{loc:"USCHS",xy:[316.2,167.5]}, "Boston":{loc:"USBOS",xy:[338.7,140.3]}, "Jacksonville":{loc:"USJAX",xy:[311.8,174.5]},
+    "Wilmington":{loc:"",xy:[321.2,163.4]}, "Los Angeles":{loc:"USLAX",xy:[219.0,164.8]}, "Long Beach":{loc:"USLGB",xy:[219.2,164.7]},
+    "Tacoma":{loc:"USTIW",xy:[208.5,126.4]}, "Vancouver":{loc:"CAVAN",xy:[206.8,120.6]}
+  };
+  /* Per-country detail from the SLG master ledger: ports used and inland delivery points. Filled from the ledger export. */
+  const LEDGER=window.SLG_LEDGER||{};
+  const DEFAULT_PORTS=["Houston","New York","Newark","Norfolk","Savannah"];
+
+  /* destination points and their map gateway, read from the hero map */
   const hsvg=document.querySelector(".hmap svg");
-  const GW={"278.7,176.2":"Houston","311.4,187.2":"Miami","312.5,169.4":"Savannah","334.5,145.1":"New York / NJ"};
-  const GWXY={Houston:[278.7,176.2],Miami:[311.4,187.2],Savannah:[312.5,169.4],"New York / NJ":[334.5,145.1]};
-  const LOC={Houston:"USHOU",Miami:"USMIA",Savannah:"USSAV","New York / NJ":"USNYC"};
-  const lanes={};
+  const GWAT={"278.7,176.2":"Houston","311.4,187.2":"Miami","312.5,169.4":"Savannah","334.5,145.1":"New York"};
+  const dest={}, mapGw={};
   if(hsvg){
-    hsvg.querySelectorAll("path.rt").forEach(p=>{
-      const t=p.querySelector("title"); if(!t) return;
-      const name=t.textContent.split(":")[0].trim();
-      const m=(p.getAttribute("d")||"").match(/^M([\d.]+) ([\d.]+)Q([\d.]+) ([\d.]+) ([\d.]+) ([\d.]+)/);
-      if(!m) return;
-      lanes[name]={gw:GW[m[1]+","+m[2]]||null,d:p.getAttribute("d"),end:[+m[5],+m[6]],label:t.textContent.trim()};
-      /* a wider invisible twin so the thin arc is easy to point at */
-      const h=document.createElementNS("http://www.w3.org/2000/svg","path");
-      h.setAttribute("d",p.getAttribute("d")); h.setAttribute("class","hit"); h.dataset.cursor=t.textContent.replace(":"," ·");
-      p.parentNode.appendChild(h);
-    });
-    hsvg.querySelectorAll("circle").forEach(c=>{const t=c.querySelector("title"); if(t) c.dataset.cursor=t.textContent.trim();});
-    hsvg.querySelectorAll("circle.pp").forEach(c=>{
-      const k=(+c.getAttribute("cx")).toFixed(1)+","+(+c.getAttribute("cy")).toFixed(1);
-      if(GW[k]) c.dataset.cursor=GW[k]+" gateway";
-    });
+    hsvg.querySelectorAll("circle").forEach(c=>{const t=c.querySelector("title"); if(t&&c.getAttribute("fill")==="#ffde59") dest[t.textContent.trim()]=[+c.getAttribute("cx"),+c.getAttribute("cy")];});
+    hsvg.querySelectorAll("path.rt").forEach(p=>{const t=p.querySelector("title"); const m=(p.getAttribute("d")||"").match(/^M([\d.]+) ([\d.]+)Q[\d.]+ [\d.]+ ([\d.]+) ([\d.]+)/);
+      if(t&&m){ const n=t.textContent.split(":")[0].trim(); mapGw[n]=GWAT[m[1]+","+m[2]]; if(!dest[n]) dest[n]=[+m[3],+m[4]]; }});
   }
   const landD=hsvg&&hsvg.querySelector("path.land")?hsvg.querySelector("path.land").getAttribute("d"):"";
-
-  function factsFor(c){
-    const ln=lanes[c]||{}, active=c in C26, n26=C26[c]||0;
-    return {c, region:regionOf[c]||"", gw:ln.gw||null, loc:ln.gw?LOC[ln.gw]:null, active, n26, top:TOP[c]||0, rank:RANK[c]||0, isNew:NEW.has(c), lane:ln};
+  function portsFor(c){
+    const L=LEDGER[c], used=(L&&L.ports)||[];
+    const list=[...new Set(used.concat(mapGw[c]?[mapGw[c]]:[]).concat(DEFAULT_PORTS))];   /* ports this lane has used first, then the core gateways */
+    return {list, west:list.some(p=>["Los Angeles","Long Beach","Tacoma","Vancouver"].includes(p))};
   }
-  const thisYear=f=>f.active?(f.n26?f.n26+(f.n26===1?" shipment":" shipments"):"3 or fewer"):"None yet";
+  const arc=(a,b)=>{const mx=(a[0]+b[0])/2,my=(a[1]+b[1])/2,d=Math.hypot(b[0]-a[0],b[1]-a[1]);return `M${a[0]} ${a[1]}Q${mx.toFixed(1)} ${(my-d*.26).toFixed(1)} ${b[0]} ${b[1]}`;};
 
   /* ---- lane card ---- */
   const lane=document.getElementById("lane"), lbody=document.getElementById("laneBody");
   let lastFocus=null;
-  function routeSvg(f){
-    if(!f.lane.d||!f.gw) return "";
-    const [gx,gy]=GWXY[f.gw], [ex,ey]=f.lane.end;
-    const pad=40, x0=Math.min(gx,ex)-pad, y0=Math.min(gy,ey)-pad*.8, x1=Math.max(gx,ex)+pad, y1=Math.max(gy,ey)+pad*.8;
-    const w=Math.max(x1-x0,180), h=Math.max(y1-y0,100), cx=(x0+x1)/2, cy=(y0+y1)/2;
-    const vb=[cx-w/2,cy-h/2,w,h].map(v=>v.toFixed(1)).join(" ");
-    const R2L=ex>gx;
-    return `<svg viewBox="${vb}" role="img" aria-label="Route from ${esc(f.gw)} to ${esc(f.c)}">
-      <path d="${landD}" stroke="var(--g)" stroke-opacity=".22" stroke-width="2.3" stroke-linecap="round" fill="none"/>
-      <path class="route" pathLength="1" d="${f.lane.d}"/>
-      <circle cx="${gx}" cy="${gy}" r="4" fill="var(--g)"/>
-      <circle cx="${ex}" cy="${ey}" r="4.4" fill="var(--y)" stroke="var(--g)" stroke-width="1.2"/>
-      <g font-family="inherit" font-weight="700" font-size="${Math.max(7,w/42).toFixed(1)}" letter-spacing=".6" fill="var(--g)" stroke="var(--yl)" stroke-width="3" paint-order="stroke" style="text-transform:uppercase">
-        <text x="${gx+(R2L?6:-6)}" y="${gy-9}" text-anchor="${R2L?"start":"end"}">${esc(f.gw)}</text>
-        <text x="${ex+(R2L?-6:6)}" y="${ey-10}" text-anchor="${R2L?"end":"start"}">${esc(f.c)}</text>
-      </g></svg>`;
+  function routeSvg(c,ports){
+    const e=dest[c]; if(!e) return "";
+    const pts=ports.map(p=>PORTS[p]).filter(Boolean).filter(p=>p.xy[0]>240).slice(0,5).map(p=>p.xy);   /* east and gulf ports draw a lane; west coast is listed only */
+    if(!pts.length) return "";
+    const xs=pts.map(p=>p[0]).concat(e[0]), ys=pts.map(p=>p[1]).concat(e[1]);
+    const pad=34, x0=Math.min(...xs)-pad, x1=Math.max(...xs)+pad, y0=Math.min(...ys)-pad*1.6, y1=Math.max(...ys)+pad*.7;
+    const w=Math.max(x1-x0,200), h=Math.max(y1-y0,110), cx=(x0+x1)/2, cy=(y0+y1)/2;
+    const vb=[cx-w/2,cy-h/2,w,h].map(v=>v.toFixed(1)).join(" "), fs=Math.max(7,w/40).toFixed(1);
+    const R2L=e[0]>pts[0][0];
+    return `<svg viewBox="${vb}" role="img" aria-label="Lanes from US ports to ${esc(c)}">
+      <path d="${landD}" stroke="var(--g)" stroke-opacity=".2" stroke-width="2.3" stroke-linecap="round" fill="none"/>
+      ${pts.map((p,i)=>`<path class="route" pathLength="1" style="animation-delay:${(.1+i*.12).toFixed(2)}s" d="${arc(p,e)}"/>`).join("")}
+      ${pts.map(p=>`<circle cx="${p[0]}" cy="${p[1]}" r="2.6" fill="var(--g)"/>`).join("")}
+      <circle cx="${e[0]}" cy="${e[1]}" r="4.6" fill="var(--y)" stroke="var(--g)" stroke-width="1.2"/>
+      <text x="${e[0]+(R2L?-7:7)}" y="${e[1]-10}" text-anchor="${R2L?"end":"start"}" font-family="inherit" font-weight="700" font-size="${fs}" letter-spacing=".6"
+        fill="var(--g)" stroke="var(--yl)" stroke-width="3" paint-order="stroke" style="text-transform:uppercase">${esc(c)}</text></svg>`;
   }
   function openLane(c){
-    const f=factsFor(c); if(!f.region) return;
+    const region=regionOf[c]; if(!region) return;
     lastFocus=document.activeElement;
-    const chips=[f.active?'<span class="y">Active lane</span>':'<span>Served before</span>',
-      f.rank?`<span>#${f.rank} busiest lane</span>`:"", f.isNew?'<span class="y">Newest lane</span>':""].join("");
+    const top=TOP[c]||0, rank=RANK[c]||0, P=portsFor(c), L=LEDGER[c]||{};
+    const chips=[in26(c)?'<span class="y">Shipped in 2026</span>':"", rank?`<span>#${rank} busiest lane</span>`:"", NEW.has(c)?'<span class="y">Newest lane</span>':""].join("");
+    const nums=[in26(c)?`<div><b>${n26(c)?n26(c):"1 to 3"}</b><span>shipments in 2026</span></div>`:"", top?`<div><b>${top.toLocaleString("en-US")}</b><span>shipments since 2020</span></div>`:""].join("");
+    const chip=x=>`<span class="${x.km>=900?"deep":""}">${esc(x.p)}${x.km?`<small>${x.km.toLocaleString("en-US")} km from ${esc(x.from)}</small>`:""}</span>`;
+    let inland="";
+    if(L.inland&&L.inland.length) inland=`<div class="lc-sec lc-pad"><h4>Inland destinations</h4><div class="lc-list lc-in">${L.inland.map(chip).join("")}</div>
+      <p class="lc-note">Straight-line distance from the port of discharge; the road is longer.</p></div>`;
+    else if(L.capital) inland=`<div class="lc-sec lc-pad"><h4>Landlocked</h4><div class="lc-list lc-in">${chip(L.capital)}</div>
+      <p class="lc-note">The capital, ${esc(L.capital.p)}, sits ${L.capital.km.toLocaleString("en-US")} km from ${esc(L.capital.from)}, the nearest seaport, in a straight line.</p></div>`;
     lbody.innerHTML=`
-      <div class="lc-head"><p class="lbl">Lane card</p><h3 id="laneTitle">${esc(c)}</h3><p class="rg">${esc(f.region)}</p>
-        <div class="lc-chips">${chips}</div></div>
-      ${f.gw?`<div class="lc-map">${routeSvg(f)}</div>`:""}
-      <dl class="lc-facts">
-        <div><dt>Leaves from</dt><dd>${f.gw?esc(f.gw)+`<small>${f.loc}</small>`:"Varies by cargo"}</dd></div>
-        <div><dt>This year</dt><dd>${esc(thisYear(f))}</dd></div>
-        ${f.top?`<div><dt>All time</dt><dd>${f.top.toLocaleString("en-US")} shipments<small>Rank #${f.rank}</small></dd></div>`:""}
-      </dl>
-      <div class="lc-todo"><b>Sample layout: still to fill in from the ledger</b>Arrival port, typical transit time, and the kinds of cargo moved on this lane.</div>
-      <div class="lc-foot"><a class="btn" href="#contact" data-lane-close>Book this lane</a><button type="button" class="btn o" data-lane-close>Back to the index</button></div>`;
+      <div class="lc-head lc-pad"><p class="lbl">Lane card</p><h3 id="laneTitle">${esc(c)}</h3><p class="rg">${esc(region)}</p>
+        ${chips?`<div class="lc-chips">${chips}</div>`:""}</div>
+      ${dest[c]?`<div class="lc-map">${routeSvg(c,P.list)}</div>`:""}
+      ${nums?`<div class="lc-sec lc-pad"><div class="lc-nums">${nums}</div></div>`:""}
+      <div class="lc-sec lc-pad"><h4>Ships from</h4>
+        <div class="lc-list">${P.list.map(p=>`<span>${esc(p)}${PORTS[p]?`<small>${PORTS[p].loc}</small>`:""}</span>`).join("")}<span class="more">${P.west?"and more":"West Coast ports and more"}</span></div>
+        <p class="lc-note">We route from whichever US port gets your cargo there best.</p></div>
+      ${inland}
+      <div class="lc-foot lc-pad"><a class="btn" href="#contact" data-lane-close>Book this lane</a><button type="button" class="btn o" data-lane-close>Back to the index</button></div>`;
     lane.hidden=false; document.body.classList.add("lane-open");
     lane.querySelector(".lcard").scrollTop=0;
     document.getElementById("laneX").focus({preventScroll:true});
@@ -1188,14 +1211,18 @@ initMap();route();
     "saint vincent":"St. Vincent & the Grenadines","trinidad":"Trinidad & Tobago","tobago":"Trinidad & Tobago","dr":"Dominican Republic","dominican":"Dominican Republic","car":"Central African Republic",
     "turkiye":"Turkey","burma":"","myanmar":""};
   const NAMES=all.map(([c])=>c), NN=NAMES.map(norm);
+  /* inland places from the ledger also find their country (for example Lilongwe finds Malawi) */
+  const PLACE={}; Object.entries(LEDGER).forEach(([c,L])=>(L.inland||[]).concat(L.capital?[L.capital]:[]).forEach(x=>{PLACE[norm(x.p)]=c;}));
   function matches(q){
     const n=norm(q); if(!n) return [];
     const out=[]; const add=c=>{ if(c&&!out.includes(c)) out.push(c); };
     if(ALIAS[n]) add(ALIAS[n]);
+    if(PLACE[n]) add(PLACE[n]);
     NAMES.forEach((c,i)=>{ if(NN[i]===n) add(c); });
     NAMES.forEach((c,i)=>{ if(NN[i].startsWith(n)) add(c); });
     NAMES.forEach((c,i)=>{ if(NN[i].split(" ").some(w=>w.startsWith(n))) add(c); });
     if(n.length>2) NAMES.forEach((c,i)=>{ if(NN[i].includes(n)) add(c); });
+    if(n.length>2) Object.keys(PLACE).forEach(p=>{ if(p.startsWith(n)) add(PLACE[p]); });
     Object.keys(ALIAS).forEach(a=>{ if(a.startsWith(n)&&ALIAS[a]) add(ALIAS[a]); });
     return out.slice(0,6);
   }
@@ -1209,11 +1236,12 @@ initMap();route();
   function answer(q){
     sug.hidden=true; inp.setAttribute("aria-expanded","false");
     const raw=q.trim(); if(!raw){ res.hidden=true; return; }
-    const hit=matches(raw)[0], exact=hit&&(norm(hit)===norm(raw)||ALIAS[norm(raw)]===hit||matches(raw).length===1);
+    const m=matches(raw), hit=m[0], n=norm(raw);
+    const exact=hit&&(norm(hit)===n||ALIAS[n]===hit||PLACE[n]===hit||m.length===1);
     if(hit&&exact){
-      const f=factsFor(hit);
-      const bits=[f.active?"Active lane":"Served before", f.gw?"leaves from "+f.gw:"", f.top?f.top.toLocaleString("en-US")+" shipments since 2020":(f.active&&f.n26?f.n26+" shipments this year":"")].filter(Boolean).join(" · ");
-      res.innerHTML=`<h3>Yes. We ship to ${esc(hit)}.</h3><p>${esc(bits.charAt(0).toUpperCase()+bits.slice(1))}.</p>
+      const via=PLACE[n]&&PLACE[n]===hit&&norm(hit)!==n?` We deliver to ${esc(raw)} inland.`:"";
+      const bits=[in26(hit)?(n26(hit)?n26(hit)+" shipments in 2026":"Shipped in 2026"):"", TOP[hit]?"#"+RANK[hit]+" busiest lane":""].filter(Boolean).join(" · ");
+      res.innerHTML=`<h3>Yes. We ship to ${esc(hit)}.</h3><p>${bits?esc(bits)+".":""}${via} Open the lane card for ports and delivery points.</p>
         <div class="btns"><button type="button" class="btn" data-open="${esc(hit)}">Open the ${esc(hit)} lane card</button><a class="btn o" href="#contact">Book this lane</a></div>`;
     } else if(hit){
       res.innerHTML=`<h3>Did you mean ${esc(hit)}?</h3><p>Pick it from the list, or keep typing.</p>
@@ -1240,22 +1268,33 @@ initMap();route();
     res.addEventListener("click",e=>{ const b=e.target.closest("[data-open]"); if(b) openLane(b.dataset.open); });
   }
 
+  /* ---- deepest inland: the furthest point per country, furthest first ---- */
+  const deepEl=document.getElementById("deep");
+  if(deepEl){
+    const best=Object.entries(LEDGER).map(([c,L])=>{const x=(L.inland||[]).concat(L.capital?[L.capital]:[]).filter(i=>i.km).sort((a,b)=>b.km-a.km)[0];return x?{c,...x}:null;})
+      .filter(Boolean).sort((a,b)=>b.km-a.km).slice(0,8);
+    deepEl.querySelector(".deep-row").innerHTML=best.map(x=>`<button type="button" class="dp" data-open="${esc(x.c)}" data-cursor="Open ${esc(x.c)} lane">
+      <b>${x.km.toLocaleString("en-US")}<small>km</small></b><span class="dp-p">${esc(x.p)}</span><span class="dp-c">${esc(x.c)}</span><span class="dp-f">from ${esc(x.from)}</span></button>`).join("");
+    deepEl.addEventListener("click",e=>{const b=e.target.closest("[data-open]"); if(b) openLane(b.dataset.open);});
+  }
+
   /* ---- flip board ---- */
   const board=document.getElementById("board"), vGrid=document.getElementById("vGrid"), vBoard=document.getElementById("vBoard");
   const ABBR={"Central African Republic":"CENTRAL AFR REP","St. Vincent & the Grenadines":"ST VINCENT/GREN","Dominican Republic":"DOMINICAN REP","Trinidad & Tobago":"TRINIDAD/TOBAGO"};
   const NABBR={"Central African Republic":"CENT AFR REP","Czech Republic":"CZECH REP","Equatorial Guinea":"EQ GUINEA","Papua New Guinea":"PAPUA NEW GN","St. Vincent & the Grenadines":"ST VINCENT","Trinidad & Tobago":"TRINIDAD/TOB"};
-  const NARROW=matchMedia("(max-width:620px)"), W=[17,5,6,3], GLY="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#";
-  const cells=(txt,w)=>{const s=(txt||"").toUpperCase().slice(0,w).padEnd(w," ");return [...s].map(ch=>`<span class="ch${ch===" "?" sp":""}" data-t="${ch===" "?"&nbsp;":esc(ch)}">${ch===" "?"&nbsp;":esc(ch)}</span>`).join("");};
+  const NARROW=matchMedia("(max-width:620px)"), GLY="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#";
+  const cells=(txt,w,right)=>{let s=(txt||"").toUpperCase().slice(0,w); s=right?s.padStart(w," "):s.padEnd(w," ");
+    return [...s].map(ch=>`<span class="ch${ch===" "?" sp":""}" data-t="${ch===" "?"&nbsp;":esc(ch)}">${ch===" "?"&nbsp;":esc(ch)}</span>`).join("");};
   function renderBoard(){
     if(!board||board.hidden) return;
     let rows=[...grid.children].filter(d=>!d.classList.contains("off")).map(d=>d.dataset.n);
     if(grid.classList.contains("rank")) rows.sort((a,b)=>(RANK[a]||99)-(RANK[b]||99));
-    const html=rows.map(c=>{const f=factsFor(c);
-      return `<button type="button" class="fbd-r" data-c="${esc(c)}" data-cursor="Open ${esc(c)} lane">
-        <span class="fbd-c">${NARROW.matches?cells(NABBR[c]||ABBR[c]||c,13):cells(ABBR[c]||c,W[0])}</span><span class="fbd-c">${cells(f.loc||"",W[1])}</span>
-        <span class="fbd-c ${f.active?"st-a":"st-s"}">${cells(f.active?"ACTIVE":"SERVED",W[2])}</span><span class="fbd-c">${cells(f.rank?"#"+f.rank:"",W[3])}</span></button>`;}).join("");
-    board.querySelector(".fbd-rows").innerHTML=html;
-    board.querySelector(".fbd-foot").textContent=rows.length+" DESTINATIONS · GATEWAY CODES ARE UN/LOCODE";
+    const nw=NARROW.matches;
+    board.querySelector(".fbd-rows").innerHTML=rows.map(c=>
+      `<button type="button" class="fbd-r${in26(c)?" y26":""}" data-c="${esc(c)}" data-cursor="Open ${esc(c)} lane">
+        <span class="fbd-c">${nw?cells(NABBR[c]||ABBR[c]||c,13):cells(ABBR[c]||c,17)}</span><span class="fbd-c">${cells(count26(c),4,true)}</span><span class="fbd-c">${cells(RANK[c]?"#"+RANK[c]:"",3,true)}</span></button>`).join("");
+    const n=rows.filter(in26).length;
+    board.querySelector(".fbd-foot").textContent=rows.length+" DESTINATIONS · "+n+" SHIPPED IN 2026, LIT YELLOW";
     flap();
   }
   let flapT=0;
@@ -1281,40 +1320,29 @@ initMap();route();
     vGrid.addEventListener("click",()=>setView("grid")); vBoard.addEventListener("click",()=>setView("board"));
     board.addEventListener("click",e=>{const r=e.target.closest(".fbd-r"); if(r) openLane(r.dataset.c);});
     new MutationObserver(()=>{ if(!board.hidden) renderBoard(); }).observe(grid,{attributes:true,attributeFilter:["class"]});
-    window.slgSetView=setView;
     NARROW.addEventListener&&NARROW.addEventListener("change",()=>{ if(!board.hidden) renderBoard(); });
+    window.slgSetView=setView;
   }
 
-  /* ---- container codes: nothing to do at run time (set in the markup) ---- */
-
-  /* ---- highlighter circles round the key numbers ---- */
-  const CIRC=["M12 52C6 30 30 9 62 8s86 6 92 30-22 48-70 50S8 74 14 46c3-14 18-28 40-34","M16 50C9 27 37 6 70 10s82 12 80 34-30 42-74 42S10 66 17 40"];
-  document.querySelectorAll(".stats b").forEach((b,i)=>{
-    b.classList.add("hlc");
-    b.insertAdjacentHTML("beforeend",`<svg viewBox="0 0 170 90" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="${CIRC[i%2]}"/></svg>`);
-  });
-  const hio=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ const el=e.target; setTimeout(()=>el.classList.add("drawn"),180+[...el.parentNode.parentNode.children].indexOf(el.parentNode)*140); hio.unobserve(el);} }),{threshold:.8});
-  document.querySelectorAll(".hlc").forEach(el=>hio.observe(el));
-  addEventListener("hashchange",()=>setTimeout(()=>document.querySelectorAll(".page.on .hlc:not(.drawn)").forEach(el=>{hio.unobserve(el);hio.observe(el);}),120));
-
-  /* ---- smart cursor: mouse and trackpad only ---- */
+  /* ---- smart cursor: mouse and trackpad only, every page except Home ---- */
   const FINE=matchMedia("(hover:hover) and (pointer:fine)");
   const cur=document.getElementById("scur");
   if(cur&&FINE.matches){
-    document.documentElement.classList.add("scur-on"); cur.style.display="flex";
-    const lab=cur.querySelector(".lab");
+    const lab=cur.querySelector(".lab"), root=document.documentElement;
+    const scope=()=>{ const pg=(location.hash.replace("#","")||"home"); root.classList.toggle("scur-on",pg!=="home"&&!!document.getElementById("p-"+pg)); };
+    scope(); addEventListener("hashchange",scope);
     let x=-100,y=-100,tx=-100,ty=-100,raf=0;
     const tick=()=>{ x+=(tx-x)*(REDUCED?1:.32); y+=(ty-y)*(REDUCED?1:.32); cur.style.transform=`translate3d(${x}px,${y}px,0)`;
       raf=(Math.abs(tx-x)>.3||Math.abs(ty-y)>.3)?requestAnimationFrame(tick):0; };
-    addEventListener("pointermove",e=>{ if(e.pointerType!=="mouse"&&e.pointerType!=="pen") return; tx=e.clientX; ty=e.clientY; cur.classList.remove("hide"); if(!raf) raf=requestAnimationFrame(tick);
+    addEventListener("pointermove",e=>{ if(e.pointerType!=="mouse"&&e.pointerType!=="pen") return; if(!root.classList.contains("scur-on")) return;
+      tx=e.clientX; ty=e.clientY; if(!raf) raf=requestAnimationFrame(tick);
       const t=e.target.closest?e.target.closest("[data-cursor]"):null;
-      const typing=e.target.closest&&e.target.closest("input,textarea,[contenteditable]");
-      cur.classList.toggle("hide",!!typing);
+      cur.classList.toggle("hide",!!(e.target.closest&&e.target.closest("input,textarea,[contenteditable]")));
       if(t){ lab.textContent=t.dataset.cursor; cur.classList.add("label"); cur.classList.remove("link"); }
       else { cur.classList.remove("label"); cur.classList.toggle("link",!!(e.target.closest&&e.target.closest("a,button,[role=button],label"))); }
     },{passive:true});
     document.addEventListener("mouseleave",()=>cur.classList.add("hide"));
-    addEventListener("blur",()=>cur.classList.add("hide"));
+    document.addEventListener("mouseenter",()=>cur.classList.remove("hide"));
   }
 })();
 </script>

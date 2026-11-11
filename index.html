@@ -124,7 +124,14 @@
     background:var(--slab);color:var(--onSlab);border:1px solid var(--slab);padding:13px 18px;box-shadow:0 6px 22px rgba(0,0,0,.18)}
   #fbBtn:hover{background:var(--b);color:var(--onB);border-color:var(--b)}
   #fbBtn .cnt{background:var(--b);color:var(--onB);border-radius:999px;padding:1px 7px;font-size:10px;letter-spacing:.06em}
-  #fbBtn[hidden],#fbGuideBtn[hidden]{display:none}
+  #fbBtn[hidden],#fbGuideBtn[hidden],#fbViewBtn[hidden]{display:none}
+  #fbViewBtn{font:inherit;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;padding:0 14px;
+    background:var(--w);color:var(--g);border:1px solid var(--g);box-shadow:0 6px 22px rgba(0,0,0,.18)}
+  #fbViewBtn:hover{background:var(--b);color:var(--onB);border-color:var(--b)}
+  .vwRow{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 12px;padding:14px 0;border-bottom:1px solid var(--ln)}
+  .vwRow .who{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+  .vwRow .n{font-size:12px;font-weight:700;font-variant-numeric:tabular-nums;text-align:right}
+  .vwRow .t{grid-column:1/-1;font-size:13px;color:var(--mut)}
   #fbGuideBtn{font:inherit;font-size:14px;font-weight:700;min-width:44px;cursor:pointer;background:var(--w);color:var(--g);
     border:1px solid var(--g);box-shadow:0 6px 22px rgba(0,0,0,.18)}
   #fbGuideBtn:hover{background:var(--b);color:var(--onB);border-color:var(--b)}
@@ -739,7 +746,7 @@
 </div>
 
 
-<div class="fbDock"><button id="fbGuideBtn" type="button" hidden aria-label="How reviewing works" title="How reviewing works">?</button><button id="fbBtn" type="button" hidden>Feedback<span class="cnt" id="fbCount" hidden>0</span></button></div>
+<div class="fbDock"><button id="fbViewBtn" type="button" hidden>Viewers</button><button id="fbGuideBtn" type="button" hidden aria-label="How reviewing works" title="How reviewing works">?</button><button id="fbBtn" type="button" hidden>Feedback<span class="cnt" id="fbCount" hidden>0</span></button></div>
 <aside id="fbPanel" aria-label="Feedback" aria-hidden="true">
   <div class="fbHead">
     <div><h3 id="fbWhere">Feedback</h3><p class="sub" id="fbWho"></p></div>
@@ -1003,7 +1010,8 @@ initMap();route();
         guide=$("fbGuide"), guideBtn=$("fbGuideBtn");
   if(!btn||!panel) return;
   let db=null,user=null,me=null,canWrite=null,isAdmin=false,isEditor=false;
-  let all=[], tallies={}, cur=null, names={}, draftT=null, busy=false;
+  let all=[], tallies={}, visits={}, cur=null, names={}, draftT=null, busy=false, mode="section";
+  const viewBtn=$("fbViewBtn"), formEl=panel.querySelector(".fbForm");
 
   const slug=t=>t.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"").slice(0,44);
   const esc=t=>{const d=document.createElement("div");d.textContent=t;return d.innerHTML;};
@@ -1050,13 +1058,34 @@ initMap();route();
     countEl.title=isAdmin? n+" open" : "You have sent "+plural(n);
   }
   function openFor(el){
-    cur={section:el.dataset.fb,label:el.dataset.fbLabel};
+    cur={section:el.dataset.fb,label:el.dataset.fbLabel}; mode="section"; if(formEl) formEl.hidden=false;
     whereEl.textContent=cur.label;
     whoEl.textContent=cur.section.split(":")[0]+" page";
     panel.classList.add("open"); panel.setAttribute("aria-hidden","false");
     renderList(); loadDraft(); if(canWrite!==false) textEl.focus();
   }
-  function closePanel(){panel.classList.remove("open");panel.setAttribute("aria-hidden","true");cur=null;}
+  function closePanel(){panel.classList.remove("open");panel.setAttribute("aria-hidden","true");cur=null;mode="section";if(formEl) formEl.hidden=false;}
+
+  /* owner only: who has opened the review, and when */
+  const when=ms=>{try{return new Date(ms).toLocaleString(undefined,{month:"short",day:"numeric",hour:"numeric",minute:"2-digit"});}catch(_){return "";}};
+  function openViewers(){
+    cur=null; mode="viewers"; if(formEl) formEl.hidden=true;
+    whereEl.textContent="Who has opened the review"; whoEl.textContent="Only you see this";
+    panel.classList.add("open"); panel.setAttribute("aria-hidden","false");
+    renderViewers();
+  }
+  async function renderViewers(){
+    if(mode!=="viewers") return;
+    const ids=Object.keys(visits).sort((a,b)=>(visits[b].last||0)-(visits[a].last||0));
+    await resolveNames(ids);
+    if(mode!=="viewers") return;
+    const sent={}; all.forEach(r=>{sent[r.authorId]=(sent[r.authorId]||0)+1;});
+    listEl.innerHTML = ids.length
+      ? '<p class="fbNote">'+esc(ids.length+(ids.length===1?" person has":" people have")+" opened the review.")+'</p>'+ids.map(id=>{const v=visits[id]||{};
+          return `<div class="vwRow"><span class="who">${esc(names[id]||"Unnamed reviewer")}</span><span class="n">${esc(plural(sent[id]||0))}</span>
+          <span class="t">Opened ${esc(String(v.count||1))} ${v.count===1?"time":"times"} · first ${esc(when(v.first))} · last ${esc(when(v.last))}</span></div>`;}).join("")
+      : '<p class="fbNote">Nobody has opened the review yet. People appear here the first time they open the link.</p>';
+  }
 
   async function resolveNames(ids){
     if(!user||!user.profiles||!ids.length) return;
@@ -1205,6 +1234,12 @@ initMap();route();
     try{ isEditor=!isAdmin&&!!user&&(await user.canEdit()); }catch(_){ isEditor=false; }
     if(isEditor||isAdmin){ const e=$("fbgEditor"); if(e) e.hidden=false; }
     btn.hidden=false; if(guideBtn) guideBtn.hidden=false;
+    if(isAdmin&&viewBtn){
+      viewBtn.hidden=false; viewBtn.addEventListener("click",()=>{ if(panel.classList.contains("open")&&mode==="viewers") closePanel(); else openViewers(); });
+      try{ db.collection("visits").onSnapshot(snap=>{
+        const v={}; (snap.docs||[]).forEach(d=>{ v[d.id]=(d.data&&d.data())||{}; }); visits=v; renderViewers();
+      },()=>{}); }catch(_){}
+    }
     if(me&&!isAdmin&&canWrite!==false){           /* one write per page load: who opened the review and when */
       const vref=db.collection("visits").doc(me);
       vref.get().then(v=>{
@@ -1221,7 +1256,7 @@ initMap();route();
           const its=((d.data&&d.data())||{}).items||{};
           Object.entries(its).forEach(([cid,it])=>{ if(it&&it.section) rows.push(Object.assign({id:cid,authorId:d.id},it)); });
         });
-        all=rows; paintCounts(); if(panel.classList.contains("open")) renderList();
+        all=rows; paintCounts(); if(panel.classList.contains("open")){ renderList(); renderViewers(); }
       },lost);
       db.collection("tally").onSnapshot(snap=>{
         const t={}; (snap.docs||[]).forEach(d=>{ t[d.id]=((d.data&&d.data())||{}).counts||{}; });

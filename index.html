@@ -188,6 +188,8 @@
   .fbgNote{margin-top:18px;padding:12px 14px;background:var(--yl);font-size:14px;color:var(--g)}
   .fbgNote+.fbgNote{margin-top:8px}
   .fbgNote[hidden]{display:none}
+  .fbgStop{background:var(--b);color:var(--onB);margin-top:16px}
+  .fbgStop b{display:block;margin-bottom:3px}
   .fbgRow{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-top:24px}
   .fbgCard button.btn{font-family:inherit;cursor:pointer}
   #fbgSkip{font:inherit;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;background:none;border:0;color:var(--mut);cursor:pointer;padding:8px 0;border-bottom:1px solid var(--ln)}
@@ -755,6 +757,7 @@
     <p class="lbl">Reviewer guide</p>
     <h2 id="fbgTitle">Help us finish the new SLG website.</h2>
     <p class="fbgLead">This is a working preview. Read it the way a client would, then tell us what should change.</p>
+    <p class="fbgNote fbgStop" id="fbgEditor" hidden><b>Please don't edit the site.</b> You have Editor access only so your comments can save. Don't use the Chat button at the top to change the page, and don't publish edits. Run any change requests by Robertson.</p>
     <ol class="fbgSteps">
       <li><span><b>Look around.</b> Open Menu and visit all five pages: Home, Services, About Us, mySLG and Contact.</span></li>
       <li><span><b>Turn on Feedback.</b> The button sits at the bottom right. Every section gets a Comment pin.</span></li>
@@ -969,7 +972,7 @@ initMap();route();
         whereEl=$("fbWhere"), whoEl=$("fbWho"), hintEl=$("fbHint"), closeEl=$("fbClose"), countEl=$("fbCount"),
         guide=$("fbGuide"), guideBtn=$("fbGuideBtn");
   if(!btn||!panel) return;
-  let db=null,user=null,me=null,canWrite=null,isAdmin=false;
+  let db=null,user=null,me=null,canWrite=null,isAdmin=false,isEditor=false;
   let all=[], tallies={}, cur=null, names={}, draftT=null, busy=false;
 
   const slug=t=>t.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"").slice(0,44);
@@ -1039,7 +1042,8 @@ initMap();route();
     const note=isAdmin
       ? (total? plural(total)+" on this section." : "No comments on this section yet.")
       : (total? plural(total)+" on this section so far, from all reviewers. " : "No comments on this section yet. ")
-        +"Only you and Robertson can see yours.";
+        +"Only you and Robertson can see yours."
+        +(isEditor?" Please send change requests here rather than editing the page.":"");
     const items=rows.map(r=>`
       <div class="fbItem" data-st="${esc(r.status||"open")}" data-id="${esc(r.id)}" data-uid="${esc(r.authorId)}">
         <div><span class="who">${isAdmin?esc(names[r.authorId]||"Someone"):(r.authorId===me?"You":"Someone")}</span><span class="when">${ago(r.createdAt)}</span>
@@ -1124,7 +1128,8 @@ initMap();route();
   }
 
   /* first-visit guide */
-  function openGuide(){ if(!guide) return; guide.hidden=false; document.body.classList.add("fbg-open"); const g=$("fbgGo"); if(g) g.focus(); }
+  function openGuide(){ if(!guide) return; guide.hidden=false; document.body.classList.add("fbg-open");
+    const c=guide.querySelector(".fbgCard"); if(c) c.scrollTop=0; const g=$("fbgGo"); if(g) g.focus({preventScroll:true}); }
   function closeGuide(startReview){
     if(!guide||guide.hidden) return;
     guide.hidden=true; document.body.classList.remove("fbg-open");
@@ -1167,6 +1172,8 @@ initMap();route();
       const w=$("fbgWarn"); if(w) w.hidden=false;
     }
     if(isAdmin){ const o=$("fbgOwner"); if(o) o.hidden=false; }
+    try{ isEditor=!isAdmin&&!!user&&(await user.canEdit()); }catch(_){ isEditor=false; }
+    if(isEditor){ const e=$("fbgEditor"); if(e) e.hidden=false; }
     btn.hidden=false; if(guideBtn) guideBtn.hidden=false;
     const lost=()=>{ hintEl.textContent="Feedback stopped updating. Reload the page to see new comments."; };
     try{

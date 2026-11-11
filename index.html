@@ -238,7 +238,7 @@
   .hero h1{font-size:clamp(38px,6.6vw,104px);max-width:16ch;margin:18px 0 28px}
   .hero p.sub{max-width:52ch;font-size:clamp(16px,1.35vw,19px);color:var(--mut)}
   .btns{display:flex;gap:12px;flex-wrap:wrap;margin-top:36px}
-  .btn{display:inline-block;padding:15px 26px;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;border:1px solid var(--b);background:var(--b);color:var(--onB);transition:.18s}
+  .btn{display:inline-block;max-width:100%;padding:15px 26px;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;border:1px solid var(--b);background:var(--b);color:var(--onB);transition:.18s}
   .btn:hover{background:var(--g);color:var(--w);border-color:var(--g)}
   .btn.o{background:none;color:var(--g);border-color:var(--g)}.btn.o:hover{background:var(--b);color:var(--onB);border-color:var(--b)}
   .sec{padding-block:clamp(70px,9vw,124px);border-top:1px solid var(--g)}
@@ -329,8 +329,9 @@
   .creds dd{font-size:16px;font-weight:700}
   .creds p{font-size:14px;color:var(--mut);margin-top:8px}
 
-  .direct{border:1px solid var(--g);padding:clamp(24px,4vw,52px)}
-  .mail{display:inline-block;max-width:100%;margin:16px 0 26px;font-size:clamp(24px,5.4vw,66px);font-weight:700;letter-spacing:-.03em;text-decoration:none;word-break:break-word}
+  .direct{border:1px solid var(--g);padding:clamp(24px,4vw,52px);container-type:inline-size}
+  .mail{display:inline-block;max-width:100%;margin:16px 0 26px;font-size:clamp(14px,6.4cqi,66px);font-weight:700;letter-spacing:-.03em;text-decoration:none;white-space:nowrap}
+  a[href^="mailto:"]{white-space:nowrap}
   .mail:hover{background-image:none;background-color:var(--b);color:var(--onB)}
   #copymail.done{background:var(--b);color:var(--onB);border-color:var(--b)}
   .credhead{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap}
@@ -949,6 +950,35 @@ function initMap(){
 initMap();route();
 </script>
 <script>
+/* ---------- email addresses stay on one line: shrink the type when the column is too narrow ---------- */
+(function(){
+  const els=[...document.querySelectorAll('a[href^="mailto:"]')];
+  if(!els.length) return;
+  const fit=el=>{
+    const box=el.parentElement; if(!box||!box.clientWidth) return;
+    el.style.fontSize="";
+    const bs=getComputedStyle(box), es=getComputedStyle(el);
+    const avail=box.clientWidth-parseFloat(bs.paddingLeft)-parseFloat(bs.paddingRight);
+    const chrome=parseFloat(es.paddingLeft)+parseFloat(es.paddingRight)+parseFloat(es.borderLeftWidth)+parseFloat(es.borderRightWidth);
+    const need=el.scrollWidth+(el.scrollWidth>el.clientWidth?chrome-(el.offsetWidth-el.clientWidth):0);
+    if(need<=avail+0.5) return;
+    const fs=parseFloat(es.fontSize), text=el.scrollWidth-chrome+(el.offsetWidth-el.clientWidth);
+    const k=Math.max(0.4,(avail-chrome-2)/Math.max(1,text));
+    el.style.fontSize=Math.max(9,Math.floor(fs*k*10)/10)+"px";
+  };
+  const all=()=>els.forEach(fit);
+  if("ResizeObserver" in window){
+    const seen=new WeakMap();
+    const ro=new ResizeObserver(es=>es.forEach(e=>{
+      const w=Math.round(e.contentRect.width); if(seen.get(e.target)===w) return; seen.set(e.target,w);
+      els.filter(el=>el.parentElement===e.target).forEach(fit);
+    }));
+    [...new Set(els.map(el=>el.parentElement))].forEach(b=>b&&ro.observe(b));
+  } else addEventListener("resize",all);
+  if(document.fonts&&document.fonts.ready) document.fonts.ready.then(all);
+  addEventListener("hashchange",()=>setTimeout(all,60));
+})();
+
 /* ---------- appearance: light / dark, remembered per visitor ---------- */
 (function(){
   const root=document.documentElement, btns=[...document.querySelectorAll("[data-theme-set]")];

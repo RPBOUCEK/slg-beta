@@ -1203,8 +1203,16 @@ initMap();route();
     }
     if(isAdmin){ const o=$("fbgOwner"); if(o) o.hidden=false; }
     try{ isEditor=!isAdmin&&!!user&&(await user.canEdit()); }catch(_){ isEditor=false; }
-    if(isEditor){ const e=$("fbgEditor"); if(e) e.hidden=false; }
+    if(isEditor||isAdmin){ const e=$("fbgEditor"); if(e) e.hidden=false; }
     btn.hidden=false; if(guideBtn) guideBtn.hidden=false;
+    if(me&&!isAdmin&&canWrite!==false){           /* one write per page load: who opened the review and when */
+      const vref=db.collection("visits").doc(me);
+      vref.get().then(v=>{
+        const d=(v&&v.exists&&v.data())||{}, now=Date.now();
+        const log=(Array.isArray(d.log)?d.log:[]).concat(now).slice(-50);
+        return vref.set({first:d.first||now,last:now,count:(d.count||0)+1,log});
+      }).catch(()=>{});
+    }
     const lost=()=>{ hintEl.textContent="Feedback stopped updating. Reload the page to see new comments."; };
     try{
       db.collection("feedback").onSnapshot(snap=>{

@@ -7,7 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&family=IBM+Plex+Mono:wght@500;700&display=swap" rel="stylesheet">
 <title>Special Logistics Group</title>
 <meta name="description" content="Complex international freight and humanitarian logistics from origin to final delivery.">
-<script>try{if(localStorage.getItem("slg-theme")==="dark")document.documentElement.setAttribute("data-slg-theme","dark")}catch(e){}</script>
+<script>try{localStorage.removeItem("slg-theme")}catch(e){}</script>
 <style>
   :root{--g:#282828;--b:#ffde59;--onB:#282828;--b2:#ffde59;--bl:#fdf2c4;--y:#ffde59;--w:#fbfaf6;--yl:#fdf8e8;--ln:rgba(40,40,40,.16);--mut:#575757;
     --slab:#282828;--onSlab:#fbfaf6;--navbg:rgba(251,250,246,.88);--k:#8a7a2e;--cue:#777;--fbo:rgba(40,40,40,.28);
@@ -49,8 +49,9 @@
   .nl.cta{margin-left:8px;border:1px solid var(--b);background:var(--b);color:var(--onB);padding:10px 15px}
   .nl.cta:hover{background:var(--g);border-color:var(--g);color:var(--w)}
   .nl.cta.on{border-bottom-color:var(--b)}
-  @media(max-width:760px){.nl[href="#home"]{display:none}}
-  @media(max-width:620px){.nl:not(.cta){display:none}}
+  /* ribbon is the site menu; the Menu button and dropdown only below 900px */
+  @media(min-width:901px){.navbtn,#menu,#scrim{display:none!important}}
+  @media(max-width:900px){.nl:not(.cta){display:none}}
   @media(max-width:450px){.nl.cta{display:none}}
   @media(max-width:560px){.logo span{display:none}}
   .navbtn{font:inherit;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;background:none;color:var(--g);border:1px solid var(--g);padding:10px 16px;cursor:pointer;text-decoration:none;transition:.18s;flex:none;margin-left:10px}
@@ -63,6 +64,15 @@
     transform:translateX(102%);visibility:hidden;box-shadow:-18px 0 50px rgba(0,0,0,.28);
     transition:transform .42s cubic-bezier(.76,0,.24,1),visibility .42s}
   #menu.open{transform:none;visibility:visible}
+  @media(max-width:900px){ /* dropdown under the ribbon, not a side panel */
+    #menu{top:var(--navh,64px);left:0;right:0;bottom:auto;width:auto;max-height:calc(100dvh - var(--navh,64px));
+      transform:translateY(-12px);opacity:0;box-shadow:0 18px 40px rgba(0,0,0,.22);
+      transition:transform .28s cubic-bezier(.2,.7,.2,1),opacity .2s,visibility .28s}
+    #menu.open{transform:none;opacity:1}
+    #menu .mhead{display:none}
+    #scrim{top:var(--navh,64px)}
+    #menu::before{display:none}
+  }
   #menu::before{content:"";position:absolute;top:0;bottom:0;left:-26px;width:26px}
   .mhead{display:flex;justify-content:space-between;align-items:center;gap:12px;min-height:40px;margin-bottom:14px;flex:none;padding-left:6px;padding-right:max(0px,calc(var(--pad) - 14px))}
   .mhead .lbl{color:var(--onSlab)}
@@ -592,7 +602,9 @@
   </a>
   <div class="navlinks">
     <a class="nl" href="#home" data-nav>Home</a>
+    <a class="nl" href="#services" data-nav>Services</a>
     <a class="nl" href="#about" data-nav>About Us</a>
+    <a class="nl" href="#myslg" data-nav>mySLG</a>
     <a class="nl cta" href="#contact" data-nav>Book a call</a>
   </div>
   <button class="navbtn" id="mbtn" aria-expanded="false" aria-controls="menu">Menu</button>
@@ -600,8 +612,7 @@
 <div id="scrim"></div>
 <div id="menu" role="dialog" aria-modal="true" aria-label="Menu">
   <div class="mhead"><span class="lbl">Menu</span><button id="mclose" aria-label="Close menu"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg></button></div>
-  <div class="tiles"><a class="tile t1" href="#home" data-nav><span class="th"><span class="tt">Home</span><i class="dot"></i></span><span class="tb"><span class="trule"></span><span class="td">Built on trust. Proven in the field.</span></span></a><a class="tile t3 narrow" href="#about" data-nav><span class="th"><span class="tt">About Us</span><i class="dot"></i></span><span class="tb"><span class="trule"></span><span class="td">Get to know the team.</span></span></a><a class="tile t2" href="#services" data-nav><span class="th"><span class="tt">Services</span><i class="dot"></i></span><span class="tb"><span class="trule"></span><span class="td">Freight for the routes that matter.</span></span></a><a class="tile t3" href="#myslg" data-nav><span class="th"><span class="tt">mySLG</span><i class="dot"></i></span><span class="tb"><span class="trule"></span><span class="td">Your cargo. Connected.</span></span></a><a class="tile t4" href="#contact" data-nav><span class="th"><span class="tt">Contact</span><i class="dot"></i></span><span class="tb"><span class="trule"></span><span class="td">Speak to the team.</span></span></a></div>
-  <div class="mfoot"><span class="lbl">Appearance</span><div class="tmode" role="group" aria-label="Appearance"><button type="button" data-theme-set="light" aria-pressed="true">Light</button><button type="button" data-theme-set="dark" aria-pressed="false">Dark</button></div></div>
+  <div class="tiles"><a class="tile t1" href="#home" data-nav><span class="th"><span class="tt">Home</span><i class="dot"></i></span><span class="tb"><span class="trule"></span><span class="td">Built on trust. Proven in the field.</span></span></a><a class="tile t2" href="#services" data-nav><span class="th"><span class="tt">Services</span><i class="dot"></i></span><span class="tb"><span class="trule"></span><span class="td">Freight for the routes that matter.</span></span></a><a class="tile t3 narrow" href="#about" data-nav><span class="th"><span class="tt">About Us</span><i class="dot"></i></span><span class="tb"><span class="trule"></span><span class="td">Get to know the team.</span></span></a><a class="tile t3" href="#myslg" data-nav><span class="th"><span class="tt">mySLG</span><i class="dot"></i></span><span class="tb"><span class="trule"></span><span class="td">Your cargo. Connected.</span></span></a><a class="tile t4" href="#contact" data-nav><span class="th"><span class="tt">Contact</span><i class="dot"></i></span><span class="tb"><span class="trule"></span><span class="td">Speak to the team.</span></span></a></div>
 </div>
 
 <!-- ============ HOME ============ -->
@@ -614,7 +625,7 @@
       <div class="hcopy wrap">
         <div class="rule"></div>
         <p class="lbl">U.S.-based &middot; Global network</p>
-        <h1>Built on trust.<br><em class="hl1">Proven in the field.</em></h1>
+        <h1>Built on <em>trust</em>.<br><em class="hl1">Proven in the field.</em></h1>
         <p class="sub">Special Logistics Group delivers cargo into the world's most complex &amp; remote destinations, where trust &amp; experience are critical.</p>
         <div class="btns"><a class="btn" href="#contact" data-nav>Schedule a call</a><a class="btn o" href="#services" data-nav>Explore services</a></div>
         <div class="scrollcue lbl"><i></i>Scroll</div>
@@ -625,12 +636,7 @@
   <section class="sec wrap" id="reach">
     <p class="lbl rv" style="margin-bottom:14px">Where we've delivered</p>
     <h2 class="rv">From US ports of export to <em>the hardest routes</em> on the map.</h2>
-    <div class="rv" style="margin-top:40px"><div class="stats">
-        <div><b>85+</b><span>Countries served</span></div>
-        <div><b>50+</b><span>Countries in a typical year</span></div>
-        <div><b>5</b><span>Continents served</span></div>
-        <div><b>Decades</b><span>Of freight experience behind the team</span></div>
-      </div></div>
+    <div class="btns rv" style="margin-top:28px"><a class="btn o" href="#services" data-nav>See every destination</a></div>
   </section>
 
   <section class="sec wrap">
@@ -646,11 +652,6 @@
   <section class="sec tint wrap">
     <h2 class="rv">Humanitarian focus. <em>Worldwide expertise.</em></h2>
     <p class="lead rv">Our focus is shipping humanitarian aid, backed by a deep understanding of nonprofit organizations and their priorities. We bring that same expertise to commercial cargo.</p>
-    
-    <div class="stats two rv" style="margin-top:clamp(38px,5vw,60px)">
-      <div><b>Thousands</b><span>Humanitarian cargo shipments delivered</span></div>
-      <div><b>100+</b><span>NGOs, charities &amp; ministries served</span></div>
-    </div>
   </section>
 
 
@@ -1327,7 +1328,7 @@ initMap();route();
   /* ---- smart cursor: mouse and trackpad only, on every page ---- */
   const FINE=matchMedia("(hover:hover) and (pointer:fine)");
   const cur=document.getElementById("scur");
-  if(cur&&FINE.matches){
+  if(false&&cur&&FINE.matches){ /* smart cursor retired Nov 11 (review round 3) */
     const lab=cur.querySelector(".lab"), root=document.documentElement;
     const scope=()=>{ const pg=(location.hash.replace("#","")||"home"); root.classList.toggle("scur-on",!!document.getElementById("p-"+pg)); };
     scope(); addEventListener("hashchange",scope);

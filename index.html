@@ -445,11 +445,16 @@
   :root{--mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;--board:#282828;--tile:#323232;--tileInk:#f3f1ea}
   :root[data-slg-theme="dark"]{--board:#1f1f1f;--tile:#2b2b2b}
 
-  /* container codes on the service cards: a quiet stencil line, not a badge */
-  .card .no.cc{display:inline-flex;align-items:center;gap:.45em;background:none;color:var(--mut);padding:0;line-height:1;
-    font-family:var(--mono);font-weight:500;font-size:12px;letter-spacing:.14em}
-  .cc .cc-chk{border:1px solid currentColor;padding:1px 4px}
-  .cc .cc-iso::before{content:"·";margin-right:.45em}
+  /* stencil numbering: one mark for every real sequence on the site (legs, services, ranks, deepest inland) */
+  .stn{display:inline-flex;align-items:center;gap:.6em;font:500 11px/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--mut)}
+  .stn b{font-weight:700;color:var(--g);border:1.5px solid currentColor;padding:4px 6px 3px;letter-spacing:.06em}
+  .card .stn{margin-bottom:4px}
+  .cols article .stn{margin-bottom:16px}
+  .cell .rk{font:700 9.5px/1 var(--mono);letter-spacing:.04em;color:var(--g);border:1.2px solid currentColor;padding:2px 3px 1px;margin-left:7px;vertical-align:2px}
+  .lc-chips span.stnchip{display:inline-flex;align-items:center;gap:6px}
+  .lc-chips span.stnchip b{font:700 10px/1 var(--mono);border:1.2px solid currentColor;padding:2px 4px 1px}
+  .dp .stn{font-size:10px;margin-bottom:8px;color:inherit;opacity:.85}
+  .dp .stn b{color:inherit;font-size:10px;line-height:1;letter-spacing:.06em}
 
   /* smart cursor: mouse and trackpad only, not on the home page */
   #scur{position:fixed;left:0;top:0;z-index:90;pointer-events:none;display:none;align-items:center;gap:8px;
@@ -486,36 +491,11 @@
   .lres .btns{margin-top:2px}
   .lres .btn{padding:12px 18px;font-size:11px;cursor:pointer;font-family:inherit}
 
-  /* grid / board switch */
+  /* index bar */
   .ixbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:0 0 14px}
   .ixbar .tally{margin:0}
-  .ixview{display:flex;border:1px solid var(--g)}
-  .ixview button{font:inherit;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;background:none;color:var(--g);border:0;padding:8px 13px;cursor:pointer}
-  .ixview button+button{border-left:1px solid var(--g)}
-  .ixview button[aria-pressed="true"]{background:var(--b);color:var(--onB)}
   #grid .cell{cursor:pointer}
   #grid .cell:focus-visible{outline:2px solid var(--g);outline-offset:-2px}
-
-  /* flip board: every destination reads the same; 2026 lanes are lit yellow with their count */
-  #board{background:var(--board);color:var(--tileInk);padding:clamp(14px,2.4vw,26px);overflow-x:auto;border:1px solid var(--g)}
-  #board[hidden]{display:none}
-  .fbd{width:max-content;min-width:100%;font-family:var(--mono);font-weight:700;--tw:calc(1.05em + 2px)}
-  .fbd-h,.fbd-r{display:grid;grid-template-columns:calc(var(--tw)*17) calc(var(--tw)*4) calc(var(--tw)*3);gap:0 1.4em;align-items:center;font-size:clamp(12px,1.25vw,16px)}
-  .fbd-h{color:var(--y);padding:0 4px 10px;border-bottom:1px solid rgba(243,241,234,.18);margin-bottom:6px}
-  .fbd-h span{font-size:10px;letter-spacing:.2em}
-  .fbd-r{width:100%;background:none;border:0;color:inherit;font-family:inherit;font-weight:inherit;text-align:left;padding:5px 4px;cursor:pointer}
-  .fbd-r:hover,.fbd-r:focus-visible{background:rgba(255,222,89,.1);outline:none}
-  .fbd-c{display:flex;gap:2px;white-space:nowrap;overflow:hidden}
-  .ch{display:inline-grid;place-items:center;width:1.05em;height:1.45em;background:linear-gradient(var(--tile) 0 49%,rgba(0,0,0,.45) 49% 51%,var(--tile) 51%);
-    border-radius:2px;flex:none;font-size:1em;line-height:1}
-  .ch.sp{background:linear-gradient(rgba(255,255,255,.035) 0 49%,rgba(0,0,0,.3) 49% 51%,rgba(255,255,255,.035) 51%)}
-  .fbd-r.y26 .ch{color:var(--y)}
-  .fbd-foot{margin-top:12px;font:500 11px var(--mono);letter-spacing:.12em;color:#9d9a92}
-  @media(max-width:620px){
-    #board{padding:12px 10px}
-    .fbd-h,.fbd-r{font-size:10.5px;grid-template-columns:calc(var(--tw)*13) calc(var(--tw)*4) calc(var(--tw)*3);gap:0 1.1em}
-    .fbd-h span{font-size:8.5px}
-  }
 
   /* lane card */
   #lane{position:fixed;inset:0;z-index:75;display:grid;place-items:center;padding:16px;background:rgba(20,22,26,.55);backdrop-filter:blur(3px)}
@@ -558,8 +538,8 @@
     border:0;border-right:1px solid var(--g);border-bottom:1px solid var(--g);padding:14px 14px 13px;transition:background .18s}
   .dp:hover,.dp:focus-visible{background:var(--b);color:var(--onB);outline:none}
   @media(max-width:620px){.deep-row{grid-template-columns:repeat(2,minmax(0,1fr))}}
-  .dp b{font-size:clamp(26px,2.6vw,34px);letter-spacing:-.03em;line-height:1;font-variant-numeric:tabular-nums}
-  .dp b small{font-size:.42em;letter-spacing:.06em;margin-left:3px}
+  .dp>b{font-size:clamp(26px,2.6vw,34px);letter-spacing:-.03em;line-height:1;font-variant-numeric:tabular-nums}
+  .dp>b small{font-size:.42em;letter-spacing:.06em;margin-left:3px}
   .dp .dp-p{font-size:14px;font-weight:700;margin-top:6px}
   .dp .dp-c{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
   .dp .dp-f{font:500 11px var(--mono);letter-spacing:.04em;opacity:.7}
@@ -629,9 +609,9 @@
     <h2 class="rv">Your partner for every <em>leg of the journey</em></h2>
     <p class="lead rv">Our operations team works with you to develop customized solutions for your specific needs, drawing on experience to find the most reliable and cost-effective routing.</p>
     <div class="cols rv">
-      <article><p class="k">Drayage &amp; trucking</p><h3>Reliable drayage &amp; trucking solutions across the United States</h3><p>As a licensed USDOT motor carrier, we move cargo from your door to the rail or port. We also offer standalone over-the-road trucking and less-than-truckload (LTL) moves.</p></article>
-      <article><p class="k">Ocean freight</p><h3>Streamlined global shipping</h3><p>Our status as an NVOCC licensed by the Federal Maritime Commission, combined with relationships with major ocean carriers, lets us move cargo reliably across the ocean.</p></article>
-      <article><p class="k">Inland &amp; on-carriage</p><h3>From the port to the border and the final delivery</h3><p>Experience &amp; global relationships are critical to navigating the most complex portion of your cargo's journey.</p></article>
+      <article><span class="stn">Leg <b>01</b> of 03</span><p class="k">Drayage &amp; trucking</p><h3>Reliable drayage &amp; trucking solutions across the United States</h3><p>As a licensed USDOT motor carrier, we move cargo from your door to the rail or port. We also offer standalone over-the-road trucking and less-than-truckload (LTL) moves.</p></article>
+      <article><span class="stn">Leg <b>02</b> of 03</span><p class="k">Ocean freight</p><h3>Streamlined global shipping</h3><p>Our status as an NVOCC licensed by the Federal Maritime Commission, combined with relationships with major ocean carriers, lets us move cargo reliably across the ocean.</p></article>
+      <article><span class="stn">Leg <b>03</b> of 03</span><p class="k">Inland &amp; on-carriage</p><h3>From the port to the border and the final delivery</h3><p>Experience &amp; global relationships are critical to navigating the most complex portion of your cargo's journey.</p></article>
     </div>
   </section>
 
@@ -689,17 +669,17 @@
 
   <main>
     <section class="card" id="svc-1"><div class="in wrap">
-      <div><span class="no cc"><span>SLGU</span><span>000001</span><span class="cc-chk">0</span><span class="cc-iso">45G1</span></span><h2>International freight</h2></div>
+      <div><span class="stn">Service <b>01</b> of 03</span><h2>International freight</h2></div>
       <div><p>Hands-on coordination across a trusted global network.</p>
         <a class="more" href="#contact" data-nav>Talk with our team</a></div>
     </div></section>
     <section class="card"><div class="in wrap">
-      <div><span class="no cc"><span>SLGU</span><span>000002</span><span class="cc-chk">5</span><span class="cc-iso">22G1</span></span><h2>Humanitarian logistics</h2></div>
+      <div><span class="stn">Service <b>02</b> of 03</span><h2>Humanitarian logistics</h2></div>
       <div><p>Reliable delivery for NGOs, charities, and ministries in high-need regions.</p>
         <a class="more" href="#contact" data-nav>Talk with our team</a></div>
     </div></section>
     <section class="card"><div class="in wrap">
-      <div><span class="no cc"><span>SLGU</span><span>000003</span><span class="cc-chk">0</span><span class="cc-iso">42G1</span></span><h2>Commercial cargo</h2></div>
+      <div><span class="stn">Service <b>03</b> of 03</span><h2>Commercial cargo</h2></div>
       <div><p>Precision, accountability, and clear communication at every handoff.</p>
         <a class="more" href="#contact" data-nav>Talk with our team</a></div>
     </div></section>
@@ -729,13 +709,12 @@
       <div id="lsRes" class="lres" hidden aria-live="polite"></div>
     </div>
     <div class="deep rv" id="deep"><p class="lbl">Deepest inland</p><h3>Far past the port.</h3>
-      <p class="lead2">The furthest delivery point in each country, measured in a straight line from the port where the cargo came off the ship.</p>
+      <p class="lead2">The furthest delivery point in each country, measured from the port where the cargo came off the ship.</p>
       <div class="deep-row"></div></div>
     <div class="filters rv" id="filters"></div>
-    <div class="ixbar rv"><p class="tally" id="tally"></p><div class="ixview" role="group" aria-label="Index view"><button type="button" id="vGrid" aria-pressed="true">Grid</button><button type="button" id="vBoard" aria-pressed="false">Board</button></div></div>
+    <div class="ixbar rv"><p class="tally" id="tally"></p></div>
     <div id="grid" class="rv"></div>
-    <div id="board" hidden><div class="fbd"><div class="fbd-h"><span>DESTINATION</span><span>FROM</span><span>STATUS</span><span>RANK</span></div><div class="fbd-rows"></div><p class="fbd-foot"></p></div></div>
-    <p class="key rv"><i></i> Shipped to in 2026 &nbsp;&middot;&nbsp; <b>#1&ndash;#10</b> busiest lanes since 2020 &nbsp;&middot;&nbsp; Totals from the SLG master ledger, US domestic moves excluded</p>
+    <p class="key rv"><i></i> Shipped to in 2026 &nbsp;&middot;&nbsp; <b>01&ndash;10</b> busiest lanes since 2020 &nbsp;&middot;&nbsp; Totals from the SLG master ledger, US domestic moves excluded</p>
   </section>
 
   <section class="cta"><div class="wrap">
@@ -961,7 +940,7 @@ grid.innerHTML=all.map(([c,r])=>{
   const y=c in C26, t=TOP[c], n=NEW.has(c);
   const cls=["cell",y?"y26":"",t?"top":"",n?"new":""].filter(Boolean).join(" ");
   return `<div class="${cls}" data-r="${r}" data-n="${c}"${t?` style="--o:${RANK[c]}"`:""}>
-    <span class="cn">${c}${t?`<i class="rk">#${RANK[c]}</i>`:""}</span>
+    <span class="cn">${c}${t?`<i class="rk" title="Rank ${RANK[c]} of 10">${String(RANK[c]).padStart(2,"0")}</i>`:""}</span>
     <span class="cm">${y?(C26[c]?`<b>${fmt(C26[c])}</b> in 2026`:"1 to 3 in 2026"):"&nbsp;"}</span>
     ${n?'<span class="tag">Newest</span>':""}</div>`}).join("");
 const counts={};all.forEach(([,r])=>counts[r]=(counts[r]||0)+1);
@@ -1093,7 +1072,7 @@ initMap();route();
 </script>
 <script>window.SLG_LEDGER={"Chad":{"ports":["Norfolk","New York"],"inland":[{"p":"N'Djamena","km":1075,"from":"Douala"}]},"Mozambique":{"ports":["New York","Houston","Norfolk","Montreal"]},"Sierra Leone":{"ports":["Baltimore"]},"Jamaica":{"ports":["New York","Houston","Wilmington","Philadelphia"],"inland":[{"p":"Mandeville","km":76,"from":"Kingston"}]},"Ghana":{"ports":["Newark"]},"Zambia":{"ports":["Norfolk","Houston","Tacoma"],"inland":[{"p":"Lusaka","km":1534,"from":"Dar es Salaam"},{"p":"Kitwe","km":1383,"from":"Dar es Salaam"},{"p":"Ndola","km":1352,"from":"Dar es Salaam"},{"p":"Mansa","km":1241,"from":"Dar es Salaam"},{"p":"Luwingu","km":1098,"from":"Dar es Salaam"},{"p":"Kasama","km":968,"from":"Dar es Salaam"}]},"Togo":{"ports":["New York"]},"Tanzania":{"ports":["New York","Norfolk","Houston","Port Everglades","Baltimore"],"inland":[{"p":"Kamachumu","km":1029,"from":"Dar es Salaam"}]},"Uganda":{"ports":["Newark","Norfolk","New York","Houston","Montreal"],"inland":[{"p":"Kampala","km":927,"from":"Mombasa"}]},"Dominican Republic":{"ports":["New York","Norfolk","Houston","Miami","Philadelphia","Los Angeles","Newark","Charleston","Savannah"]},"Afghanistan":{"inland":[{"p":"Mazar-i-Sharif","km":1320,"from":"Karachi"}]},"Lebanon":{"ports":["Houston","Los Angeles","New York"]},"Guyana":{"ports":["Houston","New York"]},"Burkina Faso":{"ports":["Houston","Norfolk","New York","Montreal"],"inland":[{"p":"Ouagadougou","km":767,"from":"Tema"}]},"Nigeria":{"ports":["Norfolk","New York"]},"Burundi":{"ports":["Houston","Montreal","New York","Baltimore"],"inland":[{"p":"Bujumbura","km":1164,"from":"Dar es Salaam"},{"p":"Ngozi"}]},"South Sudan":{"ports":["Norfolk","New York"],"inland":[{"p":"Bor","km":1453,"from":"Mombasa"},{"p":"Juba","km":1338,"from":"Mombasa"}]},"Kenya":{"ports":["New York","Norfolk","Montreal","Newark"],"inland":[{"p":"Nairobi","km":441,"from":"Mombasa"}]},"Ukraine":{"ports":["New York","Norfolk","Houston","Montreal"],"inland":[{"p":"Lutsk","km":1430,"from":"Piraeus"},{"p":"Vinnytsia","km":1314,"from":"Piraeus"},{"p":"Lviv","km":721,"from":"Constanța"},{"p":"Mukachevo","km":658,"from":"Constanța"},{"p":"Zaporizhzhia","km":646,"from":"Constanța"}]},"Liberia":{"ports":["Newark","Houston","Norfolk","New York","Baltimore","Los Angeles","Montreal"],"inland":[{"p":"Gbarnga","km":164,"from":"Monrovia"},{"p":"Harbel","km":50,"from":"Monrovia"}]},"Panama":{"ports":["New York"],"inland":[{"p":"La Chorrera","km":54,"from":"Manzanillo"}]},"Madagascar":{"ports":["Houston"]},"Philippines":{"ports":["Los Angeles"]},"Colombia":{"ports":["Norfolk","Mobile"]},"UAE":{"ports":["Newark"]},"DR Congo":{"inland":[{"p":"Lubumbashi","km":1403,"from":"Dar es Salaam"},{"p":"Goma","km":1254,"from":"Dar es Salaam"},{"p":"Kinshasa","km":265,"from":"Matadi"}]},"Mali":{"ports":["Norfolk"],"inland":[{"p":"Bamako","km":1045,"from":"Dakar"}]},"Romania":{"ports":["Norfolk","Baltimore","New York"],"inland":[{"p":"Suceava","km":429,"from":"Constanța"},{"p":"Bucharest","km":205,"from":"Constanța"}]},"Cambodia":{"ports":["Los Angeles","Norfolk"]},"Eswatini":{"ports":["New York","Norfolk","Houston","Newark"],"inland":[{"p":"Manzini","km":377,"from":"Durban"},{"p":"Matsapha","km":374,"from":"Durban"}]},"Lesotho":{"ports":["Newark","Houston"],"inland":[{"p":"Maseru","km":349,"from":"Durban"}]},"Cuba":{"ports":["Los Angeles","Houston"]},"Honduras":{"ports":["New York","Houston","Long Beach","Philadelphia","Baltimore","Mobile","Newark","New Orleans","Savannah","Port Everglades","Jacksonville"],"inland":[{"p":"El Progreso","km":52,"from":"Puerto Cortés"},{"p":"San Pedro Sula","km":39,"from":"Puerto Cortés"}]},"Haiti":{"ports":["New York","Miami","Port Everglades"]},"Guatemala":{"ports":["Los Angeles","Houston","New York","Port Everglades","Philadelphia","Baltimore","New Orleans","Newark","Norfolk"],"inland":[{"p":"San Lucas Tolimán","km":299,"from":"Puerto Barrios"},{"p":"Mixco","km":244,"from":"Santo Tomás de Castilla"},{"p":"Guatemala City","km":85,"from":"Puerto Quetzal"}]},"Mauritania":{"ports":["Houston","Los Angeles"]},"Moldova":{"ports":["Savannah"],"inland":[{"p":"Chisinau","km":316,"from":"Constanța"}]},"Nicaragua":{"ports":["Los Angeles"]},"Zimbabwe":{"inland":[{"p":"Harare","km":457,"from":"Beira"}]},"Rwanda":{"inland":[{"p":"Kigali","km":1092,"from":"Mombasa"}]},"South Africa":{"ports":["Houston","Baltimore","Norfolk","Newark","New York","Charleston"]},"Greece":{"ports":["New York"]},"Vietnam":{"ports":["Newark"]},"Central African Republic":{"ports":["Norfolk"],"inland":[{"p":"Bangui","km":983,"from":"Douala"}]},"Bangladesh":{"ports":["Norfolk","Houston","Newark","New York","Los Angeles"]},"Peru":{"ports":["Philadelphia","Long Beach","Houston","New York","Norfolk"]},"Malawi":{"ports":["Montreal","Houston","New York","Baltimore"],"inland":[{"p":"Nsanje","km":1205,"from":"Dar es Salaam"},{"p":"Zomba","km":1046,"from":"Dar es Salaam"},{"p":"Karonga","km":683,"from":"Dar es Salaam"},{"p":"Lilongwe","km":662,"from":"Beira"},{"p":"Blantyre","km":450,"from":"Beira"},{"p":"Mzimba"},{"p":"Liwonde"}]},"Somalia":{"ports":["Norfolk","Baltimore","New York"]},"El Salvador":{"ports":["Los Angeles","Houston","Philadelphia","Boston","Norfolk","New Orleans","Savannah"],"inland":[{"p":"San Salvador","km":71,"from":"Acajutla"}]},"Paraguay":{"ports":["Philadelphia"]},"Angola":{"ports":["New York","Norfolk","Baltimore","Vancouver","Philadelphia"]},"Grenada":{"ports":["New York"]},"Mongolia":{"capital":{"p":"Ulaanbaatar","km":1317,"from":"Tianjin"}}};</script>
 <script>
-/* ================= feature set: lanes data, lane search, lane cards, flip board, smart cursor ================= */
+/* ================= feature set: lanes data, lane search, lane cards, deepest inland, smart cursor ================= */
 (function(){
   const REDUCED=matchMedia("(prefers-reduced-motion: reduce)").matches;
   const esc=t=>{const d=document.createElement("div");d.textContent=t;return d.innerHTML;};
@@ -1156,14 +1135,13 @@ initMap();route();
     const region=regionOf[c]; if(!region) return;
     lastFocus=document.activeElement;
     const top=TOP[c]||0, rank=RANK[c]||0, P=portsFor(c), L=LEDGER[c]||{};
-    const chips=[in26(c)?'<span class="y">Shipped in 2026</span>':"", rank?`<span>#${rank} busiest lane</span>`:"", NEW.has(c)?'<span class="y">Newest lane</span>':""].join("");
+    const chips=[in26(c)?'<span class="y">Shipped in 2026</span>':"", rank?`<span class="stnchip"><b>${String(rank).padStart(2,"0")}</b> busiest lane</span>`:"", NEW.has(c)?'<span class="y">Newest lane</span>':""].join("");
     const nums=[in26(c)?`<div><b>${n26(c)?n26(c):"1 to 3"}</b><span>shipments in 2026</span></div>`:"", top?`<div><b>${top.toLocaleString("en-US")}</b><span>shipments since 2020</span></div>`:""].join("");
     const chip=x=>`<span class="${x.km>=900?"deep":""}">${esc(x.p)}${x.km?`<small>${x.km.toLocaleString("en-US")} km from ${esc(x.from)}</small>`:""}</span>`;
     let inland="";
-    if(L.inland&&L.inland.length) inland=`<div class="lc-sec lc-pad"><h4>Inland destinations</h4><div class="lc-list lc-in">${L.inland.map(chip).join("")}</div>
-      <p class="lc-note">Straight-line distance from the port of discharge; the road is longer.</p></div>`;
+    if(L.inland&&L.inland.length) inland=`<div class="lc-sec lc-pad"><h4>Inland destinations</h4><div class="lc-list lc-in">${L.inland.map(chip).join("")}</div></div>`;
     else if(L.capital) inland=`<div class="lc-sec lc-pad"><h4>Landlocked</h4><div class="lc-list lc-in">${chip(L.capital)}</div>
-      <p class="lc-note">The capital, ${esc(L.capital.p)}, sits ${L.capital.km.toLocaleString("en-US")} km from ${esc(L.capital.from)}, the nearest seaport, in a straight line.</p></div>`;
+      <p class="lc-note">The capital, ${esc(L.capital.p)}, sits ${L.capital.km.toLocaleString("en-US")} km from ${esc(L.capital.from)}, the nearest seaport.</p></div>`;
     lbody.innerHTML=`
       <div class="lc-head lc-pad"><p class="lbl">Lane card</p><h3 id="laneTitle">${esc(c)}</h3><p class="rg">${esc(region)}</p>
         ${chips?`<div class="lc-chips">${chips}</div>`:""}</div>
@@ -1171,7 +1149,7 @@ initMap();route();
       ${nums?`<div class="lc-sec lc-pad"><div class="lc-nums">${nums}</div></div>`:""}
       <div class="lc-sec lc-pad"><h4>Ships from</h4>
         <div class="lc-list">${P.list.map(p=>`<span>${esc(p)}${PORTS[p]?`<small>${PORTS[p].loc}</small>`:""}</span>`).join("")}<span class="more">${P.west?"and more":"West Coast ports and more"}</span></div>
-        <p class="lc-note">We route from whichever US port gets your cargo there best.</p></div>
+        <p class="lc-note">The best routing is chosen for your cargo and situation.</p></div>
       ${inland}
       <div class="lc-foot lc-pad"><a class="btn" href="#contact" data-lane-close>Book this lane</a><button type="button" class="btn o" data-lane-close>Back to the index</button></div>`;
     lane.hidden=false; document.body.classList.add("lane-open");
@@ -1260,55 +1238,9 @@ initMap();route();
   if(deepEl){
     const best=Object.entries(LEDGER).map(([c,L])=>{const x=(L.inland||[]).concat(L.capital?[L.capital]:[]).filter(i=>i.km).sort((a,b)=>b.km-a.km)[0];return x?{c,...x}:null;})
       .filter(Boolean).sort((a,b)=>b.km-a.km).slice(0,8);
-    deepEl.querySelector(".deep-row").innerHTML=best.map(x=>`<button type="button" class="dp" data-open="${esc(x.c)}" data-cursor="Open ${esc(x.c)} lane">
-      <b>${x.km.toLocaleString("en-US")}<small>km</small></b><span class="dp-p">${esc(x.p)}</span><span class="dp-c">${esc(x.c)}</span><span class="dp-f">from ${esc(x.from)}</span></button>`).join("");
+    deepEl.querySelector(".deep-row").innerHTML=best.map((x,i)=>`<button type="button" class="dp" data-open="${esc(x.c)}" data-cursor="Open ${esc(x.c)} lane">
+      <span class="stn">No. <b>${String(i+1).padStart(2,"0")}</b> of ${String(best.length).padStart(2,"0")}</span><b>${x.km.toLocaleString("en-US")}<small>km</small></b><span class="dp-p">${esc(x.p)}</span><span class="dp-c">${esc(x.c)}</span><span class="dp-f">from ${esc(x.from)}</span></button>`).join("");
     deepEl.addEventListener("click",e=>{const b=e.target.closest("[data-open]"); if(b) openLane(b.dataset.open);});
-  }
-
-  /* ---- flip board ---- */
-  const board=document.getElementById("board"), vGrid=document.getElementById("vGrid"), vBoard=document.getElementById("vBoard");
-  const ABBR={"Central African Republic":"CENTRAL AFR REP","St. Vincent & the Grenadines":"ST VINCENT/GREN","Dominican Republic":"DOMINICAN REP","Trinidad & Tobago":"TRINIDAD/TOBAGO"};
-  const NABBR={"Central African Republic":"CENT AFR REP","Czech Republic":"CZECH REP","Equatorial Guinea":"EQ GUINEA","Papua New Guinea":"PAPUA NEW GN","St. Vincent & the Grenadines":"ST VINCENT","Trinidad & Tobago":"TRINIDAD/TOB"};
-  const NARROW=matchMedia("(max-width:620px)"), GLY="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#";
-  const cells=(txt,w,right)=>{let s=(txt||"").toUpperCase().slice(0,w); s=right?s.padStart(w," "):s.padEnd(w," ");
-    return [...s].map(ch=>`<span class="ch${ch===" "?" sp":""}" data-t="${ch===" "?"&nbsp;":esc(ch)}">${ch===" "?"&nbsp;":esc(ch)}</span>`).join("");};
-  function renderBoard(){
-    if(!board||board.hidden) return;
-    let rows=[...grid.children].filter(d=>!d.classList.contains("off")).map(d=>d.dataset.n);
-    if(grid.classList.contains("rank")) rows.sort((a,b)=>(RANK[a]||99)-(RANK[b]||99));
-    const nw=NARROW.matches;
-    board.querySelector(".fbd-rows").innerHTML=rows.map(c=>
-      `<button type="button" class="fbd-r${in26(c)?" y26":""}" data-c="${esc(c)}" data-cursor="Open ${esc(c)} lane">
-        <span class="fbd-c">${nw?cells(NABBR[c]||ABBR[c]||c,13):cells(ABBR[c]||c,17)}</span><span class="fbd-c">${cells(count26(c),4,true)}</span><span class="fbd-c">${cells(RANK[c]?"#"+RANK[c]:"",3,true)}</span></button>`).join("");
-    const n=rows.filter(in26).length;
-    board.querySelector(".fbd-foot").textContent=rows.length+" DESTINATIONS · "+n+" SHIPPED IN 2026, LIT YELLOW";
-    flap();
-  }
-  let flapT=0;
-  function flap(){
-    if(REDUCED) return;
-    const spans=[...board.querySelectorAll(".fbd-r")].slice(0,26).flatMap((r,ri)=>[...r.querySelectorAll(".ch:not(.sp)")].map(s=>({s,ri})));
-    const start=performance.now(), id=++flapT;
-    spans.forEach(o=>{o.end=start+180+o.ri*45+Math.random()*260;});
-    (function step(now){
-      if(id!==flapT) return;
-      let live=false;
-      spans.forEach(o=>{ if(now<o.end){ live=true; o.s.textContent=GLY[(Math.random()*GLY.length)|0]; } else if(!o.done){ o.s.innerHTML=o.s.dataset.t; o.done=true; } });
-      if(live) setTimeout(()=>requestAnimationFrame(step),55);
-    })(start);
-  }
-  function setView(v){
-    const b=v==="board"; board.hidden=!b; grid.hidden=b;
-    vGrid.setAttribute("aria-pressed",String(!b)); vBoard.setAttribute("aria-pressed",String(b));
-    const key=document.querySelector("#dest .key"); if(key) key.hidden=b;
-    if(b) renderBoard();
-  }
-  if(board){
-    vGrid.addEventListener("click",()=>setView("grid")); vBoard.addEventListener("click",()=>setView("board"));
-    board.addEventListener("click",e=>{const r=e.target.closest(".fbd-r"); if(r) openLane(r.dataset.c);});
-    new MutationObserver(()=>{ if(!board.hidden) renderBoard(); }).observe(grid,{attributes:true,attributeFilter:["class"]});
-    NARROW.addEventListener&&NARROW.addEventListener("change",()=>{ if(!board.hidden) renderBoard(); });
-    window.slgSetView=setView;
   }
 
   /* ---- smart cursor: mouse and trackpad only, every page except Home ---- */

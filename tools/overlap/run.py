@@ -27,11 +27,12 @@ async def main():
     async with async_playwright() as p:
         b=await p.chromium.launch(args=["--no-sandbox"])
         for (w,h,mob) in VPS:
-            for theme in (["light","dark"] if w in (320,390,1440) else ["light"]):
+            for theme in ["light"]:  # dark mode retired Nov 11
                 for review in ([False,True] if w in (320,390,768,1440) and theme=="light" else [False]):
                     ctx=await b.new_context(viewport={"width":w,"height":h},is_mobile=mob,has_touch=mob,device_scale_factor=1,reduced_motion="reduce" if False else "no-preference")
                     if review: await ctx.add_init_script("window.__ROLE='admin';"+MOCK)
                     await ctx.add_init_script(f"try{{localStorage.setItem('slg-theme','{theme}')}}catch(e){{}};try{{localStorage.setItem('slg-guide-seen','1')}}catch(e){{}}")
+                    await ctx.route("**/fonts.g*/**",lambda r:r.abort())
                     pg=await ctx.new_page(); errs=[]; pg.on("pageerror",lambda e:errs.append(str(e)))
                     await pg.goto(BASE+"#home"); await pg.wait_for_timeout(900)
                     tag=f"{w}x{h} {theme}{' review' if review else ''}"

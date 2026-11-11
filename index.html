@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&family=IBM+Plex+Mono:wght@500;700&display=swap" rel="stylesheet">
 <title>Special Logistics Group</title>
 <meta name="description" content="Complex international freight and humanitarian logistics from origin to final delivery.">
 <script>try{if(localStorage.getItem("slg-theme")==="dark")document.documentElement.setAttribute("data-slg-theme","dark")}catch(e){}</script>
@@ -439,6 +439,127 @@
   @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.mrow{transform:none!important}em,.mail{transition:none}em.mk{background-size:100% .13em}.mail.mk{background-size:100% .1em}.rv{opacity:1;transform:none}.card{position:relative}
     #hero{height:auto}.hstick{position:relative;height:auto;min-height:0;padding-block:90px}.hcopy{opacity:1!important;transform:none!important}.rt{stroke-dashoffset:0}
     .hmap [data-s]{opacity:1}.pp,.scrollcue i{animation:none}}
+
+  /* ================= feature set: cursor, highlighter, container codes, lane search, lane cards, flip board ================= */
+  :root{--mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;--board:#282828;--tile:#323232;--tileInk:#f3f1ea}
+  :root[data-slg-theme="dark"]{--board:#1f1f1f;--tile:#2b2b2b}
+
+  /* container codes on the service cards (ISO 6346 format, check digit boxed as on a container door) */
+  .card .no.cc{display:inline-flex;align-items:baseline;flex-wrap:wrap;gap:.18em .34em;font-family:var(--mono);font-weight:700;
+    font-size:clamp(22px,3.2vw,44px);letter-spacing:.02em;line-height:1;padding:.32em .42em .3em}
+  .cc .cc-chk{display:inline-block;border:2px solid currentColor;padding:.02em .16em;line-height:1}
+  .cc .cc-iso{flex-basis:100%;font-size:.36em;letter-spacing:.24em;font-weight:500;margin-top:.35em;opacity:.8}
+
+  /* hand-drawn highlighter: marker swash under headline words, circles round key numbers */
+  em{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 24' preserveAspectRatio='none'%3E%3Cpath d='M3 15C38 9 74 17 112 12S174 8 197 13' fill='none' stroke='%23ffde59' stroke-width='9' stroke-linecap='round'/%3E%3Cpath d='M8 18C52 14 96 19 150 15S186 14 194 16' fill='none' stroke='%23ffde59' stroke-width='4' stroke-linecap='round' opacity='.7'/%3E%3C/svg%3E");
+    background-size:0 .34em;background-position:0 104%}
+  em.mk{background-size:100% .34em}
+  .hlc{position:relative;display:inline-block}
+  .hlc svg{position:absolute;left:-22%;top:-26%;width:144%;height:152%;overflow:visible;pointer-events:none}
+  .hlc path{fill:none;stroke:var(--y);stroke-width:3.2;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 1s cubic-bezier(.5,.1,.3,1)}
+  .hlc.drawn path{stroke-dashoffset:0}
+  @media(prefers-reduced-motion:reduce){.hlc path{transition:none;stroke-dashoffset:0}}
+
+  /* smart cursor (mouse and trackpad only) */
+  #scur{position:fixed;left:0;top:0;z-index:90;pointer-events:none;display:none;align-items:center;gap:8px;
+    transform:translate3d(-100px,-100px,0);will-change:transform}
+  #scur .dot{width:12px;height:12px;border-radius:50%;background:var(--y);box-shadow:0 0 0 1.5px var(--g);flex:none;
+    transform:translate(-50%,-50%);transition:width .18s,height .18s,background .18s,box-shadow .18s}
+  #scur .lab{font:700 11px/1 var(--f);letter-spacing:.12em;text-transform:uppercase;white-space:nowrap;background:var(--g);color:var(--w);
+    padding:8px 11px;transform:translate(-2px,-50%) scale(.85);opacity:0;transition:opacity .16s,transform .16s;transform-origin:left center}
+  #scur.link .dot{width:34px;height:34px;background:rgba(255,222,89,.22);box-shadow:0 0 0 1.5px var(--y)}
+  #scur.label .dot{width:14px;height:14px}
+  #scur.label .lab{opacity:1;transform:translate(4px,-50%) scale(1)}
+  #scur.hide{opacity:0}
+  html.scur-on, html.scur-on a, html.scur-on button, html.scur-on [role="button"], html.scur-on .cell{cursor:none}
+  html.scur-on input, html.scur-on textarea{cursor:text}
+  .hmap path.hit{fill:none;stroke:transparent;stroke-width:9;pointer-events:stroke}
+  .hmap circle{pointer-events:all}
+
+  /* lane search */
+  .lsearch{margin:30px 0 6px;max-width:720px}
+  .lsearch label{display:block;margin-bottom:10px}
+  .lsrow{position:relative;display:flex;border:1px solid var(--g);background:var(--w)}
+  .lsrow input{flex:1;min-width:0;font:500 clamp(17px,1.6vw,21px) var(--f);color:var(--g);background:none;border:0;padding:16px 18px;outline:none}
+  .lsrow input::placeholder{color:var(--mut);opacity:.75}
+  .lsrow:focus-within{outline:3px solid var(--y);outline-offset:-1px}
+  .lsrow button{font:inherit;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;border:0;background:var(--b);color:var(--onB);padding:0 20px;cursor:pointer}
+  .lsug{position:absolute;left:-1px;right:-1px;top:100%;z-index:20;background:var(--w);border:1px solid var(--g);border-top:0;list-style:none;margin:0;padding:0;max-height:300px;overflow-y:auto}
+  .lsug[hidden]{display:none}
+  .lsug li{padding:11px 18px;font-size:15px;cursor:pointer;display:flex;justify-content:space-between;gap:12px}
+  .lsug li small{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--mut)}
+  .lsug li[aria-selected="true"],.lsug li:hover{background:var(--bl)}
+  .lres{margin-top:12px;border:1px solid var(--g);background:var(--w);padding:18px 20px;display:grid;gap:12px}
+  .lres[hidden]{display:none}
+  .lres h3{font-size:clamp(20px,2vw,26px)}
+  .lres p{color:var(--mut);font-size:15px}
+  .lres .btns{margin-top:2px}
+  .lres .btn{padding:12px 18px;font-size:11px;cursor:pointer;font-family:inherit}
+
+  /* grid / board switch */
+  .ixbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:0 0 14px}
+  .ixbar .tally{margin:0}
+  .ixview{display:flex;border:1px solid var(--g)}
+  .ixview button{font:inherit;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;background:none;color:var(--g);border:0;padding:8px 13px;cursor:pointer}
+  .ixview button+button{border-left:1px solid var(--g)}
+  .ixview button[aria-pressed="true"]{background:var(--b);color:var(--onB)}
+  #grid .cell{cursor:pointer}
+  #grid .cell:focus-visible{outline:2px solid var(--g);outline-offset:-2px}
+
+  /* flip board */
+  #board{background:var(--board);color:var(--tileInk);padding:clamp(14px,2.4vw,26px);overflow-x:auto;border:1px solid var(--g)}
+  #board[hidden]{display:none}
+  .fbd{width:max-content;min-width:100%;font-family:var(--mono);font-weight:700;--tw:calc(1.05em + 2px)}
+  .fbd-h,.fbd-r{display:grid;grid-template-columns:calc(var(--tw)*17) calc(var(--tw)*5) calc(var(--tw)*6) calc(var(--tw)*3);gap:0 1.4em;align-items:center;font-size:clamp(12px,1.25vw,16px)}
+  .fbd-h{color:var(--y);padding:0 4px 10px;border-bottom:1px solid rgba(243,241,234,.18);margin-bottom:6px}
+  .fbd-h span{font-size:10px;letter-spacing:.2em}
+  .fbd-r{width:100%;background:none;border:0;color:inherit;font-family:inherit;font-weight:inherit;text-align:left;padding:5px 4px;cursor:pointer}
+  .fbd-r:hover,.fbd-r:focus-visible{background:rgba(255,222,89,.1);outline:none}
+  .fbd-c{display:flex;gap:2px;white-space:nowrap;overflow:hidden}
+  .ch{display:inline-grid;place-items:center;width:1.05em;height:1.45em;background:linear-gradient(var(--tile) 0 49%,rgba(0,0,0,.45) 49% 51%,var(--tile) 51%);
+    border-radius:2px;flex:none;font-size:1em;line-height:1}
+  .ch.sp{background:linear-gradient(rgba(255,255,255,.035) 0 49%,rgba(0,0,0,.3) 49% 51%,rgba(255,255,255,.035) 51%)}
+  .fbd-r .st-a .ch{color:var(--y)}
+  .fbd-r .st-s .ch{color:#9d9a92}
+  @media(max-width:620px){
+    #board{padding:12px 10px}
+    .fbd-h,.fbd-r{font-size:10px;grid-template-columns:calc(var(--tw)*13) calc(var(--tw)*5) calc(var(--tw)*6);gap:0 1.1em}
+    .fbd-h span:nth-child(4),.fbd-r>span:nth-child(4){display:none}
+    .fbd-h span{font-size:8.5px}
+  }
+  .fbd-foot{margin-top:12px;font:500 11px var(--mono);letter-spacing:.12em;color:#9d9a92}
+
+  /* lane card */
+  #lane{position:fixed;inset:0;z-index:75;display:grid;place-items:center;padding:16px;background:rgba(20,22,26,.55);backdrop-filter:blur(3px)}
+  #lane[hidden]{display:none}
+  body.lane-open{overflow:hidden}
+  .lcard{position:relative;width:min(640px,100%);max-height:calc(100svh - 32px);overflow-y:auto;background:var(--w);color:var(--g);
+    border:1px solid var(--g);border-top:6px solid var(--b);box-shadow:0 24px 70px rgba(0,0,0,.3)}
+  .lc-head{padding:clamp(20px,3.4vw,32px) clamp(20px,3.4vw,32px) 0}
+  .lc-head h3{font-size:clamp(28px,4vw,44px);margin:10px 0 6px;letter-spacing:-.02em}
+  .lc-head .rg{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--mut)}
+  .lc-chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:14px}
+  .lc-chips span{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;border:1px solid var(--g);padding:5px 8px}
+  .lc-chips span.y{background:var(--b);color:var(--onB);border-color:var(--b)}
+  .lc-map{margin:18px 0 0;border-block:1px solid var(--ln);background:var(--yl)}
+  .lc-map svg{display:block;width:100%;height:auto}
+  .lc-map .route{fill:none;stroke:var(--g);stroke-width:2.2;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1;animation:lcdraw 1.1s .15s cubic-bezier(.5,.1,.3,1) forwards}
+  @keyframes lcdraw{to{stroke-dashoffset:0}}
+  @media(prefers-reduced-motion:reduce){.lc-map .route{animation:none;stroke-dashoffset:0}}
+  .lc-facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));border-bottom:1px solid var(--ln)}
+  .lc-facts div{padding:16px clamp(20px,3.4vw,32px) 16px 0;margin-left:clamp(20px,3.4vw,32px)}
+  .lc-facts dt{font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--mut);margin-bottom:6px}
+  .lc-facts dd{margin:0;font-size:17px;font-weight:700}
+  .lc-facts dd small{display:block;font:500 11px var(--mono);letter-spacing:.08em;color:var(--mut);margin-top:3px}
+  .lc-todo{margin:16px clamp(20px,3.4vw,32px) 0;border:1px dashed var(--mut);padding:12px 14px;font-size:13px;color:var(--mut)}
+  .lc-todo b{display:block;font-size:10px;letter-spacing:.16em;text-transform:uppercase;margin-bottom:4px;color:var(--g)}
+  .lc-foot{display:flex;gap:12px;flex-wrap:wrap;align-items:center;padding:18px clamp(20px,3.4vw,32px) clamp(20px,3.4vw,28px)}
+  .lc-foot .btn{font-family:inherit;cursor:pointer}
+  #laneX{position:absolute;top:12px;right:12px;width:36px;height:36px;background:var(--w);border:1px solid var(--ln);color:var(--g);font-size:17px;line-height:1;cursor:pointer;z-index:2}
+  #laneX:hover{background:var(--b);color:var(--onB)}
+  @media(max-width:620px){#lane{place-items:end center;padding:0}.lcard{max-height:92svh;border-left:0;border-right:0}}
+  #grid[hidden],#dest .key[hidden]{display:none}
+  @media(max-width:620px){.lc-foot{padding-bottom:calc(20px + env(safe-area-inset-bottom,0px))}}
 </style>
 </head>
 <body>
@@ -566,17 +687,17 @@
 
   <main>
     <section class="card" id="svc-1"><div class="in wrap">
-      <div><span class="no">01</span><h2>International freight</h2></div>
+      <div><span class="no cc"><span>SLGU</span><span>000001</span><span class="cc-chk">0</span><span class="cc-iso">45G1</span></span><h2>International freight</h2></div>
       <div><p>Hands-on coordination across a trusted global network.</p>
         <a class="more" href="#contact" data-nav>Talk with our team</a></div>
     </div></section>
     <section class="card"><div class="in wrap">
-      <div><span class="no">02</span><h2>Humanitarian logistics</h2></div>
+      <div><span class="no cc"><span>SLGU</span><span>000002</span><span class="cc-chk">5</span><span class="cc-iso">22G1</span></span><h2>Humanitarian logistics</h2></div>
       <div><p>Reliable delivery for NGOs, charities, and ministries in high-need regions.</p>
         <a class="more" href="#contact" data-nav>Talk with our team</a></div>
     </div></section>
     <section class="card"><div class="in wrap">
-      <div><span class="no">03</span><h2>Commercial cargo</h2></div>
+      <div><span class="no cc"><span>SLGU</span><span>000003</span><span class="cc-chk">0</span><span class="cc-iso">42G1</span></span><h2>Commercial cargo</h2></div>
       <div><p>Precision, accountability, and clear communication at every handoff.</p>
         <a class="more" href="#contact" data-nav>Talk with our team</a></div>
     </div></section>
@@ -596,9 +717,19 @@
   <section class="sec tint wrap" id="dest">
     <h2 class="rv">Destination index</h2>
     <p class="lead rv">Every country we have shipped to since 2020. Explore the listed destinations by region.</p>
+    <div class="lsearch rv">
+      <label class="lbl" for="lsIn">Where are you shipping?</label>
+      <div class="lsrow">
+        <input id="lsIn" type="text" autocomplete="off" spellcheck="false" placeholder="Type a country, for example Malawi" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="lsSug">
+        <button id="lsGo" type="button">Check</button>
+        <ul id="lsSug" class="lsug" role="listbox" hidden></ul>
+      </div>
+      <div id="lsRes" class="lres" hidden aria-live="polite"></div>
+    </div>
     <div class="filters rv" id="filters"></div>
-    <p class="tally rv" id="tally"></p>
+    <div class="ixbar rv"><p class="tally" id="tally"></p><div class="ixview" role="group" aria-label="Index view"><button type="button" id="vGrid" aria-pressed="true">Grid</button><button type="button" id="vBoard" aria-pressed="false">Board</button></div></div>
     <div id="grid" class="rv"></div>
+    <div id="board" hidden><div class="fbd"><div class="fbd-h"><span>DESTINATION</span><span>FROM</span><span>STATUS</span><span>RANK</span></div><div class="fbd-rows"></div><p class="fbd-foot"></p></div></div>
     <p class="key rv"><i></i> Active lane &nbsp;&middot;&nbsp; <b>#1&ndash;#10</b> busiest lanes since 2020 &nbsp;&middot;&nbsp; Totals from the SLG master ledger, US domestic moves excluded</p>
   </section>
 
@@ -746,6 +877,8 @@
 </div>
 
 
+<div id="lane" hidden role="dialog" aria-modal="true" aria-labelledby="laneTitle"><div class="lcard"><button id="laneX" type="button" aria-label="Close lane card">&times;</button><div id="laneBody"></div></div></div>
+<div id="scur" aria-hidden="true"><span class="dot"></span><span class="lab"></span></div>
 <div class="fbDock"><button id="fbViewBtn" type="button" hidden>Viewers</button><button id="fbGuideBtn" type="button" hidden aria-label="How reviewing works" title="How reviewing works">?</button><button id="fbBtn" type="button" hidden>Feedback<span class="cnt" id="fbCount" hidden>0</span></button></div>
 <aside id="fbPanel" aria-label="Feedback" aria-hidden="true">
   <div class="fbHead">
@@ -955,6 +1088,235 @@ function initMap(){
   addEventListener("resize",paint);
 }
 initMap();route();
+</script>
+<script>
+/* ================= feature set: lanes data, lane search, lane cards, flip board, smart cursor, highlighter ================= */
+(function(){
+  const REDUCED=matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const esc=t=>{const d=document.createElement("div");d.textContent=t;return d.innerHTML;};
+  const regionOf={}; all.forEach(([c,r])=>regionOf[c]=r);
+
+  /* ---- lanes from the hero map: which US gateway each country's arc leaves from, and its end point ---- */
+  const hsvg=document.querySelector(".hmap svg");
+  const GW={"278.7,176.2":"Houston","311.4,187.2":"Miami","312.5,169.4":"Savannah","334.5,145.1":"New York / NJ"};
+  const GWXY={Houston:[278.7,176.2],Miami:[311.4,187.2],Savannah:[312.5,169.4],"New York / NJ":[334.5,145.1]};
+  const LOC={Houston:"USHOU",Miami:"USMIA",Savannah:"USSAV","New York / NJ":"USNYC"};
+  const lanes={};
+  if(hsvg){
+    hsvg.querySelectorAll("path.rt").forEach(p=>{
+      const t=p.querySelector("title"); if(!t) return;
+      const name=t.textContent.split(":")[0].trim();
+      const m=(p.getAttribute("d")||"").match(/^M([\d.]+) ([\d.]+)Q([\d.]+) ([\d.]+) ([\d.]+) ([\d.]+)/);
+      if(!m) return;
+      lanes[name]={gw:GW[m[1]+","+m[2]]||null,d:p.getAttribute("d"),end:[+m[5],+m[6]],label:t.textContent.trim()};
+      /* a wider invisible twin so the thin arc is easy to point at */
+      const h=document.createElementNS("http://www.w3.org/2000/svg","path");
+      h.setAttribute("d",p.getAttribute("d")); h.setAttribute("class","hit"); h.dataset.cursor=t.textContent.replace(":"," ·");
+      p.parentNode.appendChild(h);
+    });
+    hsvg.querySelectorAll("circle").forEach(c=>{const t=c.querySelector("title"); if(t) c.dataset.cursor=t.textContent.trim();});
+    hsvg.querySelectorAll("circle.pp").forEach(c=>{
+      const k=(+c.getAttribute("cx")).toFixed(1)+","+(+c.getAttribute("cy")).toFixed(1);
+      if(GW[k]) c.dataset.cursor=GW[k]+" gateway";
+    });
+  }
+  const landD=hsvg&&hsvg.querySelector("path.land")?hsvg.querySelector("path.land").getAttribute("d"):"";
+
+  function factsFor(c){
+    const ln=lanes[c]||{}, active=c in C26, n26=C26[c]||0;
+    return {c, region:regionOf[c]||"", gw:ln.gw||null, loc:ln.gw?LOC[ln.gw]:null, active, n26, top:TOP[c]||0, rank:RANK[c]||0, isNew:NEW.has(c), lane:ln};
+  }
+  const thisYear=f=>f.active?(f.n26?f.n26+(f.n26===1?" shipment":" shipments"):"3 or fewer"):"None yet";
+
+  /* ---- lane card ---- */
+  const lane=document.getElementById("lane"), lbody=document.getElementById("laneBody");
+  let lastFocus=null;
+  function routeSvg(f){
+    if(!f.lane.d||!f.gw) return "";
+    const [gx,gy]=GWXY[f.gw], [ex,ey]=f.lane.end;
+    const pad=40, x0=Math.min(gx,ex)-pad, y0=Math.min(gy,ey)-pad*.8, x1=Math.max(gx,ex)+pad, y1=Math.max(gy,ey)+pad*.8;
+    const w=Math.max(x1-x0,180), h=Math.max(y1-y0,100), cx=(x0+x1)/2, cy=(y0+y1)/2;
+    const vb=[cx-w/2,cy-h/2,w,h].map(v=>v.toFixed(1)).join(" ");
+    const R2L=ex>gx;
+    return `<svg viewBox="${vb}" role="img" aria-label="Route from ${esc(f.gw)} to ${esc(f.c)}">
+      <path d="${landD}" stroke="var(--g)" stroke-opacity=".22" stroke-width="2.3" stroke-linecap="round" fill="none"/>
+      <path class="route" pathLength="1" d="${f.lane.d}"/>
+      <circle cx="${gx}" cy="${gy}" r="4" fill="var(--g)"/>
+      <circle cx="${ex}" cy="${ey}" r="4.4" fill="var(--y)" stroke="var(--g)" stroke-width="1.2"/>
+      <g font-family="inherit" font-weight="700" font-size="${Math.max(7,w/42).toFixed(1)}" letter-spacing=".6" fill="var(--g)" stroke="var(--yl)" stroke-width="3" paint-order="stroke" style="text-transform:uppercase">
+        <text x="${gx+(R2L?6:-6)}" y="${gy-9}" text-anchor="${R2L?"start":"end"}">${esc(f.gw)}</text>
+        <text x="${ex+(R2L?-6:6)}" y="${ey-10}" text-anchor="${R2L?"end":"start"}">${esc(f.c)}</text>
+      </g></svg>`;
+  }
+  function openLane(c){
+    const f=factsFor(c); if(!f.region) return;
+    lastFocus=document.activeElement;
+    const chips=[f.active?'<span class="y">Active lane</span>':'<span>Served before</span>',
+      f.rank?`<span>#${f.rank} busiest lane</span>`:"", f.isNew?'<span class="y">Newest lane</span>':""].join("");
+    lbody.innerHTML=`
+      <div class="lc-head"><p class="lbl">Lane card</p><h3 id="laneTitle">${esc(c)}</h3><p class="rg">${esc(f.region)}</p>
+        <div class="lc-chips">${chips}</div></div>
+      ${f.gw?`<div class="lc-map">${routeSvg(f)}</div>`:""}
+      <dl class="lc-facts">
+        <div><dt>Leaves from</dt><dd>${f.gw?esc(f.gw)+`<small>${f.loc}</small>`:"Varies by cargo"}</dd></div>
+        <div><dt>This year</dt><dd>${esc(thisYear(f))}</dd></div>
+        ${f.top?`<div><dt>All time</dt><dd>${f.top.toLocaleString("en-US")} shipments<small>Rank #${f.rank}</small></dd></div>`:""}
+      </dl>
+      <div class="lc-todo"><b>Sample layout: still to fill in from the ledger</b>Arrival port, typical transit time, and the kinds of cargo moved on this lane.</div>
+      <div class="lc-foot"><a class="btn" href="#contact" data-lane-close>Book this lane</a><button type="button" class="btn o" data-lane-close>Back to the index</button></div>`;
+    lane.hidden=false; document.body.classList.add("lane-open");
+    lane.querySelector(".lcard").scrollTop=0;
+    document.getElementById("laneX").focus({preventScroll:true});
+  }
+  function closeLane(){ if(lane.hidden) return; lane.hidden=true; document.body.classList.remove("lane-open"); if(lastFocus&&lastFocus.focus) lastFocus.focus({preventScroll:true}); }
+  lane.addEventListener("click",e=>{ if(e.target===lane||e.target.closest("[data-lane-close]")||e.target.closest("#laneX")) closeLane(); });
+  addEventListener("keydown",e=>{ if(e.key==="Escape"&&!lane.hidden) closeLane(); });
+  window.slgOpenLane=openLane;
+
+  /* index cells open their lane card */
+  [...grid.children].forEach(d=>{
+    d.setAttribute("role","button"); d.tabIndex=0; d.dataset.cursor="Open "+d.dataset.n+" lane";
+    d.addEventListener("click",()=>openLane(d.dataset.n));
+    d.addEventListener("keydown",e=>{ if(e.key==="Enter"||e.key===" "){e.preventDefault();openLane(d.dataset.n);} });
+  });
+
+  /* ---- "Where are you shipping?" ---- */
+  const inp=document.getElementById("lsIn"), sug=document.getElementById("lsSug"), res=document.getElementById("lsRes"), go=document.getElementById("lsGo");
+  const norm=s=>s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/&/g,"and").replace(/[^a-z0-9 ]/g," ").replace(/\s+/g," ").trim();
+  const ALIAS={"drc":"DR Congo","congo":"DR Congo","democratic republic of the congo":"DR Congo","uae":"UAE","emirates":"UAE","united arab emirates":"UAE","dubai":"UAE",
+    "cote d ivoire":"Ivory Coast","czechia":"Czech Republic","swaziland":"Eswatini","east timor":"Timor-Leste","png":"Papua New Guinea","st vincent":"St. Vincent & the Grenadines",
+    "saint vincent":"St. Vincent & the Grenadines","trinidad":"Trinidad & Tobago","tobago":"Trinidad & Tobago","dr":"Dominican Republic","dominican":"Dominican Republic","car":"Central African Republic",
+    "turkiye":"Turkey","burma":"","myanmar":""};
+  const NAMES=all.map(([c])=>c), NN=NAMES.map(norm);
+  function matches(q){
+    const n=norm(q); if(!n) return [];
+    const out=[]; const add=c=>{ if(c&&!out.includes(c)) out.push(c); };
+    if(ALIAS[n]) add(ALIAS[n]);
+    NAMES.forEach((c,i)=>{ if(NN[i]===n) add(c); });
+    NAMES.forEach((c,i)=>{ if(NN[i].startsWith(n)) add(c); });
+    NAMES.forEach((c,i)=>{ if(NN[i].split(" ").some(w=>w.startsWith(n))) add(c); });
+    if(n.length>2) NAMES.forEach((c,i)=>{ if(NN[i].includes(n)) add(c); });
+    Object.keys(ALIAS).forEach(a=>{ if(a.startsWith(n)&&ALIAS[a]) add(ALIAS[a]); });
+    return out.slice(0,6);
+  }
+  let sel=-1, opts=[];
+  function showSug(){
+    opts=matches(inp.value); sel=-1;
+    if(!opts.length||!inp.value.trim()){ sug.hidden=true; inp.setAttribute("aria-expanded","false"); return; }
+    sug.innerHTML=opts.map((c,i)=>`<li role="option" id="lso${i}" data-c="${esc(c)}" aria-selected="false">${esc(c)}<small>${esc(regionOf[c])}</small></li>`).join("");
+    sug.hidden=false; inp.setAttribute("aria-expanded","true");
+  }
+  function answer(q){
+    sug.hidden=true; inp.setAttribute("aria-expanded","false");
+    const raw=q.trim(); if(!raw){ res.hidden=true; return; }
+    const hit=matches(raw)[0], exact=hit&&(norm(hit)===norm(raw)||ALIAS[norm(raw)]===hit||matches(raw).length===1);
+    if(hit&&exact){
+      const f=factsFor(hit);
+      const bits=[f.active?"Active lane":"Served before", f.gw?"leaves from "+f.gw:"", f.top?f.top.toLocaleString("en-US")+" shipments since 2020":(f.active&&f.n26?f.n26+" shipments this year":"")].filter(Boolean).join(" · ");
+      res.innerHTML=`<h3>Yes. We ship to ${esc(hit)}.</h3><p>${esc(bits.charAt(0).toUpperCase()+bits.slice(1))}.</p>
+        <div class="btns"><button type="button" class="btn" data-open="${esc(hit)}">Open the ${esc(hit)} lane card</button><a class="btn o" href="#contact">Book this lane</a></div>`;
+    } else if(hit){
+      res.innerHTML=`<h3>Did you mean ${esc(hit)}?</h3><p>Pick it from the list, or keep typing.</p>
+        <div class="btns"><button type="button" class="btn" data-open="${esc(hit)}">Open the ${esc(hit)} lane card</button></div>`;
+    } else {
+      res.innerHTML=`<h3>${esc(raw)} isn't on our list yet.</h3><p>We open new lanes all the time. Tell us what you're moving and where, and we'll find the route.</p>
+        <div class="btns"><a class="btn" href="#contact">Ask about ${esc(raw)}</a></div>`;
+    }
+    res.hidden=false;
+  }
+  if(inp){
+    inp.addEventListener("input",showSug);
+    inp.addEventListener("keydown",e=>{
+      if(e.key==="ArrowDown"||e.key==="ArrowUp"){ if(sug.hidden) return; e.preventDefault();
+        sel=(sel+(e.key==="ArrowDown"?1:-1)+opts.length)%opts.length;
+        [...sug.children].forEach((li,i)=>li.setAttribute("aria-selected",String(i===sel)));
+        inp.setAttribute("aria-activedescendant","lso"+sel); }
+      else if(e.key==="Enter"){ e.preventDefault(); if(sel>=0&&opts[sel]) inp.value=opts[sel]; answer(inp.value); }
+      else if(e.key==="Escape"){ sug.hidden=true; }
+    });
+    sug.addEventListener("mousedown",e=>{ const li=e.target.closest("li"); if(!li) return; e.preventDefault(); inp.value=li.dataset.c; answer(li.dataset.c); });
+    inp.addEventListener("blur",()=>setTimeout(()=>{sug.hidden=true;},120));
+    go.addEventListener("click",()=>answer(inp.value));
+    res.addEventListener("click",e=>{ const b=e.target.closest("[data-open]"); if(b) openLane(b.dataset.open); });
+  }
+
+  /* ---- flip board ---- */
+  const board=document.getElementById("board"), vGrid=document.getElementById("vGrid"), vBoard=document.getElementById("vBoard");
+  const ABBR={"Central African Republic":"CENTRAL AFR REP","St. Vincent & the Grenadines":"ST VINCENT/GREN","Dominican Republic":"DOMINICAN REP","Trinidad & Tobago":"TRINIDAD/TOBAGO"};
+  const NABBR={"Central African Republic":"CENT AFR REP","Czech Republic":"CZECH REP","Equatorial Guinea":"EQ GUINEA","Papua New Guinea":"PAPUA NEW GN","St. Vincent & the Grenadines":"ST VINCENT","Trinidad & Tobago":"TRINIDAD/TOB"};
+  const NARROW=matchMedia("(max-width:620px)"), W=[17,5,6,3], GLY="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#";
+  const cells=(txt,w)=>{const s=(txt||"").toUpperCase().slice(0,w).padEnd(w," ");return [...s].map(ch=>`<span class="ch${ch===" "?" sp":""}" data-t="${ch===" "?"&nbsp;":esc(ch)}">${ch===" "?"&nbsp;":esc(ch)}</span>`).join("");};
+  function renderBoard(){
+    if(!board||board.hidden) return;
+    let rows=[...grid.children].filter(d=>!d.classList.contains("off")).map(d=>d.dataset.n);
+    if(grid.classList.contains("rank")) rows.sort((a,b)=>(RANK[a]||99)-(RANK[b]||99));
+    const html=rows.map(c=>{const f=factsFor(c);
+      return `<button type="button" class="fbd-r" data-c="${esc(c)}" data-cursor="Open ${esc(c)} lane">
+        <span class="fbd-c">${NARROW.matches?cells(NABBR[c]||ABBR[c]||c,13):cells(ABBR[c]||c,W[0])}</span><span class="fbd-c">${cells(f.loc||"",W[1])}</span>
+        <span class="fbd-c ${f.active?"st-a":"st-s"}">${cells(f.active?"ACTIVE":"SERVED",W[2])}</span><span class="fbd-c">${cells(f.rank?"#"+f.rank:"",W[3])}</span></button>`;}).join("");
+    board.querySelector(".fbd-rows").innerHTML=html;
+    board.querySelector(".fbd-foot").textContent=rows.length+" DESTINATIONS · GATEWAY CODES ARE UN/LOCODE";
+    flap();
+  }
+  let flapT=0;
+  function flap(){
+    if(REDUCED) return;
+    const spans=[...board.querySelectorAll(".fbd-r")].slice(0,26).flatMap((r,ri)=>[...r.querySelectorAll(".ch:not(.sp)")].map(s=>({s,ri})));
+    const start=performance.now(), id=++flapT;
+    spans.forEach(o=>{o.end=start+180+o.ri*45+Math.random()*260;});
+    (function step(now){
+      if(id!==flapT) return;
+      let live=false;
+      spans.forEach(o=>{ if(now<o.end){ live=true; o.s.textContent=GLY[(Math.random()*GLY.length)|0]; } else if(!o.done){ o.s.innerHTML=o.s.dataset.t; o.done=true; } });
+      if(live) setTimeout(()=>requestAnimationFrame(step),55);
+    })(start);
+  }
+  function setView(v){
+    const b=v==="board"; board.hidden=!b; grid.hidden=b;
+    vGrid.setAttribute("aria-pressed",String(!b)); vBoard.setAttribute("aria-pressed",String(b));
+    const key=document.querySelector("#dest .key"); if(key) key.hidden=b;
+    if(b) renderBoard();
+  }
+  if(board){
+    vGrid.addEventListener("click",()=>setView("grid")); vBoard.addEventListener("click",()=>setView("board"));
+    board.addEventListener("click",e=>{const r=e.target.closest(".fbd-r"); if(r) openLane(r.dataset.c);});
+    new MutationObserver(()=>{ if(!board.hidden) renderBoard(); }).observe(grid,{attributes:true,attributeFilter:["class"]});
+    window.slgSetView=setView;
+    NARROW.addEventListener&&NARROW.addEventListener("change",()=>{ if(!board.hidden) renderBoard(); });
+  }
+
+  /* ---- container codes: nothing to do at run time (set in the markup) ---- */
+
+  /* ---- highlighter circles round the key numbers ---- */
+  const CIRC=["M12 52C6 30 30 9 62 8s86 6 92 30-22 48-70 50S8 74 14 46c3-14 18-28 40-34","M16 50C9 27 37 6 70 10s82 12 80 34-30 42-74 42S10 66 17 40"];
+  document.querySelectorAll(".stats b").forEach((b,i)=>{
+    b.classList.add("hlc");
+    b.insertAdjacentHTML("beforeend",`<svg viewBox="0 0 170 90" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="${CIRC[i%2]}"/></svg>`);
+  });
+  const hio=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ const el=e.target; setTimeout(()=>el.classList.add("drawn"),180+[...el.parentNode.parentNode.children].indexOf(el.parentNode)*140); hio.unobserve(el);} }),{threshold:.8});
+  document.querySelectorAll(".hlc").forEach(el=>hio.observe(el));
+  addEventListener("hashchange",()=>setTimeout(()=>document.querySelectorAll(".page.on .hlc:not(.drawn)").forEach(el=>{hio.unobserve(el);hio.observe(el);}),120));
+
+  /* ---- smart cursor: mouse and trackpad only ---- */
+  const FINE=matchMedia("(hover:hover) and (pointer:fine)");
+  const cur=document.getElementById("scur");
+  if(cur&&FINE.matches){
+    document.documentElement.classList.add("scur-on"); cur.style.display="flex";
+    const lab=cur.querySelector(".lab");
+    let x=-100,y=-100,tx=-100,ty=-100,raf=0;
+    const tick=()=>{ x+=(tx-x)*(REDUCED?1:.32); y+=(ty-y)*(REDUCED?1:.32); cur.style.transform=`translate3d(${x}px,${y}px,0)`;
+      raf=(Math.abs(tx-x)>.3||Math.abs(ty-y)>.3)?requestAnimationFrame(tick):0; };
+    addEventListener("pointermove",e=>{ if(e.pointerType!=="mouse"&&e.pointerType!=="pen") return; tx=e.clientX; ty=e.clientY; cur.classList.remove("hide"); if(!raf) raf=requestAnimationFrame(tick);
+      const t=e.target.closest?e.target.closest("[data-cursor]"):null;
+      const typing=e.target.closest&&e.target.closest("input,textarea,[contenteditable]");
+      cur.classList.toggle("hide",!!typing);
+      if(t){ lab.textContent=t.dataset.cursor; cur.classList.add("label"); cur.classList.remove("link"); }
+      else { cur.classList.remove("label"); cur.classList.toggle("link",!!(e.target.closest&&e.target.closest("a,button,[role=button],label"))); }
+    },{passive:true});
+    document.addEventListener("mouseleave",()=>cur.classList.add("hide"));
+    addEventListener("blur",()=>cur.classList.add("hide"));
+  }
+})();
 </script>
 <script>
 /* ---------- email addresses stay on one line: shrink the type when the column is too narrow ---------- */

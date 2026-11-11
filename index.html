@@ -271,6 +271,11 @@
 
   .stats{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--ln);border-left:1px solid var(--ln)}
   .stats.two{grid-template-columns:repeat(2,1fr)}
+  .credrow{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 28px;padding-top:22px;padding-bottom:22px;border-top:1px solid var(--ln);border-bottom:1px solid var(--ln)}
+  .credrow p{display:flex;flex-wrap:wrap;gap:6px 14px;margin:0;font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--g)}
+  .credrow i{font-style:normal;color:var(--mut)}
+  .credrow a{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;border-bottom:2px solid var(--b);padding-bottom:2px;white-space:nowrap}
+  @media(max-width:560px){.credrow i{display:none}.credrow p{display:grid;grid-template-columns:1fr 1fr;gap:10px 16px;width:100%}}
   .stats div{padding:16px 18px;border-right:1px solid var(--ln);border-bottom:1px solid var(--ln)}
   .stats b{display:block;font-size:clamp(24px,3.3vw,46px);font-weight:700;line-height:1;letter-spacing:-.03em}
   .stats span{display:block;margin-top:8px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--mut)}
@@ -627,12 +632,13 @@
         <p class="lbl">U.S.-based &middot; Global network</p>
         <h1>Built on <em>trust</em>.<br><em class="hl1">Proven in the field.</em></h1>
         <p class="sub">Special Logistics Group delivers cargo into the world's most complex &amp; remote destinations, where trust &amp; experience are critical.</p>
-        <div class="btns"><a class="btn" href="#contact" data-nav>Schedule a call</a><a class="btn o" href="#services" data-nav>Explore services</a></div>
+        <div class="btns"><a class="btn" href="#contact" data-nav>Talk to an expert</a><a class="btn o" href="#services" data-nav>Explore services</a></div>
         <div class="scrollcue lbl"><i></i>Scroll</div>
       </div>
     </div>
   </header>
 
+  <div class="credrow wrap"><p><span>FMC-licensed NVOCC</span><i>&middot;</i><span>USDOT motor carrier</span><i>&middot;</i><span>FIATA</span><i>&middot;</i><span>WCA member</span></p><a href="#about" data-nav>See credentials &rarr;</a></div>
   <section class="sec wrap" id="reach">
     <p class="lbl rv" style="margin-bottom:14px">Where we've delivered</p>
     <h2 class="rv">From US ports of export to <em>the hardest routes</em> on the map.</h2>
@@ -649,10 +655,6 @@
     </div>
   </section>
 
-  <section class="sec tint wrap">
-    <h2 class="rv">Humanitarian focus. <em>Worldwide expertise.</em></h2>
-    <p class="lead rv">Our focus is shipping humanitarian aid, backed by a deep understanding of nonprofit organizations and their priorities. We bring that same expertise to commercial cargo.</p>
-  </section>
 
 
 <figure class="band">
@@ -677,9 +679,9 @@
 
   <section class="cta"><div class="wrap">
     <h2>Speak with our team.</h2>
-    <p class="ctasub">Schedule a call to learn more about how SLG can partner with you to deliver your cargo worldwide.</p>
+    <p class="ctasub">Talk with our team about how SLG can partner with you to deliver your cargo worldwide.</p>
     <div class="btns" style="justify-content:center">
-      <a class="btn" href="#contact" data-nav>Schedule a call</a>
+      <a class="btn" href="#contact" data-nav>Talk to an expert</a>
       <a class="btn o" href="tel:+15743263152">Call +1 574 326 3152</a>
     </div>
   </div></section>
@@ -763,6 +765,14 @@
 
 
   <section class="sec tint wrap">
+    <h2 class="rv">Humanitarian focus. <em>Worldwide expertise.</em></h2>
+    <p class="lead rv">Our focus is shipping humanitarian aid, backed by a deep understanding of nonprofit organizations and their priorities. We bring that same expertise to commercial cargo.</p>
+    <div class="stats two rv" style="margin-top:clamp(38px,5vw,60px)">
+      <div><b>Thousands</b><span>Humanitarian cargo shipments delivered</span></div>
+      <div><b>100+</b><span>NGOs, charities &amp; ministries served</span></div>
+    </div>
+  </section>
+  <section class="sec wrap">
     <p class="lbl rv">The people behind the promise</p>
     <h2 class="rv" style="margin-top:14px">A lifetime of experience. <em>A shared commitment.</em></h2>
     <div class="people rv">
@@ -789,10 +799,6 @@
         <div class="phead">
           <h3>Corbin Boucek</h3>
           <p class="role">General Manager</p>
-        </div>
-        <div class="pstory">
-          <p>Corbin oversees day-to-day coordination: aligning partners, keeping customers informed, and moving cargo from origin to destination.</p>
-          <p>He is direct and straightforward, treats every shipment with care, and gives humanitarian and commercial cargo equal attention.</p>
         </div>
       </div>
     </div>

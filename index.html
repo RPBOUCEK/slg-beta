@@ -762,7 +762,7 @@
       <li><span><b>Say anything.</b> Wording, facts, photos, layout, anything missing or confusing. Short is fine.</span></li>
     </ol>
     <p class="fbgNote">Your comments are private: only Robertson reads them. The number on each pin shows how many comments that section has from all reviewers.</p>
-    <p class="fbgNote" id="fbgWarn" hidden>Your access is view-only right now, so Send won't work. Ask Robertson for Contributor access.</p>
+    <p class="fbgNote" id="fbgWarn" hidden>Your access is view-only right now, so Send won't work. Ask Robertson for Editor access.</p>
     <p class="fbgNote" id="fbgOwner" hidden>You manage this review: you see every reviewer's comments, with names, and can mark them applied.</p>
     <div class="fbgRow"><button id="fbgGo" type="button" class="btn">Start reviewing</button><button id="fbgSkip" type="button">Look around first</button></div>
     <p class="note">Open this guide again any time with the ? button next to Feedback.</p>
@@ -960,7 +960,7 @@ initMap();route();
 })();
 
 /* ---------- review mode: private section comments, backed by the artifact db ----------
-   Each reviewer's comments live in feedback/<their id>; only the owner and Editors read them all.
+   Each reviewer's comments live in feedback/<their id>; only the artifact owner reads them all (Editors included, reviewers see only their own).
    tally/<id> holds each reviewer's per-section counts and is readable by everyone, so pins show totals.
    Absent on the plain static host (no window.claude): the buttons and guide never show. */
 (function(){
@@ -1157,12 +1157,12 @@ initMap();route();
     try{ db=await C.use("db"); user=await C.use("user"); }catch(_){ return; }
     if(!db) return;
     try{ me=user?await user.id():null; }catch(_){}
-    try{ isAdmin=!!user&&((await user.isOwner())||(await user.canEdit())); }catch(_){ isAdmin=false; }
+    try{ isAdmin=!!user&&(await user.isOwner()); }catch(_){ isAdmin=false; }
     try{ canWrite=user?await user.can("data.write"):null; }catch(_){ canWrite=null; }
     if(!me) canWrite=false;
     if(canWrite===false){
       textEl.disabled=true; sendEl.disabled=true;
-      textEl.placeholder="You can look around, but your access is view-only. Ask Robertson for Contributor access to comment.";
+      textEl.placeholder="You can look around, but your access is view-only. Ask Robertson for Editor access to comment.";
       hintEl.textContent="View-only access.";
       const w=$("fbgWarn"); if(w) w.hidden=false;
     }

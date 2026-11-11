@@ -503,41 +503,28 @@
   .legs.run article.on::after{animation:legfill var(--legms,5000ms) linear forwards}
   @keyframes legfill{to{transform:scaleX(1)}}
   @media(prefers-reduced-motion:reduce){.legs article::after{animation:none!important}}
-  /* the journey scene above the three legs */
-  .legscene{grid-column:1/-1;border-right:1px solid var(--ln);border-bottom:1px solid var(--ln);padding:clamp(14px,2.4vw,30px) clamp(10px,2vw,24px) 0;overflow:hidden;background:var(--w)}
-  .legscene svg{display:block;width:100%;height:auto;max-height:240px}
-  @media(max-width:700px){.legscene svg{height:200px;max-height:none}}
-  .legscene .land{fill:#ebe9e2}.legscene .edge{fill:none;stroke:#9aa1aa;stroke-width:1}
-  .legscene .wline{fill:none;stroke:#9aa1aa;stroke-width:1}
-  .legscene .sea{fill:url(#lsSea)}
-  .legscene .crest{fill:none;stroke:#8b96a3;stroke-width:1}
-  .legscene .swell{fill:none;stroke:#aab2bb;stroke-width:.8;opacity:.7}
-  .legscene .shd{fill:#282828;opacity:.12}
-  .legscene .chas{fill:#3a3f46}
-  .legscene .cab{fill:url(#lsBody);stroke:#282828;stroke-width:1.1;stroke-linejoin:round}
-  .legscene .glass{fill:url(#lsGlass);stroke:#282828;stroke-width:.9}
-  .legscene .seam{fill:none;stroke:#282828;stroke-width:.8;opacity:.55}
-  .legscene .grille{fill:#9aa1aa;stroke:#282828;stroke-width:.8}
-  .legscene .stack{fill:#9aa1aa;stroke:#282828;stroke-width:.6}
-  .legscene .tank{fill:#c4c9cf;stroke:#282828;stroke-width:.7}
-  .legscene .tyre{fill:#282828}.legscene .hub{fill:#c4c9cf}
-  .legscene .hull{fill:url(#lsHull)}
-  .legscene .boot{fill:none;stroke:#ffde59;stroke-width:1.6}
-  .legscene .sup{fill:url(#lsBody);stroke:#282828;stroke-width:1}
-  .legscene .win{fill:none;stroke:#61666d;stroke-width:2;stroke-dasharray:4 3}
-  .legscene .funnel{fill:#2b303a}.legscene .fband{fill:#ffde59}
-  .legscene .cbox rect{stroke:#282828;stroke-width:.8}.legscene .rib{fill:none;stroke:#282828;stroke-width:.5;opacity:.35}
-  .legscene .g rect{fill:#9aa1aa}.legscene .g2 rect{fill:#d7dbe0}.legscene .g3 rect{fill:#61666d}
-  .legscene .leg{fill:none;stroke:url(#lsSteel);stroke-width:5;stroke-linecap:square}
-  .legscene .crane .leg{stroke:#61666d}
-  .legscene .brace,.legscene .stay{fill:none;stroke:#7d838b;stroke-width:1.3}
-  .legscene .boom{fill:#61666d;stroke:#282828;stroke-width:.8}
-  .legscene .house{fill:#d7dbe0;stroke:#282828;stroke-width:.8}
-  .legscene .trol{fill:#282828}.legscene .cable{fill:none;stroke:#282828;stroke-width:.7}
-  .legscene .spread{fill:#3a3f46}
-  .legscene .ybox{fill:url(#lsY);stroke:#282828;stroke-width:.9}
-  .legscene .yrib{fill:none;stroke:#282828;stroke-width:.5;opacity:.3}
-  .legscene .ytxt{font:700 9px/1 var(--f);letter-spacing:.18em;fill:#282828;text-anchor:middle}
+  /* the journey scene: a thin line strip over the three legs */
+  .legscene{grid-column:1/-1;border-right:1px solid var(--ln);border-bottom:1px solid var(--ln);padding:clamp(12px,1.8vw,22px) 0 0;overflow:hidden}
+  .legscene svg{display:block;width:100%;height:auto}
+  @media(max-width:820px){.legscene svg{height:96px}}
+  .legscene *{vector-effect:non-scaling-stroke}
+  .legscene .ground{fill:none;stroke:var(--g);stroke-width:1}
+  .legscene .ln,.legscene .st{fill:none;stroke:var(--g);stroke-width:1;stroke-linecap:round;stroke-linejoin:round}
+  .legscene .st{stroke:var(--mut)}.legscene .th{stroke-width:.75}
+  .legscene .boom{fill:none;stroke:var(--g);stroke-width:2}
+  .legscene .bd{fill:var(--w);stroke:var(--g);stroke-width:1;stroke-linejoin:round}
+  .legscene .gl{fill:var(--ln);stroke:var(--g);stroke-width:.75}
+  .legscene .wh{fill:var(--w);stroke:var(--g);stroke-width:1}
+  .legscene .hull{fill:var(--g)}
+  .legscene .cb{fill:var(--w);stroke:var(--mut);stroke-width:.9}
+  .legscene .c2{fill:var(--ln)}.legscene .c3{fill:var(--w)}
+  .legscene .trol{fill:none;stroke:var(--g);stroke-width:2}
+  .legscene .cbl{fill:none;stroke:var(--g);stroke-width:.6}
+  .legscene .spr{fill:none;stroke:var(--g);stroke-width:1.4}
+  .legscene .sea{fill:var(--yl)}
+  .legscene .crest{fill:none;stroke:var(--g);stroke-width:.9}
+  .legscene .swell{fill:none;stroke:var(--mut);stroke-width:.6;opacity:.6}
+  .legscene .ybox{fill:var(--b);stroke:var(--g);stroke-width:1}
   .cell .rk{font:700 9.5px/1 var(--mono);letter-spacing:.04em;color:var(--g);border:1.2px solid currentColor;padding:2px 3px 1px;margin-left:7px;vertical-align:2px}
 
   /* smart cursor: mouse and trackpad only, not on the home page */
@@ -702,71 +689,13 @@
   <section class="sec wrap">
     <h2 class="rv">Your partner for every <em>leg of the journey</em></h2>
     <p class="lead rv">Our operations team works with you to develop customized solutions for your specific needs, drawing on experience to find the most reliable and cost-effective routing.</p>
-    <div class="cols legs rv"><div class="legscene" aria-hidden="true"><svg id="lsSvg" viewBox="0 0 1200 200" preserveAspectRatio="xMidYMid meet">
-<defs>
-<linearGradient id="lsY" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe680"/><stop offset="1" stop-color="#e9c63c"/></linearGradient>
-<linearGradient id="lsHull" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3d434d"/><stop offset="1" stop-color="#1f232a"/></linearGradient>
-<linearGradient id="lsGlass" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e3e8ee"/><stop offset="1" stop-color="#8b96a3"/></linearGradient>
-<linearGradient id="lsBody" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fbfaf6"/><stop offset="1" stop-color="#d9d7d0"/></linearGradient>
-<linearGradient id="lsSteel" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8b9199"/><stop offset="1" stop-color="#5d636b"/></linearGradient>
-<linearGradient id="lsSea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#cfd5dc"/><stop offset="1" stop-color="#eef0f2"/></linearGradient>
-<clipPath id="lsSeaClip"><rect x="400.5" y="150" width="559" height="50"/></clipPath><clipPath id="lsWaterClip"><rect x="0" y="0" width="1200" height="170"/></clipPath>
-</defs>
-<rect x="0" y="160" width="400" height="40" class="land"/><rect x="960" y="160" width="240" height="40" class="land"/>
-<path d="M0 160H400V200M960 200V160H1200" class="edge"/>
-
-<g class="crane">
-<path d="M268 160V40M333 160V40" class="leg"/>
-<path d="M268 122H333M268 70H333M268 122L333 70M333 122L268 70" class="brace"/>
-<path d="M268 40L300 10L333 40" class="leg"/>
-<path d="M300 10L238 37M300 10L560 37" class="stay"/>
-<rect x="238" y="36" width="322" height="8" class="boom"/>
-<rect x="243" y="27" width="30" height="9" class="house"/>
-<rect x="262" y="158" width="12" height="3" class="chas"/><rect x="327" y="158" width="12" height="3" class="chas"/>
-<g id="lsAT"><rect x="-11" y="44" width="22" height="6" class="trol"/>
-<path id="lsAC" d="" class="cable"/><rect id="lsAS" x="-34" y="0" width="68" height="4" class="spread"/></g>
-</g><g class="crane">
-<path d="M968 160V40M1033 160V40" class="leg"/>
-<path d="M968 122H1033M968 70H1033M968 122L1033 70M1033 122L968 70" class="brace"/>
-<path d="M968 40L1000 10L1033 40" class="leg"/>
-<path d="M1000 10L700 37M1000 10L1100 37" class="stay"/>
-<rect x="700" y="36" width="400" height="8" class="boom"/>
-<rect x="1065" y="27" width="30" height="9" class="house"/>
-<rect x="962" y="158" width="12" height="3" class="chas"/><rect x="1027" y="158" width="12" height="3" class="chas"/>
-<g id="lsBT"><rect x="-11" y="44" width="22" height="6" class="trol"/>
-<path id="lsBC" d="" class="cable"/><rect id="lsBS" x="-34" y="0" width="68" height="4" class="spread"/></g>
-</g>
-<g id="lsTruck"><ellipse cx="22" cy="161" rx="70" ry="2.2" class="shd"/>
-<rect x="-36" y="140" width="128" height="5" class="chas"/>
-<rect x="24" y="145" width="3" height="9" class="chas"/>
-<path d="M38 141V111q0-4 4-4h20l5 13h18q5 0 6 5l1 16z" class="cab"/>
-<path d="M50 111h10.5l4 9H50z" class="glass"/>
-<path d="M46 113v26M66 121v19" class="seam"/>
-<path d="M89 123h3v16h-3z" class="grille"/>
-<rect x="40" y="93" width="2.6" height="16" rx="1" class="stack"/>
-<rect x="49" y="141" width="15" height="6" rx="3" class="tank"/>
-<rect x="88" y="139" width="6" height="4" rx="1" class="chas"/>
-<circle cx="-24" cy="153" r="7" class="tyre"/><circle cx="-24" cy="153" r="2.9" class="hub"/><circle cx="-11" cy="153" r="7" class="tyre"/><circle cx="-11" cy="153" r="2.9" class="hub"/><circle cx="48" cy="153" r="7" class="tyre"/><circle cx="48" cy="153" r="2.9" class="hub"/><circle cx="61" cy="153" r="7" class="tyre"/><circle cx="61" cy="153" r="2.9" class="hub"/><circle cx="81" cy="153" r="7" class="tyre"/><circle cx="81" cy="153" r="2.9" class="hub"/></g><g id="lsCab"><ellipse cx="14" cy="161" rx="58" ry="2.2" class="shd"/>
-<rect x="-36" y="140" width="104" height="5" class="chas"/>
-<path d="M39 141V105q0-4 4-4h19q4 0 4 4v36z" class="cab"/>
-<path d="M53 105h10v14H53z" class="glass"/>
-<path d="M49 106v34" class="seam"/>
-<path d="M63 124h3v12h-3z" class="grille"/>
-<path d="M66 107h4v9" class="seam"/>
-<rect x="42" y="141" width="12" height="6" rx="3" class="tank"/>
-<circle cx="-25" cy="153" r="7" class="tyre"/><circle cx="-25" cy="153" r="2.9" class="hub"/><circle cx="-12" cy="153" r="7" class="tyre"/><circle cx="-12" cy="153" r="2.9" class="hub"/><circle cx="45" cy="153" r="7" class="tyre"/><circle cx="45" cy="153" r="2.9" class="hub"/><circle cx="59" cy="153" r="7" class="tyre"/><circle cx="59" cy="153" r="2.9" class="hub"/></g>
-<g clip-path="url(#lsWaterClip)"><g id="lsShip">
-<path d="M0 146h244l30-6-10 46H12L0 168z" class="hull"/>
-<path d="M1 160h268" class="boot"/>
-<rect x="6" y="94" width="42" height="52" class="sup"/>
-<path d="M2 104h50v6H2z" class="sup"/>
-<path d="M10 116h34M10 126h34M10 136h34" class="win"/>
-<path d="M8 98h38v4H8z" class="glass"/>
-<rect x="16" y="80" width="14" height="14" class="funnel"/>
-<rect x="16" y="84" width="14" height="3" class="fband"/>
-<g class="cbox g"><rect x="119" y="122" width="62" height="24" rx="1"/><path d="M125 125v18M130 125v18M135 125v18M140 125v18M145 125v18M150 125v18M155 125v18M160 125v18M165 125v18M170 125v18M175 125v18" class="rib"/></g><g class="cbox g"><rect x="181" y="122" width="62" height="24" rx="1"/><path d="M187 125v18M192 125v18M197 125v18M202 125v18M207 125v18M212 125v18M217 125v18M222 125v18M227 125v18M232 125v18M237 125v18" class="rib"/></g><g class="cbox g2"><rect x="119" y="98" width="62" height="24" rx="1"/><path d="M125 101v18M130 101v18M135 101v18M140 101v18M145 101v18M150 101v18M155 101v18M160 101v18M165 101v18M170 101v18M175 101v18" class="rib"/></g><g class="cbox g3"><rect x="181" y="98" width="62" height="24" rx="1"/><path d="M187 101v18M192 101v18M197 101v18M202 101v18M207 101v18M212 101v18M217 101v18M222 101v18M227 101v18M232 101v18M237 101v18" class="rib"/></g><g class="cbox g"><rect x="150" y="74" width="62" height="24" rx="1"/><path d="M156 77v18M161 77v18M166 77v18M171 77v18M176 77v18M181 77v18M186 77v18M191 77v18M196 77v18M201 77v18M206 77v18" class="rib"/></g>
-<path d="M246 146l20-14" class="seam"/></g></g><g clip-path="url(#lsSeaClip)"><rect x="400" y="166" width="560" height="34" fill="url(#lsSea)" opacity=".35"/><g id="lsWaves"><path class="sea" d="M376 169q6-2.6 12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0V200H376z"/><path class="crest" d="M376 169q6-2.6 12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0"/></g><g id="lsWaves2"><path class="swell" d="M376 181q8-2 16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0"/><path class="swell" d="M384 191q8-1.6 16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0"/></g></g>
-<g id="lsBox"><rect x="-31" y="0" width="62" height="24" rx="1" class="ybox"/><path d="M-25 3v18M-20 3v18M-15 3v18M-10 3v18M-5 3v18M0 3v18M5 3v18M10 3v18M15 3v18M20 3v18M25 3v18" class="yrib"/><text x="0" y="16" class="ytxt">SLG</text></g>
+    <div class="cols legs rv"><div class="legscene" aria-hidden="true"><svg id="lsSvg" viewBox="0 0 1200 80" preserveAspectRatio="xMidYMid meet">
+<defs><clipPath id="lsSeaClip"><rect x="410.5" y="50" width="379" height="30"/></clipPath><clipPath id="lsShipClip"><rect x="0" y="0" width="1200" height="64"/></clipPath></defs>
+<path d="M0 60H410V80M790 80V60H1200" class="ground"/>
+<g class="crane"><path d="M352 60V17M372 60V17M352 30H372M352 45H372" class="st"/><path d="M352 17L362 5L372 17M362 5L340 16M362 5L472 16" class="st th"/><path d="M340 17H472" class="boom"/><g id="lsAT"><path d="M-4 18.5h8" class="trol"/><path id="lsAC" d="" class="cbl"/><path id="lsAS" d="" class="spr"/></g></g><g class="crane"><path d="M828 60V17M848 60V17M828 30H848M828 45H848" class="st"/><path d="M828 17L838 5L848 17M838 5L700 16M838 5L862 16" class="st th"/><path d="M700 17H862" class="boom"/><g id="lsBT"><path d="M-4 18.5h8" class="trol"/><path id="lsBC" d="" class="cbl"/><path id="lsBS" d="" class="spr"/></g></g><g id="lsTruck"><path d="M-15 56.5H38" class="ln"/><path d="M16 56V44.5h8.5l2.2 5h8.8q2 0 2 2V56" class="bd"/><path d="M18.5 46.5h5l1.3 3h-6.3z" class="gl"/><path d="M17.5 44.5v-5" class="ln"/><circle cx="-10" cy="58.2" r="2.4" class="wh"/><circle cx="-5" cy="58.2" r="2.4" class="wh"/><circle cx="21" cy="58.2" r="2.4" class="wh"/><circle cx="26" cy="58.2" r="2.4" class="wh"/><circle cx="34" cy="58.2" r="2.4" class="wh"/></g><g id="lsCab"><path d="M-15 56.5H28" class="ln"/><path d="M16 56V42.5q0-1.5 1.5-1.5h7q1.5 0 1.5 1.5V56" class="bd"/><path d="M21 43h4.2v5H21z" class="gl"/><circle cx="-10" cy="58.2" r="2.4" class="wh"/><circle cx="-5" cy="58.2" r="2.4" class="wh"/><circle cx="19" cy="58.2" r="2.4" class="wh"/><circle cx="24" cy="58.2" r="2.4" class="wh"/></g>
+<g clip-path="url(#lsShipClip)"><g id="lsShip"><path d="M0 52h100l11-2.5-4.5 14.5H5L0 58z" class="hull"/><path d="M3 52V37h14v15" class="bd"/><path d="M1.5 40h17" class="ln"/><path d="M7 37v-4h5v4" class="bd"/><rect x="46" y="42" width="26" height="10" class="cb c1"/><rect x="72" y="42" width="26" height="10" class="cb c2"/><rect x="59" y="32" width="26" height="10" class="cb c3"/></g></g>
+<g clip-path="url(#lsSeaClip)"><g id="lsWaves"><path class="sea" d="M396 63q4-1.4 8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0V80H396z"/><path class="crest" d="M396 63q4-1.4 8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0"/></g><g id="lsWaves2"><path class="swell" d="M396 70q6-1 12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0"/></g></g>
+<rect id="lsBox" x="-13" y="0" width="26" height="10" class="ybox"/>
 </svg></div>
       <article><span class="stn">Leg <b>01</b> of 03</span><p class="k">Drayage &amp; trucking</p><h3>Reliable drayage &amp; trucking solutions across the United States</h3><p>As a licensed USDOT motor carrier, we move cargo from your door to the rail or port. We also offer standalone over-the-road trucking and less-than-truckload (LTL) moves.</p></article>
       <article><span class="stn">Leg <b>02</b> of 03</span><p class="k">Ocean freight</p><h3>Streamlined global shipping</h3><p>Our status as an NVOCC licensed by the Federal Maritime Commission, combined with relationships with major ocean carriers, lets us move cargo reliably across the ocean.</p></article>
@@ -1774,49 +1703,41 @@ initMap();route();
   const legs=[...box.querySelectorAll("article")], $=id=>document.getElementById(id);
   const T=$("lsTruck"),C=$("lsCab"),S=$("lsShip"),B=$("lsBox"),W=$("lsWaves"),W2=$("lsWaves2");
   const AT=$("lsAT"),AC=$("lsAC"),AS=$("lsAS"),BT=$("lsBT"),BC=$("lsBC"),BS=$("lsBS");
-  const L=15, REST=60;
+  const L=15, REST=24, SLOT=32;
   const cl=v=>Math.max(0,Math.min(1,v)), sm=v=>{v=cl(v);return v*v*(3-2*v)}, ein=v=>{v=cl(v);return v*v}, eout=v=>{v=cl(v);return 1-(1-v)*(1-v)};
-  const seg=(t,a,b)=>(t-a)/(b-a);
-  const mix=(a,b,k)=>a+(b-a)*k;
-  function crane(Tg,Cb,Sp,x,y){Tg.setAttribute("transform",`translate(${x} 0)`);Sp.setAttribute("y",y);Cb.setAttribute("d",`M-6 50L-24 ${y}M6 50L24 ${y}`);}
+  const seg=(t,a,b)=>(t-a)/(b-a), mix=(a,b,k)=>a+(b-a)*k;
+  function crane(Tg,Cb,Sp,x,y){Tg.setAttribute("transform",`translate(${x.toFixed(2)} 0)`);Cb.setAttribute("d",`M-2.5 18.5L-9 ${y-1}M2.5 18.5L9 ${y-1}`);Sp.setAttribute("d",`M-13 ${y-.7}H13`);}
   function frame(t){
-    /* leg 01: truck in, crane A lifts the box to the ship */
-    let tx = t<3.5 ? mix(-150,300,eout(seg(t,0,2.6))) : mix(300,-170,ein(seg(t,3.5,5)));
-    let ax=300, ay=REST, bx=1000, by=REST, cx, cy, onShip=false;
-    let sx = t<5 ? 410 : t<9.6 ? mix(410,672,sm(seg(t,5,9.6))) : 672;
-    const bob = Math.sin(t*2.1)*.9;
-    if(t<2.6){ ay=REST; }
-    else if(t<3.0){ ay=mix(REST,112,sm(seg(t,2.6,3.0))); }
-    else if(t<3.5){ ay=mix(112,70,sm(seg(t,3.0,3.5))); }
-    else if(t<4.1){ ay=70; ax=mix(300,496,sm(seg(t,3.5,4.1))); }
-    else if(t<4.6){ ax=496; ay=mix(70,118+bob,sm(seg(t,4.1,4.6))); }
-    else if(t<5.0){ ax=496; ay=mix(118,REST,sm(seg(t,4.6,5.0))); }
-    else { ax=mix(496,300,sm(seg(t,5,6))); ay=REST; }
-    /* the box follows whoever holds it */
-    if(t<3.0){ cx=tx; cy=116; }
-    else if(t<4.6){ cx=ax; cy=ay+4; }
-    else if(t<10.4){ cx=sx+86; cy=122+bob; onShip=true; }
-    /* leg 03: crane B lifts it to the cabover, which drives off */
-    if(t>=9.4 && t<10.0){ bx=mix(1000,758,sm(seg(t,9.4,10))); }
-    else if(t>=10.0 && t<10.4){ bx=758; by=mix(REST,118+bob,sm(seg(t,10,10.4))); }
-    else if(t>=10.4 && t<10.8){ bx=758; by=mix(118,70,sm(seg(t,10.4,10.8))); }
-    else if(t>=10.8 && t<11.4){ bx=mix(758,1000,sm(seg(t,10.8,11.4))); by=70; }
-    else if(t>=11.4 && t<11.8){ bx=1000; by=mix(70,112,sm(seg(t,11.4,11.8))); }
-    else if(t>=11.8 && t<12.2){ bx=1000; by=mix(112,REST,sm(seg(t,11.8,12.2))); }
-    let kx = t<12.2 ? 1000 : mix(1000,1380,ein(seg(t,12.2,14.6)));
-    if(t>=10.4 && t<11.8){ cx=bx; cy=by+4; }
-    else if(t>=11.8){ cx=kx; cy=116; }
-    const shipOp = t<.6 ? cl(t/.6) : t>14.2 ? cl((15-t)/.8) : 1;
-    const cabOp = t<.8 ? cl(t/.8) : 1;
-    T.setAttribute("transform",`translate(${tx} 0)`);
-    C.setAttribute("transform",`translate(${kx} 0)`); C.style.opacity=cabOp;
-    S.setAttribute("transform",`translate(${sx} ${bob})`); S.style.opacity=shipOp;
-    B.setAttribute("transform",`translate(${cx} ${cy})`); B.style.opacity = onShip? shipOp : 1;
+    const bob=Math.sin(t*2.1)*.35;
+    let tx = t<3.5 ? mix(-60,362,eout(seg(t,0,2.6))) : mix(362,-80,ein(seg(t,3.5,5)));
+    let sx = t<5 ? 415 : t<9.6 ? mix(415,678,sm(seg(t,5,9.6))) : 678;
+    let ax=362, ay=REST, bx=838, by=REST, cx, cy, onShip=false;
+    if(t<2.6){}
+    else if(t<3.0) ay=mix(REST,46,sm(seg(t,2.6,3)));
+    else if(t<3.5) ay=mix(46,30,sm(seg(t,3,3.5)));
+    else if(t<4.1){ ay=30; ax=mix(362,415+SLOT,sm(seg(t,3.5,4.1))); }
+    else if(t<4.6){ ax=415+SLOT; ay=mix(30,42+bob,sm(seg(t,4.1,4.6))); }
+    else if(t<5.0){ ax=415+SLOT; ay=mix(42,REST,sm(seg(t,4.6,5))); }
+    else ax=mix(415+SLOT,362,sm(seg(t,5,6)));
+    if(t<3.0){ cx=tx; cy=46; } else if(t<4.6){ cx=ax; cy=ay; } else if(t<10.4){ cx=sx+SLOT; cy=42+bob; onShip=true; }
+    const d=678+SLOT;
+    if(t>=9.4&&t<10.0) bx=mix(838,d,sm(seg(t,9.4,10)));
+    else if(t>=10.0&&t<10.4){ bx=d; by=mix(REST,42+bob,sm(seg(t,10,10.4))); }
+    else if(t>=10.4&&t<10.8){ bx=d; by=mix(42,30,sm(seg(t,10.4,10.8))); }
+    else if(t>=10.8&&t<11.4){ bx=mix(d,838,sm(seg(t,10.8,11.4))); by=30; }
+    else if(t>=11.4&&t<11.8){ by=mix(30,46,sm(seg(t,11.4,11.8))); }
+    else if(t>=11.8&&t<12.2){ by=mix(46,REST,sm(seg(t,11.8,12.2))); }
+    let kx = t<12.2 ? 838 : mix(838,1260,ein(seg(t,12.2,14.6)));
+    if(t>=10.4&&t<11.8){ cx=bx; cy=by; } else if(t>=11.8){ cx=kx; cy=46; }
+    const shipOp = t<.6 ? cl(t/.6) : t>14.2 ? cl((15-t)/.8) : 1, cabOp = t<.8 ? cl(t/.8) : 1;
+    T.setAttribute("transform",`translate(${tx.toFixed(2)} 0)`);
+    C.setAttribute("transform",`translate(${kx.toFixed(2)} 0)`); C.style.opacity=cabOp;
+    S.setAttribute("transform",`translate(${sx.toFixed(2)} ${bob.toFixed(2)})`); S.style.opacity=shipOp;
+    B.setAttribute("transform",`translate(${cx.toFixed(2)} ${cy.toFixed(2)})`); B.style.opacity = onShip? shipOp : 1;
     crane(AT,AC,AS,ax,ay); crane(BT,BC,BS,bx,by);
-    W.setAttribute("transform",`translate(${-(t*14)%24} 0)`); W2.setAttribute("transform",`translate(${-(t*7)%32} 0)`);
-    /* phones: the camera follows the box */
-    if(svg.clientWidth<700){ const w=440, x=Math.max(0,Math.min(1200-w,cx-w/2)); svg.setAttribute("viewBox",`${x.toFixed(1)} 0 ${w} 200`); }
-    else svg.setAttribute("viewBox","0 0 1200 200");
+    W.setAttribute("transform",`translate(${(-(t*9)%16).toFixed(2)} 0)`); W2.setAttribute("transform",`translate(${(-(t*5)%24).toFixed(2)} 0)`);
+    if(svg.clientWidth<700){ const vw=320, x=Math.max(0,Math.min(1200-vw,cx-vw/2)); svg.setAttribute("viewBox",`${x.toFixed(1)} 0 ${vw} 80`); }
+    else svg.setAttribute("viewBox","0 0 1200 80");
     return t<5?0:t<10?1:2;
   }
   let cur=-1;

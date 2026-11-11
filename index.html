@@ -496,15 +496,14 @@
   /* services: compact hero and one plain list of what we handle */
   .svhero{min-height:auto!important;padding-bottom:clamp(40px,6vw,72px)}
   .svhero h1{font-size:clamp(34px,4.6vw,64px);max-width:none}
-  .svlist{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;border-top:1px solid var(--ln);margin-top:clamp(28px,4vw,44px)}
+  .svlist{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;border-top:1px solid var(--ln);margin-top:clamp(28px,4vw,44px)}
   .svg{padding:24px clamp(14px,1.6vw,24px) 26px 0}
   .svg+.svg{padding-left:clamp(14px,1.6vw,24px);border-left:1px solid var(--ln)}
   .svg .stn{margin-bottom:14px}
   .svg h3{font-size:clamp(17px,1.4vw,20px);margin-bottom:14px;letter-spacing:-.01em}
   .svg ul{list-style:none;margin:0;padding:0}
   .svg li{font-size:15px;color:var(--mut);padding:9px 0;border-top:1px solid var(--ln);line-height:1.45}
-  @media(max-width:1000px){.svlist{grid-template-columns:repeat(2,minmax(0,1fr))}.svg:nth-child(3){padding-left:0;border-left:0}.svg:nth-child(n+3){border-top:1px solid var(--ln)}}
-  @media(max-width:620px){.svlist{grid-template-columns:minmax(0,1fr)}.svg,.svg+.svg{padding-left:0;border-left:0}.svg+.svg{border-top:1px solid var(--ln)}}
+  @media(max-width:820px){.svlist{grid-template-columns:minmax(0,1fr)}.svg,.svg+.svg{padding-left:0;border-left:0}.svg+.svg{border-top:1px solid var(--ln)}}
   /* the three legs: the card in play gets a yellow number and a line that fills across its top */
   .cols.legs{grid-template-columns:repeat(3,minmax(0,1fr))}
   @media(max-width:820px){.cols.legs{grid-template-columns:minmax(0,1fr)}}
@@ -743,7 +742,7 @@
   <section class="marq" hidden aria-hidden="true"><div class="mrow" id="mrow1"></div><div class="mrow alt" id="mrow2"></div></section>
   <section class="sec wrap svsec" id="handle">
     <h2 class="rv">Everything an <em>NVOCC</em> handles.</h2>
-    <div class="svlist rv"><div class="svg"><p class="stn">Part <b>01</b></p><h3>US side</h3><ul><li>Drayage and over-the-road trucking as a licensed USDOT motor carrier</li><li>Warehousing: receiving, consolidation, container loading, crating and labeling</li><li>Bonded cargo: in-bond moves and bonded warehouses</li><li>Export clearance: AES filing, U.S. Customs and Border Protection, vehicle titles, license and denied-party screening</li></ul></div><div class="svg"><p class="stn">Part <b>02</b></p><h3>Ocean</h3><ul><li>Ocean carrier bookings and contracts</li><li>Full and part containers (FCL and LCL)</li><li>Vehicles (RoRo), breakbulk, oversized project cargo and hazardous cargo</li><li>Our own house bill of lading and published rates as an FMC-licensed NVOCC</li><li>Marine cargo insurance</li></ul></div><div class="svg"><p class="stn">Part <b>03</b></p><h3>Destination documents</h3><ul><li>Cargo tracking notes (ECTN / BESC) for West and Central Africa</li><li>Angola CNCA (ARCCLA)</li><li>Pre-shipment inspection and certificates of conformity, such as Kenya PVoC and Nigeria SONCAP</li><li>Duty-exemption letters for NGO cargo</li><li>Certificates of origin, consular legalization, fumigation and ISPM 15 wood packaging</li></ul></div><div class="svg"><p class="stn">Part <b>04</b></p><h3>After arrival</h3><ul><li>Customs clearance with trusted local agents</li><li>On-carriage across borders to landlocked countries</li><li>Delivery to the final address</li><li>Every shipment tracked in mySLG</li></ul></div></div>
+    <div class="svlist rv"><div class="svg"><p class="stn">Part <b>01</b> of 03</p><h3>Origin</h3><ul><li>Drayage and over-the-road trucking as a licensed USDOT motor carrier</li><li>Warehousing: receiving, consolidation, container loading, crating and labeling</li><li>Bonded cargo: in-bond moves and bonded warehouses</li><li>Export clearance: AES filing, U.S. Customs and Border Protection, vehicle titles, license and denied-party screening</li></ul></div><div class="svg"><p class="stn">Part <b>02</b> of 03</p><h3>Ocean</h3><ul><li>Ocean carrier bookings and contracts</li><li>Full and part containers (FCL and LCL)</li><li>Vehicles (RoRo), breakbulk, oversized project cargo and hazardous cargo</li><li>Our own house bill of lading and published rates as an FMC-licensed NVOCC</li><li>Marine cargo insurance</li></ul></div><div class="svg"><p class="stn">Part <b>03</b> of 03</p><h3>Destination</h3><ul><li>Cargo tracking notes (ECTN / BESC) and Angola CNCA (ARCCLA)</li><li>Pre-shipment inspection and certificates of conformity, such as Kenya PVoC and Nigeria SONCAP</li><li>Duty-exemption letters for NGO cargo</li><li>Certificates of origin, consular legalization, fumigation and ISPM 15 wood packaging</li><li>Customs clearance with trusted local agents</li><li>On-carriage across borders, to the final address</li><li>Every shipment tracked in mySLG</li></ul></div></div>
   </section>
 
 <section class="sec tint wrap" id="dest">
@@ -780,12 +779,12 @@
 
 <!-- ============ ABOUT ============ -->
 <div class="page" id="p-about">
-  <header class="hero wrap">
+  <header class="hero wrap svhero">
     <div class="rule"></div>
-    <p class="lbl">Credentials &amp; experience</p>
-    <h1>Built for <em>complex cargo</em>.</h1>
+    <p class="lbl">Who we are</p>
+    <h1>About <em>us</em>.</h1>
     <p class="sub">We have moved thousands of humanitarian cargo shipments to 85+ countries, for more than 100 NGOs, charities and ministries.</p>
-    <div class="scrollcue lbl"><i></i>Scroll</div>
+    <div class="btns"><a class="btn" href="#contact" data-nav>Talk to an expert</a></div>
   </header>
 
   <section class="sec wrap">

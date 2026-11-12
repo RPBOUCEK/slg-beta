@@ -749,27 +749,24 @@
   @keyframes legfill{to{transform:scaleX(1)}}
   @media(prefers-reduced-motion:reduce){.legs article::after{animation:none!important}}
   /* the journey scene: a thin line strip over the three legs */
-  .legscene{grid-column:1/-1;border-right:1px solid var(--ln);border-bottom:1px solid var(--ln);padding:clamp(10px,1.4vw,18px) 0 clamp(8px,1vw,12px);overflow:hidden}
-  .legscene svg{display:block;width:100%;height:auto}
-  @media(max-width:820px){.legscene svg{height:96px}}
-  .legscene *{vector-effect:non-scaling-stroke}
-  .legscene .ground{fill:none;stroke:var(--g);stroke-width:1}
-  .legscene .ln,.legscene .st{fill:none;stroke:var(--g);stroke-width:1;stroke-linecap:round;stroke-linejoin:round}
-  .legscene .st{stroke:var(--mut)}.legscene .th{stroke-width:.75}
-  .legscene .boom{fill:none;stroke:var(--g);stroke-width:2}
-  .legscene .bd{fill:var(--w);stroke:var(--g);stroke-width:1;stroke-linejoin:round}
-  .legscene .gl{fill:var(--ln);stroke:var(--g);stroke-width:.75}
-  .legscene .wh{fill:var(--w);stroke:var(--g);stroke-width:1}
-  .legscene .hull{fill:var(--g)}
-  .legscene .cb{fill:var(--w);stroke:var(--mut);stroke-width:.9}
-  .legscene .c2{fill:var(--ln)}.legscene .c3{fill:var(--w)}
-  .legscene .trol{fill:none;stroke:var(--g);stroke-width:2}
-  .legscene .cbl{fill:none;stroke:var(--g);stroke-width:.6}
-  .legscene .spr{fill:none;stroke:var(--g);stroke-width:1.4}
-  .legscene .sea{fill:var(--yl)}
-  .legscene .crest{fill:none;stroke:var(--g);stroke-width:.9}
-  .legscene .swell{fill:none;stroke:var(--mut);stroke-width:.6;opacity:.6}
-  .legscene .ybox{fill:var(--b);stroke:var(--g);stroke-width:1}
+  .legscene{grid-column:1/-1;border-right:1px solid var(--ln);border-bottom:1px solid var(--ln);overflow:hidden}
+  .legscene svg{display:block;width:100%;height:104px}
+  .legscene .base{fill:none;stroke:var(--ln);stroke-width:1}
+  .legscene .trk{fill:none;stroke:var(--fbo);stroke-width:1.5;stroke-linecap:round}
+  .legscene .trk.inl,.legscene .done .inl{stroke-dasharray:1 7}
+  .legscene .done path{fill:none;stroke:var(--g);stroke-width:2;stroke-linecap:round}
+  .legscene .nd{fill:var(--w);stroke:var(--g);stroke-width:1.5;transition:fill .3s}
+  .legscene .nd.hit{fill:var(--b)}
+  .legscene .halo{fill:var(--b);opacity:0;transform-box:fill-box;transform-origin:center}
+  .legscene .halo.hit{animation:lshalo 1.8s ease-out infinite}
+  @keyframes lshalo{0%{opacity:.55;transform:scale(1)}100%{opacity:0;transform:scale(3.4)}}
+  .legscene text{font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;fill:var(--cue);transition:fill .3s}
+  .legscene text.hit{fill:var(--g)}
+  .legscene .box rect{fill:var(--b);stroke:var(--g);stroke-width:1.25}
+  .legscene .box path{fill:none;stroke:var(--g);stroke-width:1;opacity:.5}
+  .legscene .box .sh{fill:var(--g);stroke:none;opacity:.12}
+  @media(max-width:560px){.legscene text{font-size:9px;letter-spacing:.08em}}
+  @media(prefers-reduced-motion:reduce){.legscene .halo.hit{animation:none}}
   .cell .rk{font:700 9.5px/1 var(--mono);letter-spacing:.04em;color:var(--g);border:1.2px solid currentColor;padding:2px 3px 1px;margin-left:7px;vertical-align:2px}
 
   /* smart cursor: mouse and trackpad only, not on the home page */
@@ -932,14 +929,7 @@
     <div class="cols legs rv">
       <article><h3>Drayage &amp; trucking</h3><p>As a licensed USDOT motor carrier, we move cargo from your door to the railhead or port. We also offer standalone over-the-road trucking and less-than-truckload (LTL) moves.</p></article>
       <article><h3>Ocean freight</h3><p>Our status as an NVOCC licensed by the Federal Maritime Commission, combined with relationships with major ocean carriers, lets us move cargo reliably across the ocean.</p></article>
-      <article><h3>Inland &amp; on-carriage</h3><p>Experience, long-standing relationships with trusted providers, and diligent monitoring and supervision are critical to navigating the most complex portion of your cargo&rsquo;s journey.</p></article><div class="legscene" aria-hidden="true"><svg id="lsSvg" viewBox="0 0 1200 80" preserveAspectRatio="xMidYMid meet">
-<defs><clipPath id="lsSeaClip"><rect x="410.5" y="50" width="379" height="30"/></clipPath><clipPath id="lsShipClip"><rect x="0" y="0" width="1200" height="64"/></clipPath></defs>
-<path d="M0 60H410V80M790 80V60H1200" class="ground"/>
-<g class="crane"><path d="M352 60V17M372 60V17M352 30H372M352 45H372" class="st"/><path d="M352 17L362 5L372 17M362 5L340 16M362 5L472 16" class="st th"/><path d="M340 17H472" class="boom"/><g id="lsAT"><path d="M-4 18.5h8" class="trol"/><path id="lsAC" d="" class="cbl"/><path id="lsAS" d="" class="spr"/></g></g><g class="crane"><path d="M828 60V17M848 60V17M828 30H848M828 45H848" class="st"/><path d="M828 17L838 5L848 17M838 5L700 16M838 5L862 16" class="st th"/><path d="M700 17H862" class="boom"/><g id="lsBT"><path d="M-4 18.5h8" class="trol"/><path id="lsBC" d="" class="cbl"/><path id="lsBS" d="" class="spr"/></g></g><g id="lsTruck"><path d="M-15 56.5H38" class="ln"/><path d="M16 56V44.5h8.5l2.2 5h8.8q2 0 2 2V56" class="bd"/><path d="M18.5 46.5h5l1.3 3h-6.3z" class="gl"/><path d="M17.5 44.5v-5" class="ln"/><circle cx="-10" cy="58.2" r="2.4" class="wh"/><circle cx="-5" cy="58.2" r="2.4" class="wh"/><circle cx="21" cy="58.2" r="2.4" class="wh"/><circle cx="26" cy="58.2" r="2.4" class="wh"/><circle cx="34" cy="58.2" r="2.4" class="wh"/></g><g id="lsCab"><path d="M-15 56.5H28" class="ln"/><path d="M16 56V42.5q0-1.5 1.5-1.5h7q1.5 0 1.5 1.5V56" class="bd"/><path d="M21 43h4.2v5H21z" class="gl"/><circle cx="-10" cy="58.2" r="2.4" class="wh"/><circle cx="-5" cy="58.2" r="2.4" class="wh"/><circle cx="19" cy="58.2" r="2.4" class="wh"/><circle cx="24" cy="58.2" r="2.4" class="wh"/></g>
-<g clip-path="url(#lsShipClip)"><g id="lsShip"><path d="M0 52h100l11-2.5-4.5 14.5H5L0 58z" class="hull"/><path d="M3 52V37h14v15" class="bd"/><path d="M1.5 40h17" class="ln"/><path d="M7 37v-4h5v4" class="bd"/><rect x="46" y="42" width="26" height="10" class="cb c1"/><rect x="72" y="42" width="26" height="10" class="cb c2"/></g></g>
-<g clip-path="url(#lsSeaClip)"><g id="lsWaves"><path class="sea" d="M396 63q4-1.4 8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0V80H396z"/><path class="crest" d="M396 63q4-1.4 8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0"/></g><g id="lsWaves2"><path class="swell" d="M396 70q6-1 12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0"/></g></g>
-<rect id="lsBox" x="-13" y="0" width="26" height="10" class="ybox"/>
-</svg></div>
+      <article><h3>Inland &amp; on-carriage</h3><p>Experience, long-standing relationships with trusted providers, and diligent monitoring and supervision are critical to navigating the most complex portion of your cargo&rsquo;s journey.</p></article><div class="legscene" aria-hidden="true"><svg id="lsSvg"></svg></div>
     </div>
   </section>
   <section class="sec wrap" id="reach">
@@ -2114,67 +2104,57 @@ window.SLG_OUTLINES={"Angola":{"d":"M57.4 -1.7l-3.5 1.3-1.6 2.4-3.1 1.7 1.1 1.4-
 </script>
 
 <script>
-/* ---------- Home legs: one container, door to port, across the ocean, port to final delivery ---------- */
+/* ---------- Home legs: a shipment track. One container travels origin > port of export > port of discharge > final delivery as the page scrolls ---------- */
 (function(){
   const box=document.querySelector(".cols.legs"), svg=document.getElementById("lsSvg"); if(!box||!svg) return;
-  const legs=[...box.querySelectorAll("article")], $=id=>document.getElementById(id);
-  const T=$("lsTruck"),C=$("lsCab"),S=$("lsShip"),B=$("lsBox"),W=$("lsWaves"),W2=$("lsWaves2");
-  const AT=$("lsAT"),AC=$("lsAC"),AS=$("lsAS"),BT=$("lsBT"),BC=$("lsBC"),BS=$("lsBS");
-  const L=15, REST=24, SLOT=32;
-  const cl=v=>Math.max(0,Math.min(1,v)), sm=v=>{v=cl(v);return v*v*(3-2*v)}, ein=v=>{v=cl(v);return v*v}, eout=v=>{v=cl(v);return 1-(1-v)*(1-v)};
-  const seg=(t,a,b)=>(t-a)/(b-a), mix=(a,b,k)=>a+(b-a)*k;
-  function crane(Tg,Cb,Sp,x,y){Tg.setAttribute("transform",`translate(${x.toFixed(2)} 0)`);Cb.setAttribute("d",`M-2.5 18.5L-9 ${y-1}M2.5 18.5L9 ${y-1}`);Sp.setAttribute("d",`M-13 ${y-.7}H13`);}
-  function frame(t){
-    const bob=Math.sin(t*2.1)*.35;
-    let tx = t<3.5 ? mix(-60,362,eout(seg(t,0,2.6))) : mix(362,-80,ein(seg(t,3.5,5)));
-    let sx = t<5 ? 415 : t<9.6 ? mix(415,678,sm(seg(t,5,9.6))) : 678;
-    let ax=362, ay=REST, bx=838, by=REST, cx, cy, onShip=false;
-    if(t<2.6){}
-    else if(t<3.0) ay=mix(REST,46,sm(seg(t,2.6,3)));
-    else if(t<3.5) ay=mix(46,30,sm(seg(t,3,3.5)));
-    else if(t<4.1){ ay=30; ax=mix(362,415+SLOT,sm(seg(t,3.5,4.1))); }
-    else if(t<4.6){ ax=415+SLOT; ay=mix(30,42+bob,sm(seg(t,4.1,4.6))); }
-    else if(t<5.0){ ax=415+SLOT; ay=mix(42,REST,sm(seg(t,4.6,5))); }
-    else ax=mix(415+SLOT,362,sm(seg(t,5,6)));
-    if(t<3.0){ cx=tx; cy=46; } else if(t<4.6){ cx=ax; cy=ay; } else if(t<10.4){ cx=sx+SLOT; cy=42+bob; onShip=true; }
-    const d=678+SLOT;
-    if(t>=9.4&&t<10.0) bx=mix(838,d,sm(seg(t,9.4,10)));
-    else if(t>=10.0&&t<10.4){ bx=d; by=mix(REST,42+bob,sm(seg(t,10,10.4))); }
-    else if(t>=10.4&&t<10.8){ bx=d; by=mix(42,30,sm(seg(t,10.4,10.8))); }
-    else if(t>=10.8&&t<11.4){ bx=mix(d,838,sm(seg(t,10.8,11.4))); by=30; }
-    else if(t>=11.4&&t<11.8){ by=mix(30,46,sm(seg(t,11.4,11.8))); }
-    else if(t>=11.8&&t<12.2){ by=mix(46,REST,sm(seg(t,11.8,12.2))); }
-    let kx = t<12.2 ? 838 : mix(838,1260,ein(seg(t,12.2,14.6)));
-    if(t>=10.4&&t<11.8){ cx=bx; cy=by; } else if(t>=11.8){ cx=kx; cy=46; }
-    const shipOp = t<.6 ? cl(t/.6) : t>14.2 ? cl((15-t)/.8) : 1, cabOp = t<.8 ? cl(t/.8) : 1;
-    T.setAttribute("transform",`translate(${tx.toFixed(2)} 0)`);
-    C.setAttribute("transform",`translate(${kx.toFixed(2)} 0)`); C.style.opacity=cabOp;
-    S.setAttribute("transform",`translate(${sx.toFixed(2)} ${bob.toFixed(2)})`); S.style.opacity=shipOp;
-    B.setAttribute("transform",`translate(${cx.toFixed(2)} ${cy.toFixed(2)})`); B.style.opacity = onShip? shipOp : 1;
-    crane(AT,AC,AS,ax,ay); crane(BT,BC,BS,bx,by);
-    W.setAttribute("transform",`translate(${(-(t*9)%16).toFixed(2)} 0)`); W2.setAttribute("transform",`translate(${(-(t*5)%24).toFixed(2)} 0)`);
-    if(svg.clientWidth<700){ const vw=320, x=Math.max(0,Math.min(1200-vw,cx-vw/2)); svg.setAttribute("viewBox",`${x.toFixed(1)} 0 ${vw} 80`); }
-    else svg.setAttribute("viewBox","0 0 1200 80");
-    return t<5?0:t<10?1:2;
+  const legs=[...box.querySelectorAll("article")], scene=svg.closest(".legscene");
+  const H=104, Y=64, RISE=44, BW=38, BH=16;            /* line height, arc control offset (peak = RISE/2), container size */
+  const cl=v=>Math.max(0,Math.min(1,v)), sm=v=>{v=cl(v);return v*v*(3-2*v)};
+  let W=0, X=[], els=null;
+  function build(){
+    W=Math.max(300,Math.round(scene.clientWidth)); const small=W<560, pad=small?14:Math.min(26,W*.021);
+    X=[pad, W/3, W*2/3, W-pad];
+    const names=small?["Origin","Export","Discharge","Delivery"]:["Origin","Port of export","Port of discharge","Final delivery"];
+    const road=`M${X[0]} ${Y}H${X[1]}`, sea=`M${X[1]} ${Y}Q${(X[1]+X[2])/2} ${Y-RISE} ${X[2]} ${Y}`, inl=`M${X[2]} ${Y}H${X[3]}`;
+    const node=(k)=> (k===1||k===2) ? `<path class="nd" d="M${X[k]} ${Y-6}l6 6-6 6-6-6z"/>` : `<circle class="nd" cx="${X[k]}" cy="${Y}" r="4.5"/>`;
+    const anchor=k=>k===0?"start":k===3?"end":"middle", lx=k=>k===0?X[0]-5:k===3?X[3]+5:X[k];
+    svg.setAttribute("viewBox",`0 0 ${W} ${H}`); svg.setAttribute("preserveAspectRatio","xMidYMid meet");
+    svg.innerHTML=`<defs><clipPath id="lsClip"><rect id="lsClipR" x="0" y="0" width="0" height="${H}"/></clipPath></defs>
+      <path class="base" d="M${X[1]} ${Y}H${X[2]}"/>
+      <path class="trk" d="${road}"/><path class="trk" d="${sea}"/><path class="trk inl" d="${inl}"/>
+      <g class="done" clip-path="url(#lsClip)"><path d="${road}"/><path d="${sea}"/><path class="inl" d="${inl}"/></g>
+      <circle class="halo" cx="${X[3]}" cy="${Y}" r="4.5"/>
+      ${[0,1,2,3].map(node).join("")}
+      ${[0,1,2,3].map(k=>`<text x="${lx(k).toFixed(1)}" y="${Y+26}" text-anchor="${anchor(k)}">${names[k]}</text>`).join("")}
+      <g class="box" id="lsBox"><ellipse class="sh" cx="0" cy="-1" rx="${BW/2-2}" ry="1.6"/><rect x="${-BW/2}" y="${-BH-4}" width="${BW}" height="${BH}"/><path d="M${-BW/2+7.6} ${-BH-1}v${BH-6}m7.6 ${-(BH-6)}v${BH-6}m7.6 ${-(BH-6)}v${BH-6}m7.6 ${-(BH-6)}v${BH-6}"/></g>`;
+    els={clip:svg.querySelector("#lsClipR"), box:svg.querySelector("#lsBox"), nd:[...svg.querySelectorAll(".nd")], tx:[...svg.querySelectorAll("text")], halo:svg.querySelector(".halo")};
   }
   let cur=-1;
-  const show=n=>{ if(n===cur) return; cur=n; legs.forEach((a,k)=>{a.classList.remove("on");void a.offsetWidth;a.classList.toggle("on",k===n)}); };
-  if(matchMedia("(prefers-reduced-motion: reduce)").matches){ frame(7); return; }
-  /* the journey follows the page: scrolling through the legs moves the cargo from door to final delivery */
-  const T0=.8, T1=14.0;
-  const scene=svg.closest(".legscene");
-  const A=()=>innerHeight*.95, Z=()=>innerHeight*.3;   /* the strip runs while it travels from the bottom of the screen up to 30% */
-  const prog=()=>{ const r=scene.getBoundingClientRect(); return Math.max(0,Math.min(1,(A()-r.bottom)/(A()-Z()))); };
-  let t=T0, target=T0, raf=0;
-  const paintLegs=()=>{ const n=frame(t); show(n);
-    legs.forEach((a,k)=>{ const f=k<n?1:k>n?0:Math.max(0,Math.min(1,(t-k*5)/5)); a.style.setProperty("--lp",f.toFixed(3)); }); };
-  const tick=()=>{ t+= (target-t)*.18; if(Math.abs(target-t)<.002) t=target; paintLegs(); raf=(t!==target)?requestAnimationFrame(tick):0; };
-  const onScroll=()=>{ target=T0+(T1-T0)*prog(); if(!raf) raf=requestAnimationFrame(tick); };
-  addEventListener("scroll",onScroll,{passive:true}); addEventListener("resize",onScroll); addEventListener("hashchange",()=>setTimeout(onScroll,80));
-  legs.forEach((a,k)=>a.addEventListener("click",()=>{ /* jump the page to the start of that leg */
-    const want=Math.max(0,Math.min(1,(k*5+.4-T0)/(T1-T0))), r=scene.getBoundingClientRect();
-    const bottomAt=A()-want*(A()-Z()); scrollTo({top:scrollY+r.bottom-bottomAt,behavior:"smooth"}); }));
-  t=target=T0+(T1-T0)*prog(); paintLegs();
+  const show=n=>{ if(n===cur) return; cur=n; legs.forEach((a,k)=>a.classList.toggle("on",k===n)); };
+  function paint(p){                                    /* p: 0..1 across the whole journey */
+    const f=cl(p)*3, n=Math.min(2,Math.floor(f)), u=sm(f-n);   /* ease inside each leg so the container settles at every node */
+    const x=X[n]+(X[n+1]-X[n])*u, y=n===1?Y-RISE*2*u*(1-u):Y;
+    els.box.setAttribute("transform",`translate(${x.toFixed(2)} ${y.toFixed(2)})`);
+    els.clip.setAttribute("width",x.toFixed(2));
+    const reached=k=>x>=X[k]-.5;
+    els.nd.forEach((e,k)=>e.classList.toggle("hit",reached(k))); els.tx.forEach((e,k)=>e.classList.toggle("hit",reached(k)));
+    els.halo.classList.toggle("hit",reached(3));
+    show(n); legs.forEach((a,k)=>a.style.setProperty("--lp",(k<n?1:k>n?0:f-n).toFixed(3)));
+  }
+  build();
+  if(matchMedia("(prefers-reduced-motion: reduce)").matches){ paint(.5); addEventListener("resize",()=>{build();paint(.5)}); return; }
+  /* the journey follows the page: the strip runs while it travels from the bottom of the screen up to 30% */
+  const A=()=>innerHeight*.95, Z=()=>innerHeight*.3;
+  const prog=()=>{ const r=scene.getBoundingClientRect(); return cl((A()-r.bottom)/(A()-Z())); };
+  let p=prog(), target=p, raf=0;
+  const tick=()=>{ p+=(target-p)*.16; if(Math.abs(target-p)<.0008) p=target; paint(p); raf=(p!==target)?requestAnimationFrame(tick):0; };
+  const onScroll=()=>{ target=prog(); if(!raf) raf=requestAnimationFrame(tick); };
+  addEventListener("scroll",onScroll,{passive:true}); addEventListener("hashchange",()=>setTimeout(onScroll,80));
+  addEventListener("resize",()=>{ if(Math.round(scene.clientWidth)!==W) build(); p=target=prog(); paint(p); });
+  legs.forEach((a,k)=>a.addEventListener("click",()=>{ /* jump the page to the middle of that leg */
+    const want=(k+.5)/3, r=scene.getBoundingClientRect();
+    scrollTo({top:scrollY+r.bottom-(A()-want*(A()-Z())),behavior:"smooth"}); }));
+  paint(p);
 })();
 </script>
 <script>

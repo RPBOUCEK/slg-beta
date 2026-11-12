@@ -41,7 +41,7 @@ R={'Mauritania':[['NFK','ALG','NKC']],'Gambia':[['NFK','ALG','NKC','DKR']],'Mali
  'South Africa':[['NFK','ALG','PSD','JED','NSA','CMB','NAC','BEW','DUR']],'Eswatini':[['NFK','ALG','PSD','JED','NSA','CMB','NAC','BEW','DUR']],'Lesotho':[['NFK','ALG','PSD','JED','NSA','CMB','NAC','BEW','DUR']],
  'Madagascar':[['NFK','ALG','PSD','JED','NSA','CMB','TMM']],'Bangladesh':[['NFK','ALG','PSD','JED','NSA','CMB','CGP']],
  'Jordan':[['NYC','ALG','PSD','JED','AQB']],'Greece':[['NYC','ALG','PIR']],'Lebanon':[['NYC','ALG','PIR','BEY']],
- 'Romania':[['NYC','ALG','PIR','IST','CND']],'Ukraine':[['NYC','ALG','PIR','IST','ODS']],'Moldova':[['NYC','ALG','PIR','IST','ODS']],
+ 'Romania':[['NYC','ALG','PIR','IST','CND']],'Ukraine':[['NYC','ALG','PIR']],'Moldova':[['NYC','ALG','PIR']],
  'Poland':[['NYC','SOU','GDN']],'Finland':[['NYC','SOU','GDN','HEL']],
  'Philippines':[['LAX','Lw'],['Le','KHH','MNL']],'Vietnam':[['LAX','Lw'],['Le','KHH','CMP']],'Cambodia':[['LAX','Lw'],['Le','KHH','CMP','KOS']],
  'Mongolia':[['NFK','CTG','COL','Pw'],['Pe','TSN']],

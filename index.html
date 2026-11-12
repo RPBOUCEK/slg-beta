@@ -81,7 +81,7 @@
   .navbtn{font:inherit;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;background:none;color:var(--g);border:1px solid var(--g);padding:10px 16px;cursor:pointer;text-decoration:none;transition:.18s;flex:none;margin-left:10px}
   .navbtn:hover{background:var(--b);color:var(--onB);border-color:var(--b)}
 
-  #scrim{position:fixed;inset:0;z-index:54;background:rgba(20,22,26,.45);backdrop-filter:blur(2px);opacity:0;visibility:hidden;transition:opacity .35s ease,visibility .35s}
+  #scrim{position:fixed;inset:0;z-index:54;background:rgba(40,40,40,.45);backdrop-filter:blur(2px);opacity:0;visibility:hidden;transition:opacity .35s ease,visibility .35s}
   #scrim.open{opacity:1;visibility:visible}
   #menu{position:fixed;top:0;right:0;bottom:0;z-index:55;width:min(420px,88vw);background:var(--slab);color:var(--onSlab);
     display:flex;flex-direction:column;padding:calc(14px + env(safe-area-inset-top,0px)) 14px calc(14px + env(safe-area-inset-bottom,0px));overflow-y:auto;
@@ -120,7 +120,7 @@
   .tile.t4{background:#9aa1aa;color:#1d2126}
   .tile.t5{background:#1f252e;color:#fbfaf6}
   .tile.go{background:var(--b);color:var(--onB)}
-  @media(min-width:621px){.tile.narrow{display:none}}
+  @media(min-width:901px){.tile.narrow{display:none}}
   .tile.t3 .dot,.tile.t4 .dot{background:var(--onB)}
   .tile.go .dot{background:var(--onB)}
   .tile.t1:hover,.tile.t2:hover,.tile.t5:hover{color:#fff}
@@ -136,6 +136,21 @@
     .tile:hover .dot,.tile:focus-visible .dot{opacity:1;transform:none}
   }
   @media(hover:none){.trule{transform:scaleX(1)}}
+  /* phone and tablet menu: a plain list in the site's own paper, charcoal and yellow (no tinted tiles, no taglines) */
+  @media(max-width:900px){
+    #menu{background:var(--w);color:var(--g);padding:4px var(--pad) calc(20px + env(safe-area-inset-bottom,0px));border-bottom:1px solid var(--g);box-shadow:0 18px 40px rgba(0,0,0,.14)}
+    #menu .tiles{gap:0}
+    #menu .tile{background:none;color:var(--g);box-shadow:none;filter:none;padding:18px 0;border-bottom:1px solid var(--ln)}
+    #menu .tile .tb,#menu .tile .dot{display:none}
+    #menu .tile .tt{font-size:20px;background:linear-gradient(var(--b),var(--b)) left 100%/0 .16em no-repeat;padding-bottom:.12em}
+    #menu .tile.cur .tt{background-size:100% .16em}
+    #menu .tile:focus-visible{outline:2px solid var(--g);outline-offset:2px}
+    #menu .tile:last-child{margin-top:18px;border:0;background:var(--b);color:var(--onB);padding:16px 18px;text-align:center}
+    #menu .tile:last-child .th{justify-content:center}
+    #menu .tile:last-child .tt{font-size:12px;letter-spacing:.16em;text-transform:uppercase;background:none;padding:0}
+    #menu .mfoot{display:none}
+  }
+  @media(min-width:621px) and (max-width:900px){#menu .tile:last-child{display:none}#menu .tile:nth-last-child(2){border-bottom:0}}   /* the bar already carries Talk to an expert at this width */
   /* appearance switch, tucked at the foot of the menu */
   .mfoot{margin-top:14px;padding:14px 6px 2px;border-top:1px solid rgba(251,250,246,.14);display:flex;align-items:center;justify-content:space-between;gap:12px;flex:none}
   .mfoot .lbl{color:var(--onSlab);opacity:.6}
@@ -984,7 +999,7 @@
 <div id="scrim"></div>
 <div id="menu" role="dialog" aria-modal="true" aria-label="Menu">
   <div class="mhead"><span class="lbl">Menu</span><button id="mclose" aria-label="Close menu"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg></button></div>
-  <div class="tiles"><a class="tile t1" href="#home" data-nav><span class="th"><span class="tt">Home</span><i class="dot"></i></span><span class="tb"><span class="trule"></span><span class="td">Built on trust. Proven in the field.</span></span></a><a class="tile t2" href="#services" data-nav><span class="th"><span class="tt">Services</span><i class="dot"></i></span><span class="tb"><span class="trule"></span><span class="td">Everything SLG handles.</span></span></a><a class="tile t3 narrow" href="#about" data-nav><span class="th"><span class="tt">About Us</span><i class="dot"></i></span><span class="tb"><span class="trule"></span><span class="td">Get to know the team.</span></span></a><a class="tile t3" href="#myslg" data-nav><span class="th"><span class="tt">mySLG</span><i class="dot"></i></span><span class="tb"><span class="trule"></span><span class="td">Your cargo. Connected.</span></span></a><a class="tile t4" href="#contact" data-nav><span class="th"><span class="tt">Contact</span><i class="dot"></i></span><span class="tb"><span class="trule"></span><span class="td">Talk to an expert.</span></span></a></div>
+  <div class="tiles"><a class="tile t1" href="#home" data-nav><span class="th"><span class="tt">Home</span><i class="dot"></i></span><span class="tb"><span class="trule"></span><span class="td">Built on trust. Proven in the field.</span></span></a><a class="tile t2" href="#services" data-nav><span class="th"><span class="tt">Services</span><i class="dot"></i></span><span class="tb"><span class="trule"></span><span class="td">Everything SLG handles.</span></span></a><a class="tile t3 narrow" href="#about" data-nav><span class="th"><span class="tt">About Us</span><i class="dot"></i></span><span class="tb"><span class="trule"></span><span class="td">Get to know the team.</span></span></a><a class="tile t3" href="#myslg" data-nav><span class="th"><span class="tt">mySLG</span><i class="dot"></i></span><span class="tb"><span class="trule"></span><span class="td">Your cargo. Connected.</span></span></a><a class="tile t4" href="#contact" data-nav><span class="th"><span class="tt">Talk to an expert</span><i class="dot"></i></span><span class="tb"><span class="trule"></span><span class="td">Talk to an expert.</span></span></a></div>
 </div>
 
 <!-- ============ HOME ============ -->

@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://beta.speciallogistics.net/sitemap.xml
+Sitemap: https://shipslg.com/sitemap.xml

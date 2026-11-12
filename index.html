@@ -750,11 +750,12 @@
   @media(prefers-reduced-motion:reduce){.legs article::after{animation:none!important}}
   /* the journey scene: a thin line strip over the three legs */
   .legscene{grid-column:1/-1;border-right:1px solid var(--ln);border-bottom:1px solid var(--ln);overflow:hidden}
-  .legscene svg{display:block;width:100%;height:104px}
-  .legscene .base{fill:none;stroke:var(--ln);stroke-width:1}
+  .legscene svg{display:block;width:100%;height:112px}
   .legscene .trk{fill:none;stroke:var(--fbo);stroke-width:1.5;stroke-linecap:round}
   .legscene .trk.inl,.legscene .done .inl{stroke-dasharray:1 7}
+  .legscene .trk.tie{stroke-width:1;stroke-linecap:butt}
   .legscene .done path{fill:none;stroke:var(--g);stroke-width:2;stroke-linecap:round}
+  .legscene .done .tie{stroke-width:1;stroke-linecap:butt}
   .legscene .nd{fill:var(--w);stroke:var(--g);stroke-width:1.5;transition:fill .3s}
   .legscene .nd.hit{fill:var(--b)}
   .legscene .halo{fill:var(--b);opacity:0;transform-box:fill-box;transform-origin:center}
@@ -762,9 +763,14 @@
   @keyframes lshalo{0%{opacity:.55;transform:scale(1)}100%{opacity:0;transform:scale(3.4)}}
   .legscene text{font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;fill:var(--cue);transition:fill .3s}
   .legscene text.hit{fill:var(--g)}
-  .legscene .box rect{fill:var(--b);stroke:var(--g);stroke-width:1.25}
-  .legscene .box path{fill:none;stroke:var(--g);stroke-width:1;opacity:.5}
-  .legscene .box .sh{fill:var(--g);stroke:none;opacity:.12}
+  .legscene .ink,.legscene .wh{fill:var(--g)}
+  .legscene .pap,.legscene .hub{fill:var(--w)}
+  .legscene .yl{fill:var(--b)}
+  .legscene .cr{fill:var(--w);stroke:var(--g);stroke-width:1.25}
+  .legscene .rib{fill:none;stroke:var(--g);stroke-width:1;opacity:.35}
+  .legscene .box .cr{fill:var(--b)}
+  .legscene .box .rib{opacity:.5}
+  .legscene .veh{opacity:0}
   @media(max-width:560px){.legscene text{font-size:9px;letter-spacing:.08em}}
   @media(prefers-reduced-motion:reduce){.legscene .halo.hit{animation:none}}
   .cell .rk{font:700 9.5px/1 var(--mono);letter-spacing:.04em;color:var(--g);border:1.2px solid currentColor;padding:2px 3px 1px;margin-left:7px;vertical-align:2px}
@@ -2104,41 +2110,58 @@ window.SLG_OUTLINES={"Angola":{"d":"M57.4 -1.7l-3.5 1.3-1.6 2.4-3.1 1.7 1.1 1.4-
 </script>
 
 <script>
-/* ---------- Home legs: a shipment track. One container travels origin > port of export > port of discharge > final delivery as the page scrolls ---------- */
+/* ---------- Home legs: a shipment track. One yellow container goes door > railhead > port of export > port of discharge > final delivery as the page scrolls, handed from truck to train to vessel to truck ---------- */
 (function(){
   const box=document.querySelector(".cols.legs"), svg=document.getElementById("lsSvg"); if(!box||!svg) return;
   const legs=[...box.querySelectorAll("article")], scene=svg.closest(".legscene");
-  const H=104, Y=64, RISE=44, BW=38, BH=16;            /* line height, arc control offset (peak = RISE/2), container size */
-  const cl=v=>Math.max(0,Math.min(1,v)), sm=v=>{v=cl(v);return v*v*(3-2*v)};
-  let W=0, X=[], els=null;
+  const H=112, Y=72, BW=38, BH=16, LIFT=8;             /* strip height, line height, container size, deck height above the line */
+  const cl=v=>Math.max(0,Math.min(1,v)), sm=v=>{v=cl(v);return v*v*(3-2*v)}, fin=(q,a,b)=>sm((q-a)/(b-a)), fout=(q,a,b)=>1-sm((q-a)/(b-a));
+  /* pictograms: flat, solid, drawn around the container slot (x -19..19, y -24..-8); the line is y=0 */
+  const wheel=(x,r)=>`<circle class="wh" cx="${x}" cy="${-r}" r="${r}"/><circle class="hub" cx="${x}" cy="${-r}" r="${(r*.36).toFixed(2)}"/>`;
+  const crate=x=>`<rect class="cr" x="${x-BW/2}" y="${-LIFT-BH}" width="${BW}" height="${BH}"/><path class="rib" d="M${x-BW/2+7.6} ${-LIFT-BH+3}v${BH-6}m7.6 ${-(BH-6)}v${BH-6}m7.6 ${-(BH-6)}v${BH-6}m7.6 ${-(BH-6)}v${BH-6}"/>`;
+  const TRUCK=`<path class="ink" d="M-21 -8H24V-22h8.5l6.5 7.5V-5.5H-21z"/><path class="pap" d="M27 -19.5h4.3l4.4 5.2H27z"/>${wheel(-15,3.4)}${wheel(-7.4,3.4)}${wheel(31,3.4)}`;
+  const TRAIN=`${crate(-44)}<path class="ink" d="M-65 -8H21v2.4H-65z"/><path class="ink" d="M21 -7h6v1.2h-6z"/>
+    <path class="ink" d="M27 -5.5V-18.5H49V-24H60.5L66 -15V-5.5z"/><path class="pap" d="M51.5 -21.5h7.6l2.6 4.3H51.5z"/><path class="yl" d="M29.5 -13.5H47v1.8H29.5z"/>
+    ${[-59,-52.6,-35.4,-29,-15,-8.6,8.6,15,32,38.4,55,61.4].map(x=>wheel(x,2.7)).join("")}`;
+  const SHIP=`${crate(-40)}${crate(40)}<path class="ink" d="M-98 -8H84L73 1.5H-93z"/>
+    <path class="ink" d="M-90 -8V-30h17V-8z"/><path class="pap" d="M-87.5 -27h12v2.6h-12z"/><path class="ink" d="M-84.5 -30v-6h6v6z"/><path class="yl" d="M-84.5 -34.2h6v1.8h-6z"/><path class="ink" d="M83 -8l9-2.2-8 6z"/>`;
+  let W=0, X=[], XR=0, K=1, els=null;
+  function wave(x0,x1){ const n=Math.max(2,Math.round((x1-x0)/9)), st=(x1-x0)/n; let d=`M${x0} ${Y}q${st/2} -2.6 ${st} 0`; for(let i=1;i<n;i++) d+=`t${st} 0`; return d; }
   function build(){
-    W=Math.max(300,Math.round(scene.clientWidth)); const small=W<560, pad=small?14:Math.min(26,W*.021);
-    X=[pad, W/3, W*2/3, W-pad];
+    W=Math.max(300,Math.round(scene.clientWidth)); const small=W<560, pad=small?14:Math.min(26,W*.021); K=small?.56:W<900?.8:1;
+    X=[pad, W/3, W*2/3, W-pad]; XR=(X[0]+X[1])/2;
     const names=small?["Origin","Export","Discharge","Delivery"]:["Origin","Port of export","Port of discharge","Final delivery"];
-    const road=`M${X[0]} ${Y}H${X[1]}`, sea=`M${X[1]} ${Y}Q${(X[1]+X[2])/2} ${Y-RISE} ${X[2]} ${Y}`, inl=`M${X[2]} ${Y}H${X[3]}`;
-    const node=(k)=> (k===1||k===2) ? `<path class="nd" d="M${X[k]} ${Y-6}l6 6-6 6-6-6z"/>` : `<circle class="nd" cx="${X[k]}" cy="${Y}" r="4.5"/>`;
+    const road=`M${X[0]} ${Y}H${XR}`, rail=`M${XR} ${Y}H${X[1]}`, sea=wave(X[1],X[2]), inl=`M${X[2]} ${Y}H${X[3]}`;
+    const ties=()=>{ let d=""; for(let x=XR+6;x<X[1]-4;x+=7) d+=`M${x.toFixed(1)} ${Y-2.5}v5`; return d; };
+    const node=k=>(k===1||k===2)?`<path class="nd" d="M${X[k]} ${Y-6}l6 6-6 6-6-6z"/>`:`<circle class="nd" cx="${X[k]}" cy="${Y}" r="4.5"/>`;
     const anchor=k=>k===0?"start":k===3?"end":"middle", lx=k=>k===0?X[0]-5:k===3?X[3]+5:X[k];
     svg.setAttribute("viewBox",`0 0 ${W} ${H}`); svg.setAttribute("preserveAspectRatio","xMidYMid meet");
     svg.innerHTML=`<defs><clipPath id="lsClip"><rect id="lsClipR" x="0" y="0" width="0" height="${H}"/></clipPath></defs>
-      <path class="base" d="M${X[1]} ${Y}H${X[2]}"/>
-      <path class="trk" d="${road}"/><path class="trk" d="${sea}"/><path class="trk inl" d="${inl}"/>
-      <g class="done" clip-path="url(#lsClip)"><path d="${road}"/><path d="${sea}"/><path class="inl" d="${inl}"/></g>
+      <path class="trk" d="${road}"/><path class="trk" d="${rail}"/><path class="trk tie" d="${ties()}"/><path class="trk" d="${sea}"/><path class="trk inl" d="${inl}"/>
+      <g class="done" clip-path="url(#lsClip)"><path d="${road}"/><path d="${rail}"/><path class="tie" d="${ties()}"/><path d="${sea}"/><path class="inl" d="${inl}"/></g>
       <circle class="halo" cx="${X[3]}" cy="${Y}" r="4.5"/>
-      ${[0,1,2,3].map(node).join("")}
+      ${[0,1,2,3].map(node).join("")}<circle class="nd mid" cx="${XR}" cy="${Y}" r="3"/>
       ${[0,1,2,3].map(k=>`<text x="${lx(k).toFixed(1)}" y="${Y+26}" text-anchor="${anchor(k)}">${names[k]}</text>`).join("")}
-      <g class="box" id="lsBox"><ellipse class="sh" cx="0" cy="-1" rx="${BW/2-2}" ry="1.6"/><rect x="${-BW/2}" y="${-BH-4}" width="${BW}" height="${BH}"/><path d="M${-BW/2+7.6} ${-BH-1}v${BH-6}m7.6 ${-(BH-6)}v${BH-6}m7.6 ${-(BH-6)}v${BH-6}m7.6 ${-(BH-6)}v${BH-6}"/></g>`;
-    els={clip:svg.querySelector("#lsClipR"), box:svg.querySelector("#lsBox"), nd:[...svg.querySelectorAll(".nd")], tx:[...svg.querySelectorAll("text")], halo:svg.querySelector(".halo")};
+      ${small?"":`<text class="mid" x="${XR}" y="${Y+26}" text-anchor="middle">Railhead</text>`}
+      <g id="lsRig"><g class="veh" id="lsTruck">${TRUCK}</g><g class="veh" id="lsTrain">${TRAIN}</g><g class="veh" id="lsShip">${SHIP}</g><g class="box">${crate(0)}</g></g>`;
+    const q=x=>svg.querySelector(x);
+    els={clip:q("#lsClipR"), rig:q("#lsRig"), truck:q("#lsTruck"), train:q("#lsTrain"), ship:q("#lsShip"),
+      nd:[...svg.querySelectorAll(".nd:not(.mid)")], tx:[...svg.querySelectorAll("text:not(.mid)")], mid:[...svg.querySelectorAll(".mid")], halo:q(".halo")};
   }
   let cur=-1;
   const show=n=>{ if(n===cur) return; cur=n; legs.forEach((a,k)=>a.classList.toggle("on",k===n)); };
   function paint(p){                                    /* p: 0..1 across the whole journey */
-    const f=cl(p)*3, n=Math.min(2,Math.floor(f)), u=sm(f-n);   /* ease inside each leg so the container settles at every node */
-    const x=X[n]+(X[n+1]-X[n])*u, y=n===1?Y-RISE*2*u*(1-u):Y;
-    els.box.setAttribute("transform",`translate(${x.toFixed(2)} ${y.toFixed(2)})`);
+    const f=cl(p)*3, n=Math.min(2,Math.floor(f)), u=sm(f-n);   /* ease inside each leg so the container settles at every port */
+    const end=n===2?X[3]-42*K:X[n+1], x=X[n]+(end-X[n])*u, bob=n===1?Math.sin(x/11)*.7*Math.sin(Math.PI*u):0;
+    els.rig.setAttribute("transform",`translate(${x.toFixed(2)} ${(Y+bob).toFixed(2)}) scale(${K})`);
     els.clip.setAttribute("width",x.toFixed(2));
-    const reached=k=>x>=X[k]-.5;
+    /* who carries it: truck to the railhead, train to the port, vessel across, truck to the door */
+    els.truck.style.opacity=(n===0?fout(u,.4,.5):n===2?fin(u,0,.12):0).toFixed(3);
+    els.train.style.opacity=(n===0?fin(u,.5,.6)*fout(u,.9,1):0).toFixed(3);
+    els.ship.style.opacity=(n===1?fin(u,0,.12)*fout(u,.88,1):0).toFixed(3);
+    const reached=k=>k===3?(n===2&&u>.995):x>=X[k]-.5;
     els.nd.forEach((e,k)=>e.classList.toggle("hit",reached(k))); els.tx.forEach((e,k)=>e.classList.toggle("hit",reached(k)));
-    els.halo.classList.toggle("hit",reached(3));
+    els.mid.forEach(e=>e.classList.toggle("hit",x>=XR-.5)); els.halo.classList.toggle("hit",reached(3));
     show(n); legs.forEach((a,k)=>a.style.setProperty("--lp",(k<n?1:k>n?0:f-n).toFixed(3)));
   }
   build();

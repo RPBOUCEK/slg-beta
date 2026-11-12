@@ -2,9 +2,11 @@ import json,math
 G="/tmp/claude-0/-home-claude-slg-beta/991b3283-be07-532b-b3c5-8230aedd119b/scratchpad/geo2/ne/geojson/"
 C=json.load(open(G+"ne_50m_admin_0_countries.geojson")); L=json.load(open(G+"ne_50m_lakes.geojson"))
 LANES={'ukraine':['UKR'],'east':['KEN','TZA','SDS','BDI','UGA','RWA','ZMB','MWI','COD'],'west':['LBR','GHA','TGO','BEN','NGA','BFA','MLI'],
- 'cac':['GTM','HND','SLV','NIC','PAN','HTI','DOM','JAM'],'south':['ZAF','MOZ','ZWE','NAM','SWZ','MDG']}
+ 'cac':['GTM','HND','SLV','NIC','PAN','HTI','DOM','JAM'],'south':['ZAF','MOZ','ZWE','NAM','SWZ','MDG','BWA']}
 PORTS={'east':[('Dar es Salaam',39.3,-6.82),('Mombasa',39.67,-4.05)],'south':[('Durban',31.03,-29.87),('Beira',34.84,-19.84)],
  'west':[('Lomé',1.28,6.13),('Tema',0.0,5.63),('Monrovia',-10.8,6.32)],'cac':[('Kingston',-76.8,17.97),('Puerto Cortés',-87.95,15.85)],'ukraine':[]}
+CITIES={'south':[('Gaborone',25.91,-24.65)]}
+NAMES={'UKR':'Ukraine','KEN':'Kenya','TZA':'Tanzania','SDS':'South Sudan','BDI':'Burundi','UGA':'Uganda','RWA':'Rwanda','ZMB':'Zambia','MWI':'Malawi','COD':'DR Congo','LBR':'Liberia','GHA':'Ghana','TGO':'Togo','BEN':'Benin','NGA':'Nigeria','BFA':'Burkina Faso','MLI':'Mali','GTM':'Guatemala','HND':'Honduras','SLV':'El Salvador','NIC':'Nicaragua','PAN':'Panama','HTI':'Haiti','DOM':'Dominican Republic','JAM':'Jamaica','ZAF':'South Africa','MOZ':'Mozambique','ZWE':'Zimbabwe','NAM':'Namibia','SWZ':'Eswatini','MDG':'Madagascar','BWA':'Botswana'}
 W,H=240,190; PAD=10
 def code(f): p=f['properties']; return p.get('ADM0_A3') or p.get('ISO_A3')
 def rings(g):
@@ -52,31 +54,41 @@ OUT={}
 for lid,codes in LANES.items():
     feats=[f for f in C['features'] if code(f) in codes]
     assert len(feats)==len(codes),(lid,[code(f) for f in feats])
+    def area(r):
+        a=0
+        for i in range(len(r)): a+=r[i-1][0]*r[i][1]-r[i][0]*r[i-1][1]
+        return abs(a)/2
     xs=[];ys=[]
     for f in feats:
-        for poly in rings(f['geometry']):
+        polys=rings(f['geometry']); big=max(area(p[0]) for p in polys)
+        for poly in polys:
+            if area(poly[0])<big*0.02: continue
             for lon,lat in poly[0]:
-                if lid=='ukraine' or True:
-                    x,y=merc(lon,lat); xs.append(x); ys.append(y)
+                x,y=merc(lon,lat); xs.append(x); ys.append(y)
     mnx,mxx,mny,mxy=min(xs),max(xs),min(ys),max(ys)
     s=min((W-2*PAD)/(mxx-mnx),(H-2*PAD)/(mxy-mny))
     ox=(W-(mxx-mnx)*s)/2; oy=(H-(mxy-mny)*s)/2
     P=lambda lon,lat:((merc(lon,lat)[0]-mnx)*s+ox, H-((merc(lon,lat)[1]-mny)*s+oy))
     # view bounds in lon/lat for neighbor selection
     def proj_poly(poly): return [P(lon,lat) for lon,lat in poly]
-    lane=[];ctx=[];lakes=[]
+    lane=[];ctx=[];lakes=[];per={}
     for f in C['features']:
         polys=[]
         for poly in rings(f['geometry']):
             pp=clip(proj_poly(poly[0]),-2,-2,W+2,H+2)
             if len(pp)>2: polys.append(pp)
         if not polys: continue
-        (lane if code(f) in codes else ctx).extend(polys)
+        if code(f) in codes:
+            lane.extend(polys)
+            bigp=max(area(q) for q in polys); keep=[q for q in polys if area(q)>=bigp*0.02]
+            bx=[q[0] for r in keep for q in r]; by=[q[1] for r in keep for q in r]
+            per[NAMES[code(f)]]={'d':path(polys,.35),'bb':[round(min(bx),1),round(min(by),1),round(max(bx)-min(bx),1),round(max(by)-min(by),1)]}
+        else: ctx.extend(polys)
     for f in L['features']:
         if f['properties'].get('scalerank',9)>5: continue
         for poly in rings(f['geometry']):
             pp=clip(proj_poly(poly[0]),-2,-2,W+2,H+2)
             if len(pp)>2: lakes.append(pp)
-    OUT[lid]={'d':path(lane,.45),'c':path(ctx,1.0),'w':path(lakes,.6),'pts':[{'p':n,'x':round(P(lo,la)[0],1),'y':round(P(lo,la)[1],1)} for n,lo,la in PORTS[lid]]}
+    OUT[lid]={'k':per,'cities':[{'p':n,'x':round(P(lo,la)[0],1),'y':round(P(lo,la)[1],1)} for n,lo,la in CITIES.get(lid,[])],'d':path(lane,.45),'c':path(ctx,1.0),'w':path(lakes,.6),'pts':[{'p':n,'x':round(P(lo,la)[0],1),'y':round(P(lo,la)[1],1)} for n,lo,la in PORTS[lid]]}
     print(lid,len(OUT[lid]['d']),len(OUT[lid]['c']),len(OUT[lid]['w']))
 json.dump(OUT,open("/tmp/claude-0/-home-claude-slg-beta/991b3283-be07-532b-b3c5-8230aedd119b/scratchpad/geo2/lanemaps.json","w"),separators=(",",":"))

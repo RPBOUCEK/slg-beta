@@ -44,14 +44,17 @@ R={'Mauritania':[['NFK','ALG','NKC']],'Gambia':[['NFK','ALG','NKC','DKR']],'Mali
  'Romania':[['NYC','ALG','PIR','IST','CND']],'Ukraine':[['NYC','ALG','PIR','IST','ODS']],'Moldova':[['NYC','ALG','PIR','IST','ODS']],
  'Poland':[['NYC','SOU','GDN']],'Finland':[['NYC','SOU','GDN','HEL']],
  'Philippines':[['LAX','Lw'],['Le','KHH','MNL']],'Vietnam':[['LAX','Lw'],['Le','KHH','CMP']],'Cambodia':[['LAX','Lw'],['Le','KHH','CMP','KOS']],
- 'Mongolia':[['NFK','COL','Pw'],['Pe','TSN']],
- 'Guatemala':[['HOU','STC'],['LAX','PQZ']],'Honduras':[['HOU','PCR']],'El Salvador':[['HOU','PCR'],['LAX','PQZ']],'Nicaragua':[['LAX','PQZ','COR']],
- 'Cuba':[['HOU','MAR']],'Jamaica':[['HOU','KIN']],'Dominican Republic':[['HOU','KIN','CAU']],'Haiti':[['NYC','KIN','LAF']],'Panama':[['NYC','KIN','COL']],
- 'Colombia':[['NFK','CTG']],'Venezuela':[['NYC','KIN','LGU']],'Grenada':[['NYC','KIN','GND']],'Trinidad & Tobago':[['NYC','KIN','GND','POS']],'Guyana':[['NYC','KIN','GND','POS','GEO']],
+ 'Mongolia':[['NFK','CTG','COL','Pw'],['Pe','TSN']],
+ 'Guatemala':[['HOU','STC'],['LAX','PQZ']],'Honduras':[['HOU','STC','PCR']],'El Salvador':[['HOU','STC','PCR'],['LAX','PQZ']],'Nicaragua':[['LAX','PQZ','COR']],
+ 'Cuba':[['HOU','MAR']],'Jamaica':[['HOU','KIN']],'Dominican Republic':[['HOU','KIN','LAF','CAU']],'Haiti':[['NYC','KIN','LAF']],'Panama':[['NFK','CTG','COL']],
+ 'Colombia':[['NFK','CTG']],'Venezuela':[['NYC','KIN','LGU']],'Grenada':[['NYC','KIN','LGU','GND']],'Trinidad & Tobago':[['NYC','KIN','LGU','GND','POS']],'Guyana':[['NYC','KIN','LGU','GND','POS','GEO']],
  'Ecuador':[['NFK','CTG','COL','GYE']],'Peru':[['NFK','CTG','COL','GYE','CLL']],'Paraguay':[['NYC','SSZ','MVD']]}
 INL={'Mongolia':'rail','Paraguay':'river'}
 svg=open(f"{S}/og/hmap.svg").read()
 dest={m.group(3):(float(m.group(1)),float(m.group(2))) for m in re.finditer(r'<circle data-s="[^"]*" data-d="[^"]*" cx="([\d.]+)" cy="([\d.]+)" r="[\d.]+" fill="#ffde59"[^>]*><title>([^<]*)</title>',svg)}
+CHAINS=[(['ALG','oWA','NKC','DKR','oWA2','FNA','oWA3','ABJ','LOS','KRI','oWA4','LAD'],'West Africa'),
+        (['KIN','LGU','GND','POS','GEO'],'Caribbean'),(['CMB','NAC','BEW','DUR'],'Mozambique Channel')]
+N.update({'oWA':(-15.5,27),'oWA2':(-16.5,10.5),'oWA3':(-9.5,4.6),'oWA4':(9.3,-2.5)})
 use=collections.Counter(); who=collections.defaultdict(set); ports=set(); inland=[]
 for c,chains in R.items():
     if c not in dest: continue
@@ -71,7 +74,23 @@ out=[]
 mx=max(use.values())
 order=sorted(use.items(),key=lambda kv:-kv[1])
 paths=''
+inchain=set()
+for ch,_ in CHAINS:
+    real=[x for x in ch if not x.startswith('o')]
+    for a,b in zip(real,real[1:]): inchain.add((a,b))
+def spline(keys):
+    pts=[P(*N[k]) for k in keys]; d='M%.1f %.1f'%pts[0]
+    for i in range(len(pts)-1):
+        p0=pts[i-1] if i>0 else pts[i]; p1=pts[i]; p2=pts[i+1]; p3=pts[i+2] if i+2<len(pts) else p2
+        c1=(p1[0]+(p2[0]-p0[0])/6,p1[1]+(p2[1]-p0[1])/6); c2=(p2[0]-(p3[0]-p1[0])/6,p2[1]-(p3[1]-p1[1])/6)
+        d+='C%.1f %.1f %.1f %.1f %.1f %.1f'%(c1+c2+p2)
+    return d
+for ch,nm in CHAINS:
+    real=[x for x in ch if not x.startswith('o')]
+    n=max(use.get((real[0],real[1]),1),1)
+    paths+=f'<path pathLength="1" stroke-width="{0.7+1.5*math.sqrt(n/mx):.2f}" d="{spline(ch)}"><title>{nm}</title></path>'
 for (a,b),n in order:
+    if (a,b) in inchain: continue
     w=0.7+1.5*math.sqrt(n/mx)
     wrap=' stroke="url(#wfl)"' if b=='Lw' or b=='Pw' else (' stroke="url(#wfr)"' if a in('Le','Pe') else '')
     names=', '.join(sorted(who[(a,b)]))

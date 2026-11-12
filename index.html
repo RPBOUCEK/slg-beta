@@ -574,7 +574,7 @@
   .dc-n{display:block;font-size:19px;font-weight:700;letter-spacing:-.01em}
   .dc-p{display:block;font-size:13px;color:var(--mut);margin-top:3px}
   .lbpair{display:flex;flex-direction:column}
-  @media(max-width:999px){ .lbpair .dcar{order:-1} }
+  @media(max-width:1199px){ .lbpair .dcar{order:-1} }
   @media(max-width:620px){
     #board:not(.cv){display:none}
     .dcar{display:block;margin:30px calc(-1 * var(--pad)) 26px}
@@ -588,13 +588,13 @@
     #grid:not(.open){max-height:560px;overflow:hidden;-webkit-mask-image:linear-gradient(#000 78%,transparent);mask-image:linear-gradient(#000 78%,transparent)}
     .gridmore{display:inline-flex;margin-top:16px;font-family:inherit;cursor:pointer}
   }
-  @media(min-width:621px) and (max-width:999px){
-    .dcar{display:block;margin:28px calc(-1 * var(--pad)) 0}
-    .dcar-track{padding:6px 31vw 14px}
-    .dc{flex:0 0 38vw}
+  @media(min-width:621px) and (max-width:1199px){
+    .dcar{display:block;margin:28px calc(-1 * var(--pad)) 0;--cw:clamp(220px,32vw,320px)}
+    .dcar-track{padding:6px calc(50vw - var(--cw) / 2) 14px}
+    .dc{flex:0 0 var(--cw)}
     .dcar-note{display:none}
   }
-  @media(min-width:1000px){
+  @media(min-width:1200px){
     .lbpair{--dcol:clamp(250px,22vw,310px);display:grid;grid-template-columns:minmax(0,1fr) var(--dcol);align-items:stretch;margin:28px 0 30px}
     .lbpair>#board{margin:0;min-width:0}
     .dcar{display:block;background:var(--board);color:var(--tileInk);border:1px solid var(--g);border-left:0;min-width:0}
@@ -898,7 +898,7 @@
   .lb-sub:empty{display:none}
   .lb-body{padding:clamp(14px,2.4vw,26px);overflow-x:auto}
   .fbd{width:max-content;min-width:100%;font-family:var(--mono);font-weight:700;--tw:calc(1.05em + 2px)}
-  .fbd-h,.fbd-r{display:grid;grid-template-columns:var(--cols);gap:0 1.3em;align-items:center;font-size:clamp(12px,1.2vw,15px)}
+  .fbd-h,.fbd-r{display:grid;grid-template-columns:var(--cols);gap:0 1.3em;align-items:center;font-size:var(--fz,clamp(12px,1.2vw,15px))}
   .fbd-h{color:var(--bAcc);padding:0 4px 9px;border-bottom:1px solid var(--bLn);margin-bottom:6px}
   .fbd-h span{font-size:10px;letter-spacing:.18em}
   .fbd-r{width:100%;background:none;border:0;color:inherit;font-family:inherit;font-weight:inherit;text-align:left;padding:4px;cursor:default}
@@ -917,7 +917,8 @@
   .lbc-stats>span.y{background:var(--y);color:var(--onB);border-color:var(--y)}
   .lbc-stats .stn{color:var(--tileInk)} .lbc-stats .stn b{color:var(--tileInk)}
   .lbc-grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:clamp(16px,2.4vw,30px);margin-top:16px;align-items:start}
-  .lbc-grid.nomap{grid-template-columns:1fr}
+  .lbc-grid.nomap,.lbc-grid.stack{grid-template-columns:1fr}
+  .lbc-grid.stack .lbc-map{max-width:460px}
   .lbc-map{border:1px solid var(--bLn);padding:clamp(10px,2vw,22px);display:grid;place-items:center}
   .lbc-map svg{display:block;width:100%;max-width:420px;height:auto;overflow:hidden}
   .lbc-map .ctx,.dc-cover .ctx{fill:var(--ctxF);stroke:var(--ctxS);stroke-width:.5;stroke-linejoin:round}
@@ -934,7 +935,7 @@
   @media(prefers-reduced-motion:reduce){.lbc-map .ol,.dc-cover .ol{animation:none;stroke-dashoffset:0}.lbc-map .pt .ring,.dc-cover .pt .ring{animation:none;opacity:0}}
   .lbc h4{font:700 10px/1 var(--mono);letter-spacing:.18em;text-transform:uppercase;color:var(--bAcc);margin:0 0 10px}
   .lbc-in .fbd{min-width:0}
-  .lbc-in .fbd-h,.lbc-in .fbd-r{font-size:clamp(11px,.95vw,12.5px);gap:0 1em}
+  .lbc-in .fbd-h,.lbc-in .fbd-r{font-size:var(--fz,clamp(11px,.95vw,12.5px));gap:0 1em}
   .lbc-note{font:500 12px/1.5 var(--mono);color:var(--bMut);margin:8px 0 0}
   .lbc-from{margin-top:20px;padding-top:16px;border-top:1px solid var(--bLn)}
   .lbc-ports{display:flex;flex-wrap:wrap;gap:6px}
@@ -946,7 +947,7 @@
   .lbc-cta .btn.o{color:var(--tileInk);border-color:var(--bLn2)}
   .lbc-cta .btn.o:hover{background:var(--y);color:var(--onB);border-color:var(--y)}
   @media(max-width:760px){.lbc-grid{grid-template-columns:1fr}}
-  @media(max-width:620px){.fbd-h,.fbd-r{font-size:11px;gap:0 1em}.lb-body{padding:12px 10px}}
+  @media(max-width:620px){.fbd-h,.fbd-r{font-size:var(--fz,11px);gap:0 1em}.lb-body{padding:12px 10px}}
   #grid[hidden],#dest .key[hidden]{display:none}
   @media(max-width:620px){.lc-foot{padding-bottom:calc(20px + env(safe-area-inset-bottom,0px))}}
 </style>
@@ -1558,7 +1559,7 @@ window.SLG_OUTLINES={"Angola":{"d":"M57.4 -1.7l-3.5 1.3-1.6 2.4-3.1 1.7 1.1 1.4-
 /* ================= feature set: lanes data, lane search, the board (one stream: overview -> country), smart cursor ================= */
 (function(){
   const REDUCED=matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const NARROW=matchMedia("(max-width:620px)");
+  const NARROW=matchMedia("(max-width:820px)");   /* board tables use the short column set up to small tablets */
   const esc=t=>{const d=document.createElement("div");d.textContent=t;return d.innerHTML;};
   const two=n=>String(n).padStart(2,"0");
   const regionOf={}; all.forEach(([c,r])=>regionOf[c]=r);
@@ -1619,6 +1620,23 @@ window.SLG_OUTLINES={"Angola":{"d":"M57.4 -1.7l-3.5 1.3-1.6 2.4-3.1 1.7 1.1 1.4-
         return r.c?`<button type="button" class="fbd-r${r.hl?" hl":""}" data-c="${esc(r.c)}" data-cursor="Show ${esc(r.c)}">${inner}</button>`
                   :`<div class="fbd-r${r.hl?" hl":""}">${inner}</div>`;}).join("")}</div></div>`;
   }
+
+  /* every board table fits its box: if the tiles would run past the edge, shrink them (never scroll sideways) */
+  function fitFbd(root,tries){
+    const R=root||document, fs=[...R.querySelectorAll(".fbd")]; let wait=false;
+    R.querySelectorAll(".lbc-grid.stack").forEach(g=>g.classList.remove("stack"));
+    const fit=f=>{ f.style.removeProperty("--fz"); const host=f.parentElement, cs=getComputedStyle(host);
+      const avail=host.clientWidth-parseFloat(cs.paddingLeft)-parseFloat(cs.paddingRight); if(avail<=0){ wait=true; return; }
+      const row=f.querySelector(".fbd-r,.fbd-h"); if(!row) return;
+      for(let k=0;k<4;k++){ const need=f.scrollWidth; if(need<=avail+.5) break;
+        const cur=parseFloat(getComputedStyle(row).fontSize); f.style.setProperty("--fz",Math.max(7,cur*avail/need-.1).toFixed(2)+"px"); }
+      return parseFloat(getComputedStyle(row).fontSize); };
+    /* a country table beside its map that would drop under 11px moves below the map instead */
+    fs.forEach(f=>{ const z=fit(f), g=f.closest(".lbc-grid"); if(z&&z<11&&g&&!g.classList.contains("nomap")){ g.classList.add("stack"); fit(f); } });
+    if(wait&&(tries||0)<3) requestAnimationFrame(()=>fitFbd(root,(tries||0)+1));
+  }
+  let fitT=0; addEventListener("resize",()=>{ cancelAnimationFrame(fitT); fitT=requestAnimationFrame(()=>fitFbd(document.getElementById("board"))); });
+  if(document.fonts&&document.fonts.ready) document.fonts.ready.then(()=>fitFbd(document.getElementById("board")));
 
   /* ---- the board ---- */
   const board=document.getElementById("board");
@@ -1736,12 +1754,12 @@ window.SLG_OUTLINES={"Angola":{"d":"M57.4 -1.7l-3.5 1.3-1.6 2.4-3.1 1.7 1.1 1.4-
       vb=[Math.max(0,Math.min(240-W,x+w/2-W/2)),Math.max(0,Math.min(190-H,y+h/2-H/2)),W,H]; }
     lxZoom(svg,vb);
     panel.classList.add("swap");
-    setTimeout(()=>{ panel.innerHTML = c? countryPanel(c,id) : lanePanel(id); panel.classList.remove("swap"); flap(panel); },180);
+    setTimeout(()=>{ panel.innerHTML = c? countryPanel(c,id) : lanePanel(id); panel.classList.remove("swap"); fitFbd(panel); flap(panel); },180);
   }
   function lxSwitch(id){
     const root=body.querySelector(".lx"); if(!root||root.dataset.lane===id) return;
     lane=id; syncCar(id); root.classList.add("fade");
-    setTimeout(()=>{ body.innerHTML=renderLane(id); const n=body.querySelector(".lx"); n.classList.add("fade"); requestAnimationFrame(()=>n.classList.remove("fade")); flap(n.querySelector(".lx-panel")); },200);
+    setTimeout(()=>{ body.innerHTML=renderLane(id); fitFbd(body); const n=body.querySelector(".lx"); n.classList.add("fade"); requestAnimationFrame(()=>n.classList.remove("fade")); flap(n.querySelector(".lx-panel")); },200);
   }
   function showLane(id,scroll){ lane=id; country=null; render(); board.classList.add("cv");
     if(scroll) board.scrollIntoView({block:"start",behavior:REDUCED?"auto":"smooth"}); }
@@ -1753,6 +1771,7 @@ window.SLG_OUTLINES={"Angola":{"d":"M57.4 -1.7l-3.5 1.3-1.6 2.4-3.1 1.7 1.1 1.4-
     else if(lane){ sub.textContent=""; body.innerHTML=renderLane(lane); board.classList.add("is-country"); back.hidden=false; }
     else { sub.textContent=VIEWS[tab].sub; body.innerHTML=VIEWS[tab].render(); }
     syncCar(country?null:lane);
+    fitFbd(body);
     if(animate!==false) flap(body);
   }
   function showCountry(c,scroll){
@@ -1766,7 +1785,7 @@ window.SLG_OUTLINES={"Angola":{"d":"M57.4 -1.7l-3.5 1.3-1.6 2.4-3.1 1.7 1.1 1.4-
     if(m) m.innerHTML = x ? `${esc(x.p)} &middot; <b>${x.km.toLocaleString("en-US")}</b> km inland` : "&nbsp;"; });
   /* featured lanes as covers: a swipeable shelf on phones and tablets; on desktop a click-through column beside the board, kept in step with it */
   (function(){
-    const rows=LANES, SIDE=matchMedia("(min-width:1000px)");
+    const rows=LANES, SIDE=matchMedia("(min-width:1200px)");
     const car=document.createElement("div"); car.className="dcar rv"; car.setAttribute("aria-label","Featured lanes");
     car.innerHTML=`<div class="dcar-in"><div class="dcar-top"><p class="dcar-lbl">Flip through</p><div class="dcar-nav"><button type="button" class="dcar-prev" aria-label="Previous lane">&larr;</button><button type="button" class="dcar-next" aria-label="Next lane">&rarr;</button></div></div>
       <div class="dcar-track">${rows.map((x,i)=>`<button type="button" class="dc" data-l="${esc(x.id)}">

@@ -717,6 +717,9 @@
   .vp[data-muted="1"] .vp-bar{padding-left:220px}
   .vp-btn{flex:none;width:36px;height:36px;display:grid;place-items:center;background:none;border:0;color:#fff;cursor:pointer;border-radius:50%;transition:background .2s}
   .vp-btn:hover{background:rgba(255,255,255,.14)}
+  .vp-share{position:relative}
+  .vp-tip{position:absolute;right:0;bottom:calc(100% + 8px);padding:7px 10px;background:var(--b);color:var(--onB);font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;white-space:nowrap;opacity:0;transform:translateY(4px);pointer-events:none;transition:opacity .2s,transform .2s}
+  .vp-tip.on{opacity:1;transform:none}
   .vp[data-state="playing"] .i-play,.vp:not([data-state="playing"]) .i-pause{display:none}
   .vp[data-muted="1"] .i-on,.vp[data-muted="0"] .i-off{display:none}
   .vp-track{position:relative;flex:1;height:18px;cursor:pointer;touch-action:none}
@@ -978,6 +981,7 @@
         <div class="vp-track" role="slider" tabindex="0" aria-label="Seek" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i class="vp-buf"></i><i class="vp-fill"></i><i class="vp-knob"></i></div>
         <span class="vp-time">0:00 / 1:15</span>
         <button type="button" class="vp-btn vp-mute" aria-label="Unmute"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path class="i-on" d="M15.5 9a4.2 4.2 0 0 1 0 6M18 6.5a7.8 7.8 0 0 1 0 11"/><path class="i-off" d="M16 9.5l5 5M21 9.5l-5 5"/></svg></button>
+        <button type="button" class="vp-btn vp-share" aria-label="Share this film"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15V4M8 7.5L12 3.5l4 4M6 11.5v8h12v-8"/></svg><span class="vp-tip" role="status" aria-live="polite"></span></button>
         <button type="button" class="vp-btn vp-fs" aria-label="Full screen"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5"/></svg></button>
       </div>
     </div>
@@ -1364,6 +1368,7 @@ function route(){
   document.querySelectorAll(".page.on em, .page.on .mail").forEach(el=>mio.observe(el));
   setTimeout(()=>document.querySelectorAll(".page.on .rv").forEach(el=>el.classList.add("in")),2000);
   if(path==="contact"&&qs&&window.SLG_prefill) window.SLG_prefill(new URLSearchParams(qs));
+  if(path==="services"&&/(^|&)film\b/.test(qs)){ const go=()=>{ const f=document.getElementById("film"); if(f) f.scrollIntoView({behavior:"auto",block:"center"}); }; requestAnimationFrame(go); setTimeout(go,400); }
   setTimeout(()=>document.querySelectorAll(".page.on em, .page.on .mail").forEach(el=>el.classList.add("mk")),2600);
   requestAnimationFrame(paint);
 }
@@ -2259,6 +2264,14 @@ window.SLG_OUTLINES={"Angola":{"d":"M57.4 -1.7l-3.5 1.3-1.6 2.4-3.1 1.7 1.1 1.4-
   vp.querySelector(".vp-big").addEventListener("click",e=>{ e.stopPropagation(); if(vp.dataset.state==="ended"){ v.currentTime=0; } if(RM||vp.dataset.state==="idle"&&!v.currentTime){ soundOn(); } else { userPaused=false; play(); } });
   vp.querySelector(".vp-play").addEventListener("click",e=>{ e.stopPropagation(); if(v.paused){ userPaused=false; play(); } else { userPaused=true; v.pause(); } showUI(); });
   vp.querySelector(".vp-mute").addEventListener("click",e=>{ e.stopPropagation(); if(v.muted&&!wantSound){ soundOn(); } else { muted(!v.muted); } showUI(); });
+  { const sb=vp.querySelector(".vp-share"), tip=sb.querySelector(".vp-tip"); let tt=0;
+    const say=m=>{ tip.textContent=m; tip.classList.add("on"); clearTimeout(tt); tt=setTimeout(()=>tip.classList.remove("on"),2200); };
+    const link=()=>{ const own=/^https?:$/.test(location.protocol)&&/speciallogistics\.net$|slgcargo\.com$/.test(location.hostname);
+      const c=document.querySelector('link[rel="canonical"]'); return (own?location.origin+location.pathname:(c&&c.href)||location.href.split("#")[0])+"#services?film"; };
+    sb.addEventListener("click",async e=>{ e.stopPropagation(); showUI(); const url=link();
+      try{ if(navigator.share&&matchMedia("(pointer:coarse)").matches){ await navigator.share({title:"Special Logistics Group: Any cargo. Anywhere.",url}); return; } }catch(err){ if(err&&err.name==="AbortError") return; }
+      try{ await navigator.clipboard.writeText(url); say("Link copied"); }
+      catch(_){ const t=document.createElement("textarea"); t.value=url; t.style.cssText="position:fixed;opacity:0"; document.body.appendChild(t); t.select(); let ok=false; try{ok=document.execCommand("copy")}catch(_){}; t.remove(); say(ok?"Link copied":"Copy failed"); } }); }
   vp.querySelector(".vp-fs").addEventListener("click",e=>{ e.stopPropagation(); const el=vp; if(document.fullscreenElement) document.exitFullscreen(); else if(el.requestFullscreen) el.requestFullscreen(); else if(v.webkitEnterFullscreen) v.webkitEnterFullscreen(); });
   vp.addEventListener("click",e=>{ if(e.target.closest(".vp-bar")) return; if(v.muted){ soundOn(); return; } if(v.paused){ userPaused=false; play(); } else { userPaused=true; v.pause(); } showUI(); });
   vp.addEventListener("pointermove",showUI,{passive:true});

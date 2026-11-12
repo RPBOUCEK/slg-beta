@@ -1426,7 +1426,11 @@ addEventListener("keydown",e=>{if(e.key==="Escape"){clearT();setMenu(false)}});
 /* ---------- router ---------- */
 const PAGES={home:"p-home",services:"p-services",about:"p-about",contact:"p-contact",myslg:"p-myslg",privacy:"p-privacy"};
 const TITLES={home:"Special Logistics Group | Freight to the world\u2019s hardest-to-reach places",services:"Services | Special Logistics Group",about:"About Us | Special Logistics Group",contact:"Contact | Special Logistics Group",myslg:"mySLG | Special Logistics Group",privacy:"Privacy | Special Logistics Group"};
-let pending=null;
+let pending=null, afterNav=null;
+/* page changes jump; smooth scrolling is only for moves within a page */
+const jump=f=>{ const h=document.documentElement, o=h.style.scrollBehavior; h.style.scrollBehavior="auto"; void getComputedStyle(h).scrollBehavior; f(); requestAnimationFrame(()=>{ h.style.scrollBehavior=o; }); };   /* the style read makes Chrome apply "auto" before the scroll */
+/* open a page already scrolled to a section: SLG_goTo("services","board",()=>...) runs the callback once the page shows, then lands on the section */
+window.SLG_goTo=(page,id,after)=>{ pending=id||null; afterNav=after||null; if((location.hash.replace(/^#/,"").split("?")[0]||"home")===page) route(); else location.hash="#"+page; };
 document.addEventListener("click",e=>{const a=e.target.closest("[data-scroll]");if(a)pending=a.dataset.scroll});
 let io=null,mio=null;
 function route(){
@@ -1444,8 +1448,13 @@ function route(){
   document.querySelectorAll(".tile").forEach(a=>a.classList.toggle("cur",a.getAttribute("href")==="#"+path));
   document.querySelectorAll(".nl").forEach(a=>a.classList.toggle("on",a.getAttribute("href")==="#"+path));
   setMenu(false);
+  if(afterNav){ const f=afterNav; afterNav=null; try{ f(); }catch(_){} }
   if(pending){const t=document.getElementById(pending);pending=null;
-    if(t){requestAnimationFrame(()=>t.scrollIntoView({behavior:"auto"}))}else scrollTo(0,0)}else scrollTo(0,0);
+    /* measure without the reveal offset (.rv starts 24px low), so the section lands exactly under the bar */
+    const land=()=>jump(()=>{ const st=t.style, tr=st.transform, tn=st.transition; st.transition="none"; st.transform="none";
+      const y=t.getBoundingClientRect().top+scrollY-(parseFloat(getComputedStyle(t).scrollMarginTop)||0);
+      st.transform=tr; void t.offsetHeight; st.transition=tn; scrollTo(0,Math.max(0,y)); });
+    if(t){ land(); requestAnimationFrame(land); }else jump(()=>scrollTo(0,0))}else jump(()=>scrollTo(0,0));
   if(io)io.disconnect();
   io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target)}}),{threshold:.12});
   document.querySelectorAll(".page.on .rv").forEach(el=>io.observe(el));
@@ -2333,7 +2342,9 @@ window.SLG_OUTLINES={"Angola":{"d":"M57.4 -1.7l-3.5 1.3-1.6 2.4-3.1 1.7 1.1 1.4-
     x=Math.max(12,Math.min(b.width-w-12,x));
     card.style.left=x+"px"; card.style.top=y+"px";
     card.querySelector(".x").onclick=close;
-    card.querySelector("[data-go]").onclick=()=>{ close(); location.hash="#services"; setTimeout(()=>window.SLG_showCountry&&window.SLG_showCountry(c,true),350); };
+    card.querySelector("[data-go]").onclick=()=>{ close();
+      if(window.SLG_goTo) window.SLG_goTo("services","board",()=>window.SLG_showCountry&&window.SLG_showCountry(c,false));
+      else { location.hash="#services"; setTimeout(()=>window.SLG_showCountry&&window.SLG_showCountry(c,true),350); } };
   };
   g.addEventListener("click",e=>{const sp=e.target.closest(".spot"); if(!sp) return; if(openC===sp.dataset.c) close(); else open(sp);});
   g.addEventListener("keydown",e=>{const sp=e.target.closest(".spot"); if(sp&&(e.key==="Enter"||e.key===" ")){e.preventDefault(); open(sp);}});

@@ -603,11 +603,11 @@
   .legs article::after{content:"";position:absolute;left:-1px;right:-1px;top:-1px;height:2px;background:var(--g);transform:scaleX(0);transform-origin:left}
   .legs article .stn b{transition:background .5s ease}
   .legs article.on .stn b{background:var(--b)}
-  .legs.run article.on::after{animation:legfill var(--legms,5000ms) linear forwards}
+  .legs article::after{transform:scaleX(var(--lp,0))}
   @keyframes legfill{to{transform:scaleX(1)}}
   @media(prefers-reduced-motion:reduce){.legs article::after{animation:none!important}}
   /* the journey scene: a thin line strip over the three legs */
-  .legscene{grid-column:1/-1;border-right:1px solid var(--ln);border-bottom:1px solid var(--ln);padding:clamp(12px,1.8vw,22px) 0 0;overflow:hidden}
+  .legscene{grid-column:1/-1;border-right:1px solid var(--ln);border-bottom:1px solid var(--ln);padding:clamp(10px,1.4vw,18px) 0 clamp(8px,1vw,12px);overflow:hidden}
   .legscene svg{display:block;width:100%;height:auto}
   @media(max-width:820px){.legscene svg{height:96px}}
   .legscene *{vector-effect:non-scaling-stroke}
@@ -793,7 +793,10 @@
   <section class="sec wrap">
     <h2 class="rv">Your <em>partner</em> for <em>every</em> leg of the journey</h2>
     <p class="lead rv">Our operations team works with you to develop customized solutions for your specific needs, drawing on experience to find the most reliable and cost-effective routing.</p>
-    <div class="cols legs rv"><div class="legscene" aria-hidden="true"><svg id="lsSvg" viewBox="0 0 1200 80" preserveAspectRatio="xMidYMid meet">
+    <div class="cols legs rv">
+      <article><span class="stn">Leg <b>01</b> of 03</span><p class="k">Drayage &amp; trucking</p><h3>Reliable drayage &amp; trucking solutions across the United States</h3><p>As a licensed USDOT motor carrier, we move cargo from your door to the railhead or port. We also offer standalone over-the-road trucking and less-than-truckload (LTL) moves.</p></article>
+      <article><span class="stn">Leg <b>02</b> of 03</span><p class="k">Ocean freight</p><h3>Streamlined global shipping</h3><p>Our status as an NVOCC licensed by the Federal Maritime Commission, combined with relationships with major ocean carriers, lets us move cargo reliably across the ocean.</p></article>
+      <article><span class="stn">Leg <b>03</b> of 03</span><p class="k">Inland &amp; on-carriage</p><h3>From the port to the border and the final delivery</h3><p>Experience, long-standing relationships with trusted providers, and diligent monitoring and supervision are critical to navigating the most complex portion of your cargo&rsquo;s journey.</p></article><div class="legscene" aria-hidden="true"><svg id="lsSvg" viewBox="0 0 1200 80" preserveAspectRatio="xMidYMid meet">
 <defs><clipPath id="lsSeaClip"><rect x="410.5" y="50" width="379" height="30"/></clipPath><clipPath id="lsShipClip"><rect x="0" y="0" width="1200" height="64"/></clipPath></defs>
 <path d="M0 60H410V80M790 80V60H1200" class="ground"/>
 <g class="crane"><path d="M352 60V17M372 60V17M352 30H372M352 45H372" class="st"/><path d="M352 17L362 5L372 17M362 5L340 16M362 5L472 16" class="st th"/><path d="M340 17H472" class="boom"/><g id="lsAT"><path d="M-4 18.5h8" class="trol"/><path id="lsAC" d="" class="cbl"/><path id="lsAS" d="" class="spr"/></g></g><g class="crane"><path d="M828 60V17M848 60V17M828 30H848M828 45H848" class="st"/><path d="M828 17L838 5L848 17M838 5L700 16M838 5L862 16" class="st th"/><path d="M700 17H862" class="boom"/><g id="lsBT"><path d="M-4 18.5h8" class="trol"/><path id="lsBC" d="" class="cbl"/><path id="lsBS" d="" class="spr"/></g></g><g id="lsTruck"><path d="M-15 56.5H38" class="ln"/><path d="M16 56V44.5h8.5l2.2 5h8.8q2 0 2 2V56" class="bd"/><path d="M18.5 46.5h5l1.3 3h-6.3z" class="gl"/><path d="M17.5 44.5v-5" class="ln"/><circle cx="-10" cy="58.2" r="2.4" class="wh"/><circle cx="-5" cy="58.2" r="2.4" class="wh"/><circle cx="21" cy="58.2" r="2.4" class="wh"/><circle cx="26" cy="58.2" r="2.4" class="wh"/><circle cx="34" cy="58.2" r="2.4" class="wh"/></g><g id="lsCab"><path d="M-15 56.5H28" class="ln"/><path d="M16 56V42.5q0-1.5 1.5-1.5h7q1.5 0 1.5 1.5V56" class="bd"/><path d="M21 43h4.2v5H21z" class="gl"/><circle cx="-10" cy="58.2" r="2.4" class="wh"/><circle cx="-5" cy="58.2" r="2.4" class="wh"/><circle cx="19" cy="58.2" r="2.4" class="wh"/><circle cx="24" cy="58.2" r="2.4" class="wh"/></g>
@@ -801,9 +804,6 @@
 <g clip-path="url(#lsSeaClip)"><g id="lsWaves"><path class="sea" d="M396 63q4-1.4 8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0V80H396z"/><path class="crest" d="M396 63q4-1.4 8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0 t8 0"/></g><g id="lsWaves2"><path class="swell" d="M396 70q6-1 12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0"/></g></g>
 <rect id="lsBox" x="-13" y="0" width="26" height="10" class="ybox"/>
 </svg></div>
-      <article><span class="stn">Leg <b>01</b> of 03</span><p class="k">Drayage &amp; trucking</p><h3>Reliable drayage &amp; trucking solutions across the United States</h3><p>As a licensed USDOT motor carrier, we move cargo from your door to the railhead or port. We also offer standalone over-the-road trucking and less-than-truckload (LTL) moves.</p></article>
-      <article><span class="stn">Leg <b>02</b> of 03</span><p class="k">Ocean freight</p><h3>Streamlined global shipping</h3><p>Our status as an NVOCC licensed by the Federal Maritime Commission, combined with relationships with major ocean carriers, lets us move cargo reliably across the ocean.</p></article>
-      <article><span class="stn">Leg <b>03</b> of 03</span><p class="k">Inland &amp; on-carriage</p><h3>From the port to the border and the final delivery</h3><p>Experience, long-standing relationships with trusted providers, and diligent monitoring and supervision are critical to navigating the most complex portion of your cargo&rsquo;s journey.</p></article>
     </div>
   </section>
 
@@ -1867,17 +1867,22 @@ initMap();route();
   }
   let cur=-1;
   const show=n=>{ if(n===cur) return; cur=n; legs.forEach((a,k)=>{a.classList.remove("on");void a.offsetWidth;a.classList.toggle("on",k===n)}); };
-  box.style.setProperty("--legms","5000ms");
   if(matchMedia("(prefers-reduced-motion: reduce)").matches){ frame(7); return; }
-  let t0=null, off=0, raf=0, vis=false;
-  const loop=now=>{ if(t0===null) t0=now-off*1000; const t=((now-t0)/1000)%L; show(frame(t)); raf=vis?requestAnimationFrame(loop):0; };
-  legs.forEach((a,k)=>a.addEventListener("click",()=>{ t0=performance.now()-k*5000; cur=-1; }));
-  frame(0);
-  new IntersectionObserver(es=>es.forEach(e=>{
-    vis=e.isIntersecting;
-    if(vis){ box.classList.add("run"); if(!raf){ t0=null; raf=requestAnimationFrame(loop);} }
-    else if(raf){ cancelAnimationFrame(raf); raf=0; off=((performance.now()-(t0||performance.now()))/1000)%L; }
-  }),{threshold:.25}).observe(box);
+  /* the journey follows the page: scrolling through the legs moves the cargo from door to final delivery */
+  const T0=.8, T1=14.0;
+  const scene=svg.closest(".legscene");
+  const A=()=>innerHeight*.95, Z=()=>innerHeight*.3;   /* the strip runs while it travels from the bottom of the screen up to 30% */
+  const prog=()=>{ const r=scene.getBoundingClientRect(); return Math.max(0,Math.min(1,(A()-r.bottom)/(A()-Z()))); };
+  let t=T0, target=T0, raf=0;
+  const paintLegs=()=>{ const n=frame(t); show(n);
+    legs.forEach((a,k)=>{ const f=k<n?1:k>n?0:Math.max(0,Math.min(1,(t-k*5)/5)); a.style.setProperty("--lp",f.toFixed(3)); }); };
+  const tick=()=>{ t+= (target-t)*.18; if(Math.abs(target-t)<.002) t=target; paintLegs(); raf=(t!==target)?requestAnimationFrame(tick):0; };
+  const onScroll=()=>{ target=T0+(T1-T0)*prog(); if(!raf) raf=requestAnimationFrame(tick); };
+  addEventListener("scroll",onScroll,{passive:true}); addEventListener("resize",onScroll); addEventListener("hashchange",()=>setTimeout(onScroll,80));
+  legs.forEach((a,k)=>a.addEventListener("click",()=>{ /* jump the page to the start of that leg */
+    const want=Math.max(0,Math.min(1,(k*5+.4-T0)/(T1-T0))), r=scene.getBoundingClientRect();
+    const bottomAt=A()-want*(A()-Z()); scrollTo({top:scrollY+r.bottom-bottomAt,behavior:"smooth"}); }));
+  t=target=T0+(T1-T0)*prog(); paintLegs();
 })();
 </script>
 <script>

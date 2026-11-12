@@ -573,6 +573,18 @@
     #grid:not(.open){max-height:560px;overflow:hidden;-webkit-mask-image:linear-gradient(#000 78%,transparent);mask-image:linear-gradient(#000 78%,transparent)}
     .gridmore{display:inline-flex;margin-top:16px;font-family:inherit;cursor:pointer}
   }
+  /* featured lanes on the board */
+  .lbl-beyond{margin:16px 2px 4px;max-width:70ch;color:var(--bMut)}.lbl-beyond b{color:var(--tileInk)}
+  .lbc.lane .lane-t{font-size:15px;line-height:1.6;color:var(--tileInk);max-width:72ch;margin:6px 0 22px}
+  .lane-c{display:flex;flex-wrap:wrap;gap:6px}
+  .lnc{font:500 12px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;padding:9px 11px;border:1px solid var(--bLn2);background:none;color:var(--tileInk)}
+  button.lnc{cursor:pointer}button.lnc:hover{background:var(--rowH)}
+  .dc-lane{background:var(--board)!important;display:flex!important;flex-direction:column;justify-content:center;gap:14px;padding:18px 14px 44px}
+  .dc-tiles{display:flex;flex-direction:column;gap:5px}
+  .dc-w{display:flex;flex-wrap:wrap;gap:2px}
+  .dc-w .ch{font:700 15px/1 var(--mono);background:var(--tile);color:var(--tileInk);padding:5px 4px;min-width:16px;text-align:center}
+  .dc-list{font:500 11px/1.5 var(--mono);letter-spacing:.04em;text-transform:uppercase;color:var(--bMut)}
+  .dcar-note{padding-inline:var(--pad);margin-top:4px;font-size:14px;color:var(--mut)}.dcar-note b{color:var(--g)}
   /* services: compact hero and one plain list of what we handle */
   .svhero{min-height:auto!important;padding-bottom:clamp(40px,6vw,72px)}
   .svhero h1{font-size:clamp(34px,4.6vw,64px);max-width:none}
@@ -823,7 +835,7 @@
   <section class="marq" hidden aria-hidden="true"><div class="mrow" id="mrow1"></div><div class="mrow alt" id="mrow2"></div></section>
   <section class="sec wrap svsec" id="handle">
     <h2 class="rv">Everything an <em>NVOCC</em> handles.</h2>
-    <div class="svlist rv"><div class="svg"><p class="stn">Part <b>01</b> of 03</p><h3>Origin</h3><ul><li>Drayage and over-the-road trucking as a licensed USDOT motor carrier</li><li>Warehousing: receiving, consolidation, container loading, crating and labeling</li><li>Bonded cargo: in-bond moves and bonded warehouses</li><li>Export clearance: AES filing, U.S. Customs and Border Protection clearance, vehicle titles, and license and denied-party screening</li></ul></div><div class="svg"><p class="stn">Part <b>02</b> of 03</p><h3>Ocean</h3><ul><li>Ocean carrier bookings and contracts</li><li>Full and part containers (FCL and LCL)</li><li>Vehicles (RoRo), breakbulk, oversized project cargo and hazardous cargo</li><li>Our own house bill of lading and published rates as an FMC-licensed NVOCC</li><li>Marine cargo insurance</li></ul></div><div class="svg"><p class="stn">Part <b>03</b> of 03</p><h3>Destination</h3><ul><li>Cargo tracking notes (ECTN / BESC) and Angola CNCA (ARCCLA)</li><li>Pre-shipment inspection and certificates of conformity, such as Kenya PVoC and Nigeria SONCAP</li><li>Duty-exemption letters for NGO cargo</li><li>Certificates of origin, consular legalization, fumigation and ISPM 15 wood packaging</li><li>Customs clearance with trusted local agents</li><li>On-carriage across borders to the final address</li><li>Every shipment tracked in mySLG</li></ul></div></div>
+    <div class="svlist rv"><div class="svg"><p class="stn">Part <b>01</b> of 03</p><h3>Origin</h3><ul><li>Drayage and over-the-road trucking as a licensed USDOT motor carrier</li><li>Warehousing: receiving, consolidation, container loading, crating and labeling</li><li>Bonded cargo: in-bond moves and bonded warehouses</li><li>Export clearance: AES filing, U.S. Customs and Border Protection clearance, vehicle titles, and license and denied-party screening</li></ul></div><div class="svg"><p class="stn">Part <b>02</b> of 03</p><h3>Ocean</h3><ul><li>Ocean carrier bookings and contracts</li><li>Full and part containers (FCL and LCL)</li><li>Vehicles (RoRo), breakbulk, oversized project cargo and hazardous cargo</li><li>Our own house bill of lading and published rates as an FMC-licensed NVOCC</li><li>Optional cargo insurance for your shipment</li></ul></div><div class="svg"><p class="stn">Part <b>03</b> of 03</p><h3>Destination</h3><ul><li>Cargo tracking notes (ECTN / BESC) and Angola CNCA (ARCCLA)</li><li>Pre-shipment inspection and certificates of conformity, such as Kenya PVoC and Nigeria SONCAP</li><li>Duty-exemption letters for NGO cargo</li><li>Certificates of origin, consular legalization, fumigation and ISPM 15 wood packaging</li><li>Customs clearance with trusted local agents</li><li>On-carriage across borders to the final address</li><li>Every shipment tracked in mySLG</li></ul></div></div>
   </section>
 
 <section class="sec tint wrap" id="dest">
@@ -839,8 +851,8 @@
       <div id="lsRes" class="lres" hidden aria-live="polite"></div>
     </div>
     <div class="lboard rv" id="board" aria-label="Destination board">
-      <div class="lb-top"><p class="lb-title">Deepest inland</p>
-        <button type="button" class="lb-back" hidden>&larr; All destinations</button><p class="lb-sub"></p></div>
+      <div class="lb-top"><p class="lb-title">Featured lanes</p>
+        <button type="button" class="lb-back" hidden>&larr; Featured lanes</button><p class="lb-sub"></p></div>
       <div class="lb-body" aria-live="polite"></div>
     </div>
     <div class="filters rv" id="filters"></div>
@@ -874,7 +886,8 @@
     <div class="creds rv">
       
       
-      <div><dt>Coverage</dt><dd>Fully insured</dd><p>Protected at every stage of the journey.</p></div>
+      <div><dt>Insurance</dt><dd>Professional liability coverage</dd><p>Special Logistics Group maintains professional liability coverage, including errors and omissions, contingent cargo, and contingent auto liability. Certificates of insurance are available upon request.</p><p>We can also arrange optional cargo insurance for your shipment, which protects your interest as the shipper if goods are lost or damaged in transit. Coverage is subject to policy terms, conditions, and exclusions. Contact us for details or to add coverage to your quote.</p></div>
+      <div><dt>Partners</dt><dd>Vetted worldwide</dd><p>Special Logistics Group draws on exclusive industry networks, including WCA Inter Global and FIATA, for access to fully vetted partners around the world. We also rely on relationships cultivated over decades in the field with trusted trucking and delivery partners who know the routes, ports, and customs requirements in their regions.</p></div>
       <div><dt>Risk management</dt><dd>Vetted transport partners</dd><p>SLG maintains a rigorous vetting protocol for transport partners and monitors all vendors through weekly reviews and updates from independent watchdogs.</p></div>
       
       
@@ -922,13 +935,9 @@
           <p class="role">General Manager</p>
         </div>
         <div class="pstory">
-          <p class="plead">Corbin runs SLG&rsquo;s day-to-day operations.</p>
-          <p>He coordinates carriers and partners, keeps schedules and costs on track, and keeps customers informed from booking to final delivery.</p>
-          <p>Before joining SLG, he spent more than a decade at Cardinal Health and Tanium leading large, complex projects and the teams behind them, with close attention to budgets, schedules and clear communication. Earlier, as an outreach coordinator in Columbus, Ohio, he connected volunteers with nonprofits such as the Mid-Ohio Foodbank and Faith Mission.</p>
-        </div>
-        <div class="pbg">
-          <div><h4>Experience</h4><ul><li><b>Special Logistics Group</b><span>General Manager</span></li><li><b>Cardinal Health</b><span>Manager, Data &amp; Analytics; Manager, Software Engineering; Manager, Enterprise PMO; Program Manager</span></li><li><b>Tanium</b><span>Technical Project Manager</span></li></ul></div>
-          <div><h4>Education</h4><ul><li><b>Cedarville University</b></li></ul></div>
+          <p class="plead">Corbin Boucek is General Manager of Special Logistics Group.</p>
+          <p>He brings 15 years of broad experience in management, leadership, finance, and project execution, including roles at a Fortune 500 healthcare company and a leading information security firm. His main professional interests are leadership and process improvement.</p>
+          <p>Corbin holds a bachelor&rsquo;s degree from Cedarville University and has served on church staff and on a nonprofit board. He lives just south of Columbus, Ohio, with his wife, Jordan, and their four children.</p>
         </div>
       </div>
     </div>
@@ -1288,6 +1297,7 @@ initMap();route();
     return `<div class="fbd" style="--cols:${tpl}"><div class="fbd-h">${cols.map(c=>`<span>${c.h}</span>`).join("")}</div>
       <div class="fbd-rows">${rows.map(r=>{
         const inner=cols.map(c=>`<span class="fbd-c">${tiles(r.v[spec.indexOf(c)],W(c),c.right)}</span>`).join("");
+        if(r.l) return `<button type="button" class="fbd-r${r.hl?" hl":""}" data-l="${esc(r.l)}">${inner}</button>`;
         return r.c?`<button type="button" class="fbd-r${r.hl?" hl":""}" data-c="${esc(r.c)}" data-cursor="Show ${esc(r.c)}">${inner}</button>`
                   :`<div class="fbd-r${r.hl?" hl":""}">${inner}</div>`;}).join("")}</div></div>`;
   }
@@ -1296,11 +1306,16 @@ initMap();route();
   const board=document.getElementById("board");
   if(!board) return;
   const body=board.querySelector(".lb-body"), sub=board.querySelector(".lb-sub"), back=board.querySelector(".lb-back"), tabs=[...board.querySelectorAll("[data-tab]")];
-  let tab="deep", country=null;
+  let tab="lanes", country=null, lane=null;
+  const LANES=[{"id": "ukraine", "name": "Ukraine", "short": "UKRAINE", "via": "Humanitarian aid", "countries": ["Ukraine"], "text": "In response to the ongoing conflict, Special Logistics Group has successfully shipped hundreds of containers of humanitarian aid to Ukraine. This lane is one of our specialties, and we work with vetted partners who know the current routes, border crossings, and delivery requirements for getting aid into the country."}, {"id": "east", "name": "East Africa", "short": "EAST AFRICA", "via": "Dar es Salaam · Mombasa", "countries": ["Kenya", "Tanzania", "South Sudan", "Burundi", "Uganda", "Rwanda", "Zambia", "Malawi", "DR Congo"], "text": "Special Logistics Group has a strong track record shipping humanitarian aid into East Africa through the ports of Dar es Salaam, Mombasa, and others in the region. From there, we arrange full delivery inland to destinations including South Sudan, Burundi, Uganda, Rwanda, Zambia, Malawi, and the Democratic Republic of the Congo. We know shipping into this region comes with real challenges, including long inland routes, border crossings, and documentation requirements, and we specialize in making the process as seamless as possible for our clients."}, {"id": "west", "name": "West Africa", "short": "WEST AFRICA", "via": "Coast to inland", "countries": ["Liberia", "Ghana", "Togo", "Benin", "Nigeria", "Burkina Faso", "Mali"], "text": "West Africa is another core lane for Special Logistics Group. Our shipments of humanitarian aid reach Liberia, Ghana, Togo, Benin, Nigeria, Burkina Faso, and Mali, among others. Shipping to the region may seem simple, but port clearance, documentation, and long overland routes to inland countries like Burkina Faso and Mali can still cause delays. Our established partners in the region manage those steps so aid arrives where it’s needed."}, {"id": "cac", "name": "Central America & the Caribbean", "short": "C. AMERICA & CARIBBEAN", "via": "Shorter transits", "countries": ["Guatemala", "Honduras", "El Salvador", "Nicaragua", "Panama", "Haiti", "Dominican Republic", "Jamaica"], "text": "Special Logistics Group ships humanitarian aid throughout Central America and the Caribbean, including but not limited to Guatemala, Honduras, El Salvador, Nicaragua, Panama, Haiti, the Dominican Republic, and Jamaica. Transit times are shorter than on our overseas lanes, but customs requirements, port conditions, and inland delivery vary widely from country to country. Our partners in the region know those differences and keep shipments moving to the people they’re meant to serve."}, {"id": "south", "name": "Southern Africa", "short": "SOUTHERN AFRICA", "via": "Durban · Beira", "countries": ["South Africa", "Mozambique", "Zimbabwe", "Namibia", "Eswatini", "Madagascar"], "text": "Special Logistics Group delivers humanitarian aid across Southern Africa, with shipments moving through the ports of Durban and Beira, among others. From there, we reach destinations including but not limited to South Africa, Mozambique, Zimbabwe, Namibia, Eswatini, and Madagascar. Each country in the region has its own clearance rules and transport challenges, and our partners handle those details from port to final delivery."}], BEYOND="These are just a few of our featured lanes. Special Logistics Group ships humanitarian aid all over the world, and wherever your cargo needs to go, we’ll find the route to get it there.";
+  const laneById=id=>LANES.find(x=>x.id===id);
 
   const deepRows=()=>Object.keys(LEDGER).map(c=>{const x=inlandOf(c).filter(i=>i.km).sort((a,b)=>b.km-a.km)[0]; return x?{c,...x}:null;})
     .filter(Boolean).sort((a,b)=>b.km-a.km).slice(0,10);
   const VIEWS={
+    lanes:{sub:"Regions where we ship humanitarian aid most often. Pick one to see how we get cargo there.",
+      render:()=>table([{h:"NO.",w:2,nw:2,right:true},{h:"FEATURED LANE",w:22,nw:16},{h:"",w:24,nw:0}],
+        LANES.map((x,i)=>({l:x.id,hl:true,v:[two(i+1),x.short,x.via]})))+`<p class="lbc-note lbl-beyond"><b>Beyond our featured lanes.</b> ${esc(BEYOND)}</p>`},
     deep:{sub:"The furthest delivery point in each country, measured from the port where the cargo came off the ship.",
       render:()=>table([{h:"NO.",w:2,nw:2,right:true},{h:"DELIVERED TO",w:14,nw:11},{h:"COUNTRY",w:12,nw:0},{h:"KM",w:5,nw:5,right:true},{h:"FROM PORT",w:13,nw:0}],
         deepRows().map((x,i)=>({c:x.c,hl:true,v:[two(i+1),x.p,x.c,x.km.toLocaleString("en-US"),x.from]})))}
@@ -1338,17 +1353,31 @@ initMap();route();
         <p class="lbc-note">The best routing is chosen for your cargo and situation.</p></div>
       <div class="lbc-cta"><a class="btn" href="#contact">Book this lane</a><button type="button" class="btn o" data-back>All destinations</button></div></div>`;
   }
+  function renderLane(id){
+    const x=laneById(id); if(!x) return "";
+    const chips=x.countries.map(c=>regionOf[c]?`<button type="button" class="lnc" data-c="${esc(c)}">${esc(c)}</button>`:`<span class="lnc">${esc(c)}</span>`).join("");
+    return `<div class="lbc lane">
+      <div class="lbc-name" aria-label="${esc(x.name)}">${tiles(x.short)}</div>
+      <div class="lbc-stats"><span>Featured lane</span><span class="y">${esc(x.via)}</span></div>
+      <p class="lane-t">${esc(x.text)}</p>
+      <div class="lbc-from"><h4>${x.countries.length>1?"Destinations on this lane":"Destination"}</h4><div class="lbc-ports lane-c">${chips}</div>
+        <p class="lbc-note">Tap a country for its ports and inland destinations.</p></div>
+      <div class="lbc-cta"><a class="btn" href="#contact">Book this lane</a><button type="button" class="btn o" data-lanes>Featured lanes</button></div></div>`;
+  }
+  function showLane(id,scroll){ lane=id; country=null; render(); board.classList.add("cv");
+    if(scroll) board.scrollIntoView({block:"start",behavior:REDUCED?"auto":"smooth"}); }
   function render(animate){
     tabs.forEach(t=>t.setAttribute("aria-selected",String(!country&&t.dataset.tab===tab)));
     board.classList.toggle("is-country",!!country);
     back.hidden=!country;
     if(country){ sub.textContent=""; body.innerHTML=renderCountry(country); }
+    else if(lane){ sub.textContent=""; body.innerHTML=renderLane(lane); board.classList.add("is-country"); back.hidden=false; }
     else { sub.textContent=VIEWS[tab].sub; body.innerHTML=VIEWS[tab].render(); }
     if(animate!==false) flap(body);
   }
   function showCountry(c,scroll){
     if(!regionOf[c]) return;
-    country=c; render(); board.classList.add("cv");
+    country=c; lane=null; render(); board.classList.add("cv");
     if(scroll) board.scrollIntoView({block:"start",behavior:REDUCED?"auto":"smooth"});
     const b=board.querySelector(".lb-back"); if(b) b.focus({preventScroll:true});
   }
@@ -1357,11 +1386,11 @@ initMap();route();
     if(m) m.innerHTML = x ? `${esc(x.p)} &middot; <b>${x.km.toLocaleString("en-US")}</b> km inland` : "&nbsp;"; });
   /* phones: the deepest inland lanes as a swipeable shelf of covers */
   (function(){
-    const rows=deepRows().slice(0,10); if(!rows.length) return;
-    const car=document.createElement("div"); car.className="dcar rv"; car.setAttribute("aria-label","Hard-to-reach destinations");
-    car.innerHTML=`<div class="dcar-track">${rows.map((x,i)=>`<button type="button" class="dc" data-c="${esc(x.c)}">
-      <span class="dc-cover">${outlineSvg(x.c)||""}<span class="stn"><b>${two(i+1)}</b> of ${two(rows.length)}</span></span>
-      <span class="dc-meta"><b class="dc-n">${esc(x.c)}</b><span class="dc-p">${esc(x.p)} &middot; ${x.km.toLocaleString("en-US")} km from ${esc(x.from)}</span></span></button>`).join("")}</div>`;
+    const rows=LANES;
+    const car=document.createElement("div"); car.className="dcar rv"; car.setAttribute("aria-label","Featured lanes");
+    car.innerHTML=`<div class="dcar-track">${rows.map((x,i)=>`<button type="button" class="dc" data-l="${esc(x.id)}">
+      <span class="dc-cover dc-lane"><span class="dc-tiles">${x.short.split(" ").map(w=>`<span class="dc-w">${tiles(w)}</span>`).join("")}</span>${x.countries.length>1?`<span class="dc-list">${x.countries.slice(0,6).map(esc).join(" &middot; ")}${x.countries.length>6?" &middot; more":""}</span>`:""}<span class="stn"><b>${two(i+1)}</b> of ${two(rows.length)}</span></span>
+      <span class="dc-meta"><b class="dc-n">${esc(x.name)}</b><span class="dc-p">${esc(x.via)}</span></span></button>`).join("")}</div><p class="dcar-note"><b>Beyond our featured lanes.</b> ${esc(BEYOND)}</p>`;
     board.parentNode.insertBefore(car,board);
     const track=car.querySelector(".dcar-track"), cards=[...track.children];
     let tk=false;
@@ -1373,12 +1402,14 @@ initMap();route();
     addEventListener("resize",flow); addEventListener("hashchange",()=>setTimeout(flow,80)); setTimeout(flow,60);
     track.addEventListener("click",e=>{const c=e.target.closest(".dc"); if(!c) return;
       if(!c.classList.contains("mid")){ c.scrollIntoView({behavior:REDUCED?"auto":"smooth",inline:"center",block:"nearest"}); return; }
-      showCountry(c.dataset.c,true);});
+      showLane(c.dataset.l,true);});
   })();
-  function showTab(t){ country=null; tab=t; render(); board.classList.remove("cv"); }
+  function showTab(t){ country=null; lane=null; tab=t; render(); board.classList.remove("cv"); }
   tabs.forEach(t=>t.addEventListener("click",()=>showTab(t.dataset.tab)));
-  back.addEventListener("click",()=>{country=null;render();board.classList.remove("cv");});
-  body.addEventListener("click",e=>{ const r=e.target.closest(".fbd-r[data-c]"); if(r){ showCountry(r.dataset.c,false); return; }
+  back.addEventListener("click",()=>{country=null;lane=null;render();board.classList.remove("cv");});
+  body.addEventListener("click",e=>{ const L=e.target.closest("[data-l]"); if(L){ showLane(L.dataset.l,false); return; }
+    if(e.target.closest("[data-lanes]")){ country=null; lane=null; render(); board.classList.remove("cv"); (matchMedia("(max-width:620px)").matches?document.querySelector(".dcar")||board:board).scrollIntoView({block:"start",behavior:REDUCED?"auto":"smooth"}); return; }
+    const r=e.target.closest(".fbd-r[data-c],.lnc[data-c]"); if(r){ showCountry(r.dataset.c,false); return; }
     if(e.target.closest("[data-back]")){ country=null; render(); board.classList.remove("cv"); (matchMedia("(max-width:620px)").matches?document.querySelector(".dcar")||board:board).scrollIntoView({block:"start",behavior:REDUCED?"auto":"smooth"}); } });
   NARROW.addEventListener&&NARROW.addEventListener("change",()=>render(false));
   render(false);

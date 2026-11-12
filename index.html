@@ -950,6 +950,19 @@
   @media(max-width:620px){.fbd-h,.fbd-r{font-size:var(--fz,11px);gap:0 1em}.lb-body{padding:12px 10px}}
   #grid[hidden],#dest .key[hidden]{display:none}
   @media(max-width:620px){.lc-foot{padding-bottom:calc(20px + env(safe-area-inset-bottom,0px))}}
+  /* home map: featured lanes pulse on arrival, then hand over to the full map as it draws */
+  .lp{pointer-events:none}
+  .lp path{fill:none;stroke-linecap:round;stroke-linejoin:round}
+  .lp-base{stroke:#282828;stroke-opacity:.2;stroke-width:1}
+  .lp-c{stroke-dasharray:.13 2;stroke-dashoffset:.13;animation:lpRun var(--lpd,5s) cubic-bezier(.5,.08,.4,1) infinite;animation-delay:var(--lpw,0s)}
+  .lp-c0{stroke:#282828;stroke-width:2.7;stroke-opacity:.9}
+  .lp-c1{stroke:#ffde59;stroke-width:1.8}
+  .lp-dot{fill:#ffde59;stroke:#282828;stroke-width:.8}
+  .lp-ring{fill:none;stroke:#282828;stroke-width:.9;opacity:0;transform-box:fill-box;transform-origin:center;animation:lpRing var(--lpd,5s) ease-out infinite;animation-delay:var(--lpw,0s)}
+  @keyframes lpRun{0%{stroke-dashoffset:.13}62%,100%{stroke-dashoffset:-1}}
+  @keyframes lpRing{0%,58%{opacity:0;transform:scale(1)}62%{opacity:.9;transform:scale(1)}100%{opacity:0;transform:scale(3.4)}}
+  @media(max-width:620px){.lp-base{stroke-width:1.7}.lp-c0{stroke-width:4.6}.lp-c1{stroke-width:3}.lp-dot{stroke-width:1.3}.lp-ring{stroke-width:1.5}}
+  @media(prefers-reduced-motion:reduce){.lp{display:none}}
 </style>
 </head>
 <body>
@@ -1836,6 +1849,9 @@ window.SLG_OUTLINES={"Angola":{"d":"M57.4 -1.7l-3.5 1.3-1.6 2.4-3.1 1.7 1.1 1.4-
     if(e.target.closest("[data-back]")){ country=null; render(); board.classList.remove("cv"); (matchMedia("(max-width:620px)").matches?document.querySelector(".dcar")||board:board).scrollIntoView({block:"start",behavior:REDUCED?"auto":"smooth"}); } });
   NARROW.addEventListener&&NARROW.addEventListener("change",()=>render(false));
   render(false);
+  /* refit whenever the board's width changes, including the moment it first shows (it renders while Services is hidden) */
+  if(window.ResizeObserver){ let bw=0; new ResizeObserver(es=>{ const w=Math.round(es[es.length-1].contentRect.width); if(w&&w!==bw){ bw=w; fitFbd(body); } }).observe(body); }
+  addEventListener("hashchange",()=>requestAnimationFrame(()=>fitFbd(body)));
   new IntersectionObserver((es,o)=>es.forEach(e=>{ if(e.isIntersecting){ flap(body); o.disconnect(); } }),{threshold:.35}).observe(board);
   window.slgBoard={country:c=>showCountry(c,true),tab:t=>{showTab(t);board.scrollIntoView({block:"start"});}};
 
@@ -2308,6 +2324,41 @@ window.SLG_OUTLINES={"Angola":{"d":"M57.4 -1.7l-3.5 1.3-1.6 2.4-3.1 1.7 1.1 1.4-
 })();
 </script>
 <script>
+/* ---------- home map: the five featured lanes pulse on arrival (gateway to destination port), fading out as the full map draws ---------- */
+(function(){
+  const svg=document.querySelector(".hmap svg"), sea=svg&&svg.querySelector(".rr-sea"); if(!svg||!sea) return;
+  if(matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const NS="http://www.w3.org/2000/svg", near=(a,b)=>Math.abs(a[0]-b[0])<.6&&Math.abs(a[1]-b[1])<.6;
+  const legs=[...sea.querySelectorAll("path")].map(p=>{ const d=p.getAttribute("d")||"", n=(d.match(/-?\d*\.?\d+/g)||[]).map(Number); return n.length>3?{d,a:[n[0],n[1]],b:[n[n.length-2],n[n.length-1]]}:null; }).filter(Boolean);
+  /* each lane is a chain of waypoints along the drawn sea legs: U.S. gateway first, destination port last */
+  const LANES=[
+    [[334.4,145.4],[487.6,158.1],[553.4,153.0],[564.6,144.3],[563.1,135.5]],                       /* Ukraine: New York, Algeciras, Piraeus, Istanbul, Constanta */
+    [[326.7,155.7],[487.6,158.1],[574.8,171.4],[593.0,199.5],[674.1,206.8],[596.5,271.4],[595.4,279.1]], /* East Africa: Norfolk ... Mombasa, Dar es Salaam */
+    [[326.7,155.7],[487.6,158.1],[532.0,284.8]],                                                     /* West Africa: Norfolk, Algeciras, down the coast */
+    [[278.7,176.2],[287.1,215.7]],                                                                   /* Central America: Houston, Puerto Cortes */
+    [[326.7,155.7],[487.6,158.1],[574.8,171.4],[593.0,199.5],[674.1,206.8],[693.6,240.6],[572.3,344.3]], /* Southern Africa: Norfolk ... Colombo, Mozambique Channel */
+    [[278.7,176.2],[316.1,209.4]]                                                                    /* Caribbean: Houston, Kingston */
+  ];
+  const DUR=6.5, g=document.createElementNS(NS,"g"); g.setAttribute("class","lp"); g.setAttribute("aria-hidden","true");
+  LANES.forEach((pts,i)=>{
+    let d="";
+    for(let k=0;k<pts.length-1;k++){ const L=legs.find(l=>near(l.a,pts[k])&&near(l.b,pts[k+1])); if(!L){ d=""; break; }
+      d+= k===0 ? L.d : L.d.replace(/^M\s*-?\d*\.?\d+[\s,]+-?\d*\.?\d+/,""); }
+    if(!d) return;
+    const SLOT=[0,1,2,3,4,3], end=pts[pts.length-1], w=(SLOT[i]*DUR/5).toFixed(2)+"s", st=`--lpd:${DUR}s;--lpw:${w}`;   /* both Houston branches are one lane: same slot */
+    const lane=document.createElementNS(NS,"g"); lane.setAttribute("style",st);
+    lane.innerHTML=`<path class="lp-base" pathLength="1" d="${d}"/><path class="lp-c lp-c0" pathLength="1" d="${d}"/><path class="lp-c lp-c1" pathLength="1" d="${d}"/>`+
+      `<circle class="lp-ring" cx="${end[0]}" cy="${end[1]}" r="2.4"/><circle class="lp-dot" cx="${end[0]}" cy="${end[1]}" r="1.9"/>`;
+    g.appendChild(lane);
+  });
+  if(!g.childNodes.length) return;
+  sea.parentNode.insertBefore(g, sea.parentNode.firstChild);
+  /* fade out as the trunk leg draws in on scroll (its dash offset goes 1 to 0) */
+  const trunk=legs.length?[...sea.querySelectorAll("path")].find(p=>(p.getAttribute("d")||"").startsWith("M326.7 155.7Q414.6")):null;
+  const sync=()=>{ const o=trunk?parseFloat(trunk.style.strokeDashoffset||"1"):1; const v=Math.max(0,Math.min(1,(o-.55)/.45)); g.style.opacity=v.toFixed(3); g.style.visibility=v<.01?"hidden":""; };
+  let tk=false; addEventListener("scroll",()=>{ if(!tk){ tk=true; requestAnimationFrame(()=>{ tk=false; sync(); }); } },{passive:true});
+  addEventListener("hashchange",()=>setTimeout(sync,80)); setTimeout(sync,200);
+})();
 /* ---------- hero map: spotlight a few deep inland deliveries; tap one for the lane ---------- */
 (function(){
   const svg=document.querySelector(".hmap svg"), stick=document.querySelector(".hstick"), L=window.SLG_LEDGER||{};

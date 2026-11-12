@@ -961,7 +961,7 @@
   .lp-ring{fill:none;stroke:#282828;stroke-width:.9;opacity:0;transform-box:fill-box;transform-origin:center;animation:lpRing var(--lpd,5s) ease-out infinite;animation-delay:var(--lpw,0s)}
   @keyframes lpRun{0%{stroke-dashoffset:.13}62%,100%{stroke-dashoffset:-1}}
   @keyframes lpRing{0%,58%{opacity:0;transform:scale(1)}62%{opacity:.9;transform:scale(1)}100%{opacity:0;transform:scale(3.4)}}
-  @media(max-width:620px){.lp-base{stroke-width:1.7}.lp-c0{stroke-width:4.6}.lp-c1{stroke-width:3}.lp-dot{stroke-width:1.3}.lp-ring{stroke-width:1.5}}
+  @media(max-width:620px){.lp-base{stroke-width:1.7;stroke-opacity:.13}.lp-c0{stroke-width:4.6}.lp-c1{stroke-width:3}.lp-dot{stroke-width:1.3}.lp-ring{stroke-width:1.5}}
   @media(prefers-reduced-motion:reduce){.lp{display:none}}
 </style>
 </head>
@@ -1550,7 +1550,7 @@ function paint(){tk=false;motion();
   const r=hero.getBoundingClientRect(),p=cl(-r.top/(r.height-innerHeight));
   /* the headline clears out first and the lanes start drawing only once it has gone, so text never sits on the map */
   const q=cl((p-.16)/.84);
-  if(land)land.style.opacity=(.21+.45*cl(q*2.2)).toFixed(3);
+  if(land)land.style.opacity=(innerWidth<=620?.7:.21+.45*cl(q*2.2)).toFixed(3);   /* phones: continents at full strength from arrival, so the lanes read as routes on a map */
   for(const el of els){const t=cl((q*1.3-(+el.dataset.s))/(+el.dataset.d));
     if(el.tagName==="path")el.style.strokeDashoffset=1-t;else el.style.opacity=t}
   if(NARROW.matches){ /* phones: the map sits above the headline, so the headline stays and settles to the bottom */

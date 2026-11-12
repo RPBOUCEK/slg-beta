@@ -593,6 +593,7 @@
   #allx{margin-top:22px}
   .gridmore{display:inline-flex!important;margin-top:18px;font-family:inherit;cursor:pointer}
   .dc-cover svg{position:absolute;inset:6%;width:88%;height:80%}
+  .svfirst{padding-top:calc(var(--navh,64px) + clamp(40px,6vw,80px))!important;border-top:0!important}
   /* services: compact hero and one plain list of what we handle */
   .svhero{min-height:auto!important;padding-bottom:clamp(40px,6vw,72px)}
   .svhero h1{font-size:clamp(34px,4.6vw,64px);max-width:none}
@@ -832,16 +833,9 @@
 
 <!-- ============ SERVICES ============ -->
 <div class="page" id="p-services">
-  <header class="hero wrap svhero">
-    <div class="rule"></div>
-    <p class="lbl">What we do</p>
-    <h1>Our <em>services</em>.</h1>
-    <p class="sub">As an FMC-licensed NVOCC, we handle every part of an export, from your door to the final address.</p>
-    <div class="btns"><a class="btn" href="#contact" data-nav>Talk to an expert</a><a class="btn o" href="#services" data-nav data-scroll="dest">See every destination</a></div>
-  </header>
 
   <section class="marq" hidden aria-hidden="true"><div class="mrow" id="mrow1"></div><div class="mrow alt" id="mrow2"></div></section>
-  <section class="sec wrap svsec" id="handle">
+  <section class="sec wrap svsec svfirst" id="handle">
     <h2 class="rv">Everything an <em>NVOCC</em> handles.</h2>
     <div class="svlist rv"><div class="svg"><p class="stn">Part <b>01</b> of 03</p><h3>Origin</h3><ul><li>Drayage and over-the-road trucking as a licensed USDOT motor carrier</li><li>Warehousing: receiving, consolidation, container loading, crating and labeling</li><li>Bonded cargo: in-bond moves and bonded warehouses</li><li>Export clearance: AES filing, U.S. Customs and Border Protection clearance, vehicle titles, and license and denied-party screening</li></ul></div><div class="svg"><p class="stn">Part <b>02</b> of 03</p><h3>Ocean</h3><ul><li>Ocean carrier bookings and contracts</li><li>Full and part containers (FCL and LCL)</li><li>Vehicles (RoRo), breakbulk, oversized project cargo and hazardous cargo</li><li>Our own house bill of lading and published rates as an FMC-licensed NVOCC</li><li>Optional cargo insurance for your shipment</li></ul></div><div class="svg"><p class="stn">Part <b>03</b> of 03</p><h3>Destination</h3><ul><li>Cargo tracking notes (ECTN / BESC) and Angola CNCA (ARCCLA)</li><li>Pre-shipment inspection and certificates of conformity, such as Kenya PVoC and Nigeria SONCAP</li><li>Duty-exemption letters for NGO cargo</li><li>Certificates of origin, consular legalization, fumigation and ISPM 15 wood packaging</li><li>Customs clearance with trusted local agents</li><li>On-carriage across borders to the final address</li><li>Every shipment tracked in mySLG</li></ul></div></div>
   </section>

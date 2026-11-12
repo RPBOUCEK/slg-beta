@@ -1293,7 +1293,7 @@ grid.innerHTML=all.map(([c,r])=>{
     <span class="cn">${c}</span>
     <span class="cm">&nbsp;</span></div>`}).join("");
 const counts={};all.forEach(([,r])=>counts[r]=(counts[r]||0)+1);
-const FILT=[["All","",all.length,()=>true],
+const FILT=[["All","","85+",()=>true],
   ...Object.keys(R).map(r=>[r,r,counts[r],d=>d.dataset.r===r])];
 const tally=document.getElementById("tally");
 function applyFilter(name,f,first,byRank){
@@ -1301,8 +1301,8 @@ function applyFilter(name,f,first,byRank){
   for(const d of grid.children){const ok=f(d);d.classList.toggle("off",!ok);if(ok)n++}
   grid.classList.toggle("filtered",!first);
   grid.classList.toggle("rank",!!byRank);
-  tally.textContent=first?`All ${all.length} countries`
-    :`${n} of ${all.length} countries${name?" \u00b7 "+name:""}`;
+  tally.textContent=first?`All 85+ countries`
+    :`${n} of 85+ countries${name?" \u00b7 "+name:""}`;
 }
 FILT.forEach(([label,name,count,f,byRank],i)=>{
   const b=document.createElement("button");
@@ -1310,9 +1310,9 @@ FILT.forEach(([label,name,count,f,byRank],i)=>{
   if(!i)b.className="on";
   b.onclick=()=>{[...fl.children].forEach(x=>x.classList.toggle("on",x===b));applyFilter(name||label,f,i===0,byRank)};
   fl.appendChild(b)});
-{ const allx=document.getElementById("allx"), more=document.createElement("button"); more.type="button"; more.className="btn o gridmore"; more.textContent=`Browse all ${all.length} countries`;
+{ const allx=document.getElementById("allx"), more=document.createElement("button"); more.type="button"; more.className="btn o gridmore"; more.textContent=`Browse all 85+ countries`;
   allx.before(more);
-  more.onclick=()=>{ const o=allx.classList.toggle("open"); grid.classList.add("open"); more.textContent=o?"Hide the list":`Browse all ${all.length} countries`; }; }
+  more.onclick=()=>{ const o=allx.classList.toggle("open"); grid.classList.add("open"); more.textContent=o?"Hide the list":`Browse all 85+ countries`; }; }
 applyFilter("",()=>true,true);
 
 /* ---------- menu ---------- */

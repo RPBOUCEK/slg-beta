@@ -27,7 +27,7 @@
 <script>try{localStorage.removeItem("slg-theme")}catch(e){}</script>
 <link rel="preload" href="/fonts/Montserrat-Bold.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fonts/Montserrat-Regular.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/assets/site-31378b5223.css">
+<link rel="stylesheet" href="/assets/site-4a0233f59b.css">
 <script>window.SLG_MP={page:"about"};</script>
 </head>
 <body>
@@ -508,6 +508,8 @@ initMap();route();
   const GLY="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
   const tiles=(txt,w,right)=>{let s=(txt==null?"":String(txt)).toUpperCase(); if(w){s=s.slice(0,w); s=right?s.padStart(w," "):s.padEnd(w," ");}
     return [...s].map(ch=>`<span class="ch${ch===" "?" sp":""}" data-t="${ch===" "?"&nbsp;":esc(ch)}">${ch===" "?"&nbsp;":esc(ch)}</span>`).join("");};
+  /* a name on the board: each word (with the blank flap after it) is held together, so a long name wraps between words, never inside one */
+  const nameTiles=txt=>{const ws=String(txt==null?"":txt).trim().split(/\s+/); return ws.map((w,i)=>`<span class="nw">${tiles(w+(i<ws.length-1?" ":""))}</span>`).join("");};
   let flapT=0;
   function flap(root){
     if(REDUCED||!root) return;
@@ -593,7 +595,7 @@ initMap();route();
       : `<h4>Inland delivery</h4><p class="lbc-note">From the port to the final address, anywhere in ${esc(c)}. Tell us where it needs to go and we will plan the inland leg.</p>`;
     const map=outlineSvg(c);
     return `<div class="lbc">
-      <div class="lbc-name" aria-label="${esc(c)}">${tiles(c)}</div>
+      <div class="lbc-name" aria-label="${esc(c)}">${nameTiles(c)}</div>
       <div class="lbc-stats">${stats}</div>
       <div class="lbc-grid${map?"":" nomap"}">${map?`<div class="lbc-map">${map}</div>`:""}<div class="lbc-in">${inland}</div></div>
       <div class="lbc-from"><p class="lbc-note">The best routing is chosen for your cargo and situation.</p></div>
@@ -622,7 +624,7 @@ initMap();route();
   function lanePanel(id){
     const x=laneById(id); if(!x) return "";
     const chips=x.countries.map(c=>`<button type="button" class="lnc" data-zc="${esc(c)}">${esc(c)}</button>`).join("");
-    return `<div class="lbc-name" aria-label="${esc(x.name)}">${tiles(x.short)}</div>
+    return `<div class="lbc-name" aria-label="${esc(x.name)}">${nameTiles(x.short)}</div>
       <div class="lbc-stats"><span>Featured lane</span><span class="y">${esc(x.via)}</span></div>
       <p class="lane-t">${esc(x.text)}</p>
       <div class="lbc-from"><h4>${x.countries.length>1?"Destinations on this lane":"Destination"}</h4><div class="lbc-ports lane-c">${chips}</div>

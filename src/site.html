@@ -939,6 +939,7 @@
   .fbd-r.hl .ch{color:var(--hlInk)}
   /* country view */
   .lbc-name{display:flex;flex-wrap:wrap;gap:3px;font:700 clamp(18px,2.6vw,30px)/1 var(--mono)}
+  .lbc-name .nw{display:flex;flex-wrap:wrap;gap:3px;flex:none;max-width:100%}
   .lbc-name .ch{color:var(--nameInk);background:linear-gradient(var(--nameT) 0 49%,var(--seam) 49% 51%,var(--nameT) 51%)}
   .lbc-stats{display:flex;flex-wrap:wrap;gap:6px;margin:14px 0 4px}
   .lbc-stats>span{font:700 10.5px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;border:1px solid var(--bLn2);padding:6px 8px}
@@ -1737,6 +1738,8 @@ window.SLG_OUTLINES={"Angola":{"d":"M57.4 -1.7l-3.5 1.3-1.6 2.4-3.1 1.7 1.1 1.4-
   const GLY="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
   const tiles=(txt,w,right)=>{let s=(txt==null?"":String(txt)).toUpperCase(); if(w){s=s.slice(0,w); s=right?s.padStart(w," "):s.padEnd(w," ");}
     return [...s].map(ch=>`<span class="ch${ch===" "?" sp":""}" data-t="${ch===" "?"&nbsp;":esc(ch)}">${ch===" "?"&nbsp;":esc(ch)}</span>`).join("");};
+  /* a name on the board: each word (with the blank flap after it) is held together, so a long name wraps between words, never inside one */
+  const nameTiles=txt=>{const ws=String(txt==null?"":txt).trim().split(/\s+/); return ws.map((w,i)=>`<span class="nw">${tiles(w+(i<ws.length-1?" ":""))}</span>`).join("");};
   let flapT=0;
   function flap(root){
     if(REDUCED||!root) return;
@@ -1822,7 +1825,7 @@ window.SLG_OUTLINES={"Angola":{"d":"M57.4 -1.7l-3.5 1.3-1.6 2.4-3.1 1.7 1.1 1.4-
       : `<h4>Inland delivery</h4><p class="lbc-note">From the port to the final address, anywhere in ${esc(c)}. Tell us where it needs to go and we will plan the inland leg.</p>`;
     const map=outlineSvg(c);
     return `<div class="lbc">
-      <div class="lbc-name" aria-label="${esc(c)}">${tiles(c)}</div>
+      <div class="lbc-name" aria-label="${esc(c)}">${nameTiles(c)}</div>
       <div class="lbc-stats">${stats}</div>
       <div class="lbc-grid${map?"":" nomap"}">${map?`<div class="lbc-map">${map}</div>`:""}<div class="lbc-in">${inland}</div></div>
       <div class="lbc-from"><p class="lbc-note">The best routing is chosen for your cargo and situation.</p></div>
@@ -1851,7 +1854,7 @@ window.SLG_OUTLINES={"Angola":{"d":"M57.4 -1.7l-3.5 1.3-1.6 2.4-3.1 1.7 1.1 1.4-
   function lanePanel(id){
     const x=laneById(id); if(!x) return "";
     const chips=x.countries.map(c=>`<button type="button" class="lnc" data-zc="${esc(c)}">${esc(c)}</button>`).join("");
-    return `<div class="lbc-name" aria-label="${esc(x.name)}">${tiles(x.short)}</div>
+    return `<div class="lbc-name" aria-label="${esc(x.name)}">${nameTiles(x.short)}</div>
       <div class="lbc-stats"><span>Featured lane</span><span class="y">${esc(x.via)}</span></div>
       <p class="lane-t">${esc(x.text)}</p>
       <div class="lbc-from"><h4>${x.countries.length>1?"Destinations on this lane":"Destination"}</h4><div class="lbc-ports lane-c">${chips}</div>

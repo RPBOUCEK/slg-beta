@@ -27,7 +27,7 @@
 <script>try{localStorage.removeItem("slg-theme")}catch(e){}</script>
 <link rel="preload" href="/fonts/Montserrat-Bold.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fonts/Montserrat-Regular.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/assets/site-82fe4c18e3.css">
+<link rel="stylesheet" href="/assets/site-8b8bbedfbe.css">
 <script>window.SLG_MP={page:"contact"};</script>
 </head>
 <body>
@@ -130,6 +130,7 @@
 
 <!-- ============ mySLG ============ -->
 <footer><div class="in wrap">
+  <canvas class="fflag" id="fflag" width="46" height="56" role="img" aria-label="Signal flags Alpha over India: we will not abandon you" title="Alpha over India: we will not abandon you"></canvas>
   <div class="l"><a href="/services/" data-nav>Services</a><a href="/about/" data-nav>About Us</a><a href="/contact/" data-nav>Contact</a><a href="/myslg/" data-nav>mySLG</a><a href="/privacy/" data-nav>Privacy</a></div>
   <span>&copy; <span id="yr">2026</span> Special Logistics Group LLC. All rights reserved.</span>
   <span class="ftdocs"><a href="https://shipslg.com/terms/hbl-terms.pdf" target="_blank" rel="noopener">HBL Terms (PDF)</a><a href="https://shipslg.com/terms/nra-terms.pdf" target="_blank" rel="noopener">NRA Terms (PDF)</a></span>
@@ -270,6 +271,79 @@ addEventListener("hashchange",route);
 
 const cl=v=>Math.min(1,Math.max(0,v));
 document.getElementById("yr").textContent=new Date().getFullYear();
+/* ---------- footer: Alpha over India, flying from a halyard ----------
+   Both flags are drawn flat once (in black and white), then redrawn each frame one device-pixel column at a time,
+   each column lifted by a travelling wave that is pinned at the hoist and grows toward the fly,
+   with light and shade following the slope. Pauses off screen; holds still for reduced motion. */
+(function(){
+  const cv=document.getElementById("fflag"); if(!cv||!cv.getContext) return;
+  const ctx=cv.getContext("2d"), root=document.documentElement;
+  const CW=46,CH=56,FW=34,FH=22,GAP=3,X0=7,Y0=5,HX=4.5,A=2.4,K=7.2;
+  let dpr=1,flat=null,ink="#282828",ph=0,T=0,last=0,raf=0,seen=false;
+  const still=matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function paintFlat(){
+    dpr=Math.min(3,Math.max(1,devicePixelRatio||1));
+    cv.width=Math.round(CW*dpr); cv.height=Math.round(CH*dpr);
+    flat=document.createElement("canvas"); flat.width=Math.round(FW*dpr); flat.height=Math.round((FH*2+GAP)*dpr);
+    const o=flat.getContext("2d"); o.scale(dpr,dpr);
+    const n=FW*.31, al=new Path2D(`M0 0H${FW}L${FW-n} ${FH/2}L${FW} ${FH}H0Z`);
+    const dark=root.getAttribute("data-slg-theme")==="dark";
+    o.fillStyle="#fff"; o.fill(al);
+    o.save(); o.clip(al); o.fillStyle="#282828"; o.fillRect(FW/2,0,FW,FH); o.restore();
+    o.lineWidth=.7; o.strokeStyle=dark?"rgba(251,250,246,.5)":"rgba(40,40,40,.35)"; o.stroke(al);
+    const y=FH+GAP;
+    o.fillStyle="#fff"; o.fillRect(0,y,FW,FH);
+    o.fillStyle="#282828"; o.beginPath(); o.arc(FW/2,y+FH/2,FH*.27,0,Math.PI*2); o.fill();
+    o.strokeRect(.35,y+.35,FW-.7,FH-.7);
+  }
+  function readInk(){ ink=getComputedStyle(root).getPropertyValue("--g").trim()||"#282828"; }
+  function draw(){
+    const d=dpr, cols=flat.width, amp=A*d*(.78+.22*Math.sin(T*.5)), squeeze=1-.035*(.5+.5*Math.sin(T*.9));
+    ctx.setTransform(1,0,0,1,0,0); ctx.clearRect(0,0,cv.width,cv.height);
+    ctx.globalCompositeOperation="source-over";
+    // halyard and the clips that hold each flag to it
+    ctx.strokeStyle=ink; ctx.globalAlpha=.75; ctx.lineWidth=Math.max(1,d*.9);
+    ctx.beginPath(); ctx.moveTo(HX*d,0); ctx.lineTo(HX*d,CH*d);
+    for(const yy of [Y0,Y0+FH,Y0+FH+GAP,Y0+FH*2+GAP]){ ctx.moveTo(HX*d,yy*d); ctx.lineTo(X0*d,yy*d); }
+    ctx.stroke(); ctx.globalAlpha=1;
+    const shade=[];
+    for(let f=0;f<2;f++){
+      const sy=Math.round(f*(FH+GAP)*d), sh=Math.round(FH*d), dy=(Y0+f*(FH+GAP))*d, row=[];
+      for(let c=0;c<cols;c++){
+        const u=c/cols, a=ph-u*K-f*.45, lift=amp*Math.pow(u,1.25)*Math.sin(a);
+        ctx.drawImage(flat,c,sy,1,sh,X0*d+c*squeeze,dy+lift,1.6,sh);
+        row.push(-Math.cos(a)*Math.min(1,u*1.6));
+      }
+      shade.push(row);
+    }
+    // light and shade on the folds, only where the cloth is
+    ctx.globalCompositeOperation="source-atop";
+    for(let f=0;f<2;f++){
+      const dy=(Y0+f*(FH+GAP))*d;
+      shade[f].forEach((v,c)=>{
+        ctx.fillStyle=v>0?`rgba(255,255,255,${(v*.22).toFixed(3)})`:`rgba(30,30,30,${(-v*.26).toFixed(3)})`;
+        ctx.fillRect(X0*d+c*squeeze,dy-amp-2,1.6,FH*d+amp*2+4);
+      });
+    }
+    ctx.globalCompositeOperation="source-over";
+  }
+  function tick(now){
+    const dt=Math.min(.05,last?(now-last)/1000:0); last=now; T+=dt;
+    ph+=dt*(5.4+1.5*Math.sin(T*.37)+.7*Math.sin(T*1.13));
+    draw(); raf=requestAnimationFrame(tick);
+  }
+  function run(on){
+    if(still){ draw(); return; }
+    if(on&&!raf){ last=0; raf=requestAnimationFrame(tick); }
+    if(!on&&raf){ cancelAnimationFrame(raf); raf=0; }
+  }
+  paintFlat(); readInk(); ph=1.2; draw();
+  new MutationObserver(()=>{readInk();paintFlat();draw();}).observe(root,{attributes:true,attributeFilter:["data-slg-theme"]});
+  addEventListener("resize",()=>{ if(Math.min(3,Math.max(1,devicePixelRatio||1))!==dpr){ paintFlat(); draw(); } });
+  if("IntersectionObserver" in window) new IntersectionObserver(es=>{ seen=es[0].isIntersecting; run(seen&&!document.hidden); }).observe(cv);
+  else { seen=true; run(true); }
+  document.addEventListener("visibilitychange",()=>run(seen&&!document.hidden));
+})();
 /* ---------- copy to clipboard ---------- */
 document.addEventListener("click",async e=>{const b=e.target.closest("[data-copy]");if(!b)return;
   const txt=b.dataset.copy,old=b.textContent;

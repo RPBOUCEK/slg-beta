@@ -27,7 +27,7 @@
 <script>try{localStorage.removeItem("slg-theme")}catch(e){}</script>
 <link rel="preload" href="/fonts/Montserrat-Bold.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fonts/Montserrat-Regular.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/assets/site-91241884ee.css">
+<link rel="stylesheet" href="/assets/site-31378b5223.css">
 <script>window.SLG_MP={page:"services"};</script>
 </head>
 <body>
@@ -114,7 +114,7 @@
 
 <!-- ============ ABOUT ============ -->
 <footer><div class="in wrap">
-  <canvas class="fflag" id="fflag" width="46" height="56" role="img" aria-label="Signal flags Alpha over India: we will not abandon you" title="Alpha over India: we will not abandon you"></canvas>
+  <a class="fflag" id="fflagl" href="/about/" data-nav aria-label="Alpha over India: read why we will not abandon you" title="Alpha over India: we will not abandon you"><canvas id="fflag" width="46" height="56" aria-hidden="true"></canvas></a>
   <div class="l"><a href="/services/" data-nav>Services</a><a href="/about/" data-nav>About Us</a><a href="/contact/" data-nav>Contact</a><a href="/myslg/" data-nav>mySLG</a><a href="/privacy/" data-nav>Privacy</a></div>
   <span>&copy; <span id="yr">2026</span> Special Logistics Group LLC. All rights reserved.</span>
   <span class="ftdocs"><a href="https://shipslg.com/terms/hbl-terms.pdf" target="_blank" rel="noopener">HBL Terms (PDF)</a><a href="https://shipslg.com/terms/nra-terms.pdf" target="_blank" rel="noopener">NRA Terms (PDF)</a></span>
@@ -327,6 +327,10 @@ document.getElementById("yr").textContent=new Date().getFullYear();
   if("IntersectionObserver" in window) new IntersectionObserver(es=>{ seen=es[0].isIntersecting; run(seen&&!document.hidden); }).observe(cv);
   else { seen=true; run(true); }
   document.addEventListener("visibilitychange",()=>run(seen&&!document.hidden));
+  /* the hoist is a link straight to the story behind it, on About Us */
+  const lk=document.getElementById("fflagl");
+  if(lk) lk.addEventListener("click",e=>{ if(e.metaKey||e.ctrlKey||e.shiftKey||e.altKey||e.button) return;
+    if(window.SLG_goTo){ e.preventDefault(); window.SLG_goTo("about","abandon"); } });
 })();
 /* ---------- copy to clipboard ---------- */
 document.addEventListener("click",async e=>{const b=e.target.closest("[data-copy]");if(!b)return;

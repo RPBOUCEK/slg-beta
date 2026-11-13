@@ -31,7 +31,32 @@ PAGES={ # key: (path, title, description, breadcrumb name)
    "How Special Logistics Group handles the information you send us. We do not sell personal data.","Privacy"),
 }
 EXT={"image/jpeg":"jpg","image/png":"png","image/webp":"webp","image/gif":"gif"}
+# Pictures that are bigger than they are ever drawn. Keyed by the sha1 of the bytes in src/site.html,
+# so changing a picture drops it back to "leave it alone" and the build says so.
+#   sha1 prefix -> (widest it is ever drawn at 2x, jpeg quality or None to keep the original)
+TRIM={
+ "ab611b33e5":(2560,82),   # home photo band: drawn at most 1920 wide, 300 tall
+ "3fb44db826":(2560,82),   # services photo band
+ "001e1a8de1":(300,None),  # WCAworld mark: drawn 132 wide
+}
+LEAVE={"ca3753c5cb","03e63f84d0","744b1c9803","dc90673352","16582ca51e","87d9f41b55","e02785a67a"}  # already no bigger than they need to be
 def esc(t): return t.replace("&","&amp;").replace('"',"&quot;").replace("<","&lt;")
+
+def trim(raw, mime, key):
+    """Shrink a picture to the size it is actually drawn at. Returns the bytes to publish."""
+    if key not in TRIM: return raw
+    maxw, q = TRIM[key]
+    try:
+        from PIL import Image
+    except ImportError:
+        return raw
+    im = Image.open(io.BytesIO(raw))
+    if im.width > maxw: im = im.resize((maxw, round(im.height*maxw/im.width)), Image.LANCZOS)
+    buf = io.BytesIO()
+    if mime == "image/jpeg": im.convert("RGB").save(buf, "JPEG", quality=q or 82, optimize=True, progressive=True)
+    else: im.save(buf, "PNG", optimize=True)
+    out = buf.getvalue()
+    return out if len(out) < len(raw) else raw
 
 def main():
     s=SRC.read_text(encoding="utf-8")
@@ -40,9 +65,14 @@ def main():
     sizes={}
     def asset(m):
         mime,b64=m.group(1),m.group(2); raw=base64.b64decode(b64)
-        name=f"img-{hashlib.sha1(raw).hexdigest()[:10]}.{EXT[mime]}"; (ASSETS/name).write_bytes(raw)
+        key=hashlib.sha1(raw).hexdigest()[:10]
+        out=trim(raw,mime,key)
+        if key not in TRIM and key not in LEAVE and len(raw)>120_000:
+            print(f"  note: {key} is {len(raw)//1024}KB and is not in TRIM or LEAVE in tools/build/build.py; published as is")
+        name=f"img-{key}.{EXT[mime]}"; (ASSETS/name).write_bytes(out)
+        if len(out)!=len(raw): print(f"  {name}: {len(raw)//1024}KB -> {len(out)//1024}KB")
         try:
-            from PIL import Image; sizes[name]=Image.open(io.BytesIO(raw)).size
+            from PIL import Image; sizes[name]=Image.open(io.BytesIO(out)).size
         except Exception: pass
         return "/assets/"+name
     DATAURI=re.compile(r"data:(image/(?:jpeg|png|webp|gif));base64,([A-Za-z0-9+/=]{2000,})")   # small inline icons stay inline
@@ -117,7 +147,7 @@ def main():
 <title>Page not found | Special Logistics Group</title><meta name="robots" content="noindex">
 {fav}
 <link rel="stylesheet" href="/assets/{cssname}">
-<style>.nf{{min-height:100svh;display:flex;flex-direction:column;justify-content:center;gap:22px;padding-block:80px}}.nf h1{{font-size:clamp(40px,7vw,84px);line-height:1.02;letter-spacing:-.03em}}.nf h1 em{{font-style:normal;background:linear-gradient(var(--b),var(--b)) left 100%/100% .13em no-repeat}}.nf p{{max-width:52ch;font-size:18px;color:var(--mut)}}.nf nav{{position:static;display:flex;flex-wrap:wrap;gap:10px;padding:0;background:none;border:0;height:auto}}</style>
+<style>.nf{{min-height:100svh;display:flex;flex-direction:column;justify-content:center;gap:22px;padding-block:80px}}.nf h1{{font-size:clamp(40px,7vw,84px);line-height:1.02;letter-spacing:-.03em}}.nf h1 em{{font-style:normal;background:linear-gradient(var(--b),var(--b)) left 100%/100% .13em no-repeat}}.nf p{{max-width:52ch;font-size:18px;color:var(--mut)}}.nf nav{{position:static;display:flex;justify-content:flex-start;flex-wrap:wrap;gap:10px;padding:0;background:none;border:0;height:auto;backdrop-filter:none}}</style>
 </head><body><main class="nf wrap"><p class="lbl">Error 404</p><h1>That page is <em>off the map</em>.</h1>
 <p>The address may have changed when we moved to shipslg.com. Everything is still here:</p>
 <nav aria-label="Pages"><a class="btn" href="/">Home</a><a class="btn o" href="/services/">Services</a><a class="btn o" href="/about/">About Us</a><a class="btn o" href="/myslg/">mySLG</a><a class="btn o" href="/contact/">Talk to an expert</a></nav>

@@ -39,7 +39,7 @@ TRIM={
  "3fb44db826":(2560,82),   # services photo band
  "001e1a8de1":(300,None),  # WCAworld mark: drawn 132 wide
 }
-LEAVE={"ca3753c5cb","03e63f84d0","744b1c9803","dc90673352","16582ca51e","87d9f41b55","e02785a67a"}  # already no bigger than they need to be
+LEAVE={"71f16695a3","ca3753c5cb","03e63f84d0","744b1c9803","dc90673352","16582ca51e","87d9f41b55","e02785a67a"}  # already no bigger than they need to be
 def esc(t): return t.replace("&","&amp;").replace('"',"&quot;").replace("<","&lt;")
 
 def trim(raw, mime, key):

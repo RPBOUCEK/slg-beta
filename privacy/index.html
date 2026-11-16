@@ -518,7 +518,7 @@ initMap();route();
       <div class="lbc-name" aria-label="${esc(c)}">${nameTiles(c)}</div>
       <div class="lbc-stats">${stats}</div>
       <div class="lbc-grid${map?"":" nomap"}">${map?`<div class="lbc-map">${map}</div>`:""}<div class="lbc-in">${inland}</div></div>
-      <div class="lbc-from"><p class="lbc-note">We ship here from anywhere. The best routing is chosen for your cargo and situation.</p></div>
+      <div class="lbc-from"><p class="lbc-note">The best routing is chosen for your cargo and situation.</p></div>
       <div class="lbc-cta"><a class="btn" href="/contact/?country=${encodeURIComponent(c)}">Book this lane</a><button type="button" class="btn o" data-back>All destinations</button></div></div>`;
   }
   const LMAP=window.SLG_LANEMAPS||{};
@@ -1195,7 +1195,7 @@ initMap();route();
   let openC=null, y0=0;
   const close=()=>{card.hidden=true; openC=null; g.querySelectorAll(".spot.on").forEach(x=>x.classList.remove("on"));};
   const open=sp=>{ const c=sp.dataset.c, d=deep(c), l=L[c]||{};     card.innerHTML=`<button class="x" type="button" aria-label="Close">&times;</button><p class="stn">Deep inland</p><h3>${esc(c)}</h3>
-      <p><b>${esc(d.p)}</b>, ${d.km.toLocaleString("en-US")} km from ${esc(d.from)}</p><p>We ship here from anywhere.</p>
+      <p><b>${esc(d.p)}</b>, ${d.km.toLocaleString("en-US")} km from ${esc(d.from)}</p><p>The best routing is chosen for your cargo and situation.</p>
       <button class="btn" type="button" data-go>Open in the destination index &rarr;</button>`;
     card.hidden=false; openC=c; y0=scrollY; g.querySelectorAll(".spot").forEach(x=>x.classList.toggle("on",x===sp));
     const r=sp.getBoundingClientRect(), b=stick.getBoundingClientRect(), w=card.offsetWidth, h=card.offsetHeight;

@@ -23,7 +23,7 @@
 <meta name="twitter:title" content="Contact | Talk to an Expert at Special Logistics Group">
 <meta name="twitter:description" content="Talk to an expert at Special Logistics Group. Book a time, call +1 574 326 3152 or email info@speciallogistics.net.">
 <meta name="twitter:image" content="https://shipslg.com/og.png">
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":["Organization","LocalBusiness"],"@id":"https://shipslg.com/#org","name":"Special Logistics Group LLC","alternateName":"SLG","url":"https://shipslg.com/","logo":"https://shipslg.com/logo.png","image":"https://shipslg.com/og.png","description":"FMC-licensed NVOCC in Elkhart, Indiana. Humanitarian and commercial freight from U.S. ports to 85+ countries, all the way to final delivery.","telephone":"+1-574-326-3152","email":"info@speciallogistics.net","address":{"@type":"PostalAddress","streetAddress":"227 S Main St","addressLocality":"Elkhart","addressRegion":"IN","addressCountry":"US"},"areaServed":"Worldwide","knowsAbout":["Freight forwarding","NVOCC ocean freight","Drayage","Humanitarian logistics","Export documentation"],"identifier":[{"@type":"PropertyValue","propertyID":"FMC OTI license","value":"027805NF"},{"@type":"PropertyValue","propertyID":"USDOT","value":"9002700"},{"@type":"PropertyValue","propertyID":"MC","value":"57447342"}]},{"@type":"WebSite","@id":"https://shipslg.com/#site","url":"https://shipslg.com/","name":"Special Logistics Group","publisher":{"@id":"https://shipslg.com/#org"}},{"@type":"ContactPage","@id":"https://shipslg.com/contact/#page","url":"https://shipslg.com/contact/","name":"Contact | Talk to an Expert at Special Logistics Group","description":"Talk to an expert at Special Logistics Group. Book a time, call +1 574 326 3152 or email info@speciallogistics.net.","isPartOf":{"@id":"https://shipslg.com/#site"},"about":{"@id":"https://shipslg.com/#org"},"inLanguage":"en-US"},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://shipslg.com/"},{"@type":"ListItem","position":2,"name":"Contact","item":"https://shipslg.com/contact/"}]}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":["Organization","LocalBusiness"],"@id":"https://shipslg.com/#org","name":"Special Logistics Group LLC","alternateName":"SLG","url":"https://shipslg.com/","logo":"https://shipslg.com/logo.png","image":"https://shipslg.com/og.png","description":"FMC-licensed NVOCC in Elkhart, Indiana. Humanitarian and commercial freight from anywhere to 85+ countries, all the way to final delivery.","telephone":"+1-574-326-3152","email":"info@speciallogistics.net","address":{"@type":"PostalAddress","streetAddress":"227 S Main St","addressLocality":"Elkhart","addressRegion":"IN","addressCountry":"US"},"areaServed":"Worldwide","knowsAbout":["Freight forwarding","NVOCC ocean freight","Drayage","Humanitarian logistics","Export documentation"],"identifier":[{"@type":"PropertyValue","propertyID":"FMC OTI license","value":"027805NF"},{"@type":"PropertyValue","propertyID":"USDOT","value":"9002700"},{"@type":"PropertyValue","propertyID":"MC","value":"57447342"}]},{"@type":"WebSite","@id":"https://shipslg.com/#site","url":"https://shipslg.com/","name":"Special Logistics Group","publisher":{"@id":"https://shipslg.com/#org"}},{"@type":"ContactPage","@id":"https://shipslg.com/contact/#page","url":"https://shipslg.com/contact/","name":"Contact | Talk to an Expert at Special Logistics Group","description":"Talk to an expert at Special Logistics Group. Book a time, call +1 574 326 3152 or email info@speciallogistics.net.","isPartOf":{"@id":"https://shipslg.com/#site"},"about":{"@id":"https://shipslg.com/#org"},"inLanguage":"en-US"},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://shipslg.com/"},{"@type":"ListItem","position":2,"name":"Contact","item":"https://shipslg.com/contact/"}]}]}</script>
 <script>try{localStorage.removeItem("slg-theme")}catch(e){}</script>
 <link rel="preload" href="/fonts/Montserrat-Bold.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fonts/Montserrat-Regular.woff2" as="font" type="font/woff2" crossorigin>
@@ -236,7 +236,7 @@ function route(){
   if(MP&&!pending&&location.hash.length>1){ const h=location.hash.slice(1); if(/^[\w-]+$/.test(h)&&document.getElementById(h)) pending=h; }
   for(const id of Object.values(PAGES)){ const el=document.getElementById(id); if(el) el.classList.toggle("on",id===PAGES[path]); }
   if(!MP) document.title=TITLES[path];
-  if(!MP){ const DESC={home:"FMC-licensed NVOCC in Elkhart, Indiana. Humanitarian and commercial freight from U.S. ports to 85+ countries, all the way to final delivery.",
+  if(!MP){ const DESC={home:"FMC-licensed NVOCC in Elkhart, Indiana. Humanitarian and commercial freight from anywhere to 85+ countries, all the way to final delivery.",
       services:"Everything SLG handles as a licensed NVOCC: drayage, warehousing, bonded cargo, export clearance, ocean bookings, insurance and destination documents such as ECTN and CNCA.",
       about:"Special Logistics Group: founded by a lifelong mariner, with thousands of humanitarian shipments to 85+ countries for more than 100 NGOs, charities and ministries.",
       contact:"Talk to an expert at Special Logistics Group. Book a time, call +1 574 326 3152 or email info@speciallogistics.net.",
@@ -572,7 +572,7 @@ initMap();route();
       <div class="lbc-name" aria-label="${esc(c)}">${nameTiles(c)}</div>
       <div class="lbc-stats">${stats}</div>
       <div class="lbc-grid${map?"":" nomap"}">${map?`<div class="lbc-map">${map}</div>`:""}<div class="lbc-in">${inland}</div></div>
-      <div class="lbc-from"><p class="lbc-note">The best routing is chosen for your cargo and situation.</p></div>
+      <div class="lbc-from"><p class="lbc-note">We ship here from anywhere. The best routing is chosen for your cargo and situation.</p></div>
       <div class="lbc-cta"><a class="btn" href="/contact/?country=${encodeURIComponent(c)}">Book this lane</a><button type="button" class="btn o" data-back>All destinations</button></div></div>`;
   }
   const LMAP=window.SLG_LANEMAPS||{};
@@ -1248,9 +1248,8 @@ initMap();route();
   const card=document.createElement("div"); card.className="spotcard"; card.hidden=true; card.setAttribute("role","dialog"); stick.appendChild(card);
   let openC=null, y0=0;
   const close=()=>{card.hidden=true; openC=null; g.querySelectorAll(".spot.on").forEach(x=>x.classList.remove("on"));};
-  const open=sp=>{ const c=sp.dataset.c, d=deep(c), l=L[c]||{}; const ports=(l.ports&&l.ports.length?l.ports:DEF).slice(0,4);
-    card.innerHTML=`<button class="x" type="button" aria-label="Close">&times;</button><p class="stn">Deep inland</p><h3>${esc(c)}</h3>
-      <p><b>${esc(d.p)}</b>, ${d.km.toLocaleString("en-US")} km from ${esc(d.from)}</p><p>Ships from ${ports.map(esc).join(", ")}${l.ports&&l.ports.length>4?" and more":""}</p>
+  const open=sp=>{ const c=sp.dataset.c, d=deep(c), l=L[c]||{};     card.innerHTML=`<button class="x" type="button" aria-label="Close">&times;</button><p class="stn">Deep inland</p><h3>${esc(c)}</h3>
+      <p><b>${esc(d.p)}</b>, ${d.km.toLocaleString("en-US")} km from ${esc(d.from)}</p><p>We ship here from anywhere.</p>
       <button class="btn" type="button" data-go>Open in the destination index &rarr;</button>`;
     card.hidden=false; openC=c; y0=scrollY; g.querySelectorAll(".spot").forEach(x=>x.classList.toggle("on",x===sp));
     const r=sp.getBoundingClientRect(), b=stick.getBoundingClientRect(), w=card.offsetWidth, h=card.offsetHeight;

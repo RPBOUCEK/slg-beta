@@ -18,7 +18,7 @@ ASSETS=ROOT/"assets"
 SITE="https://shipslg.com"
 PAGES={ # key: (path, title, description, breadcrumb name)
  "home":("/","Special Logistics Group | Freight to the world’s hardest-to-reach places",
-   "FMC-licensed NVOCC in Elkhart, Indiana. Humanitarian and commercial freight from U.S. ports to 85+ countries, all the way to final delivery.","Home"),
+   "FMC-licensed NVOCC in Elkhart, Indiana. Humanitarian and commercial freight from anywhere to 85+ countries, all the way to final delivery.","Home"),
  "services":("/services/","Ocean Freight, Trucking and Export Services | Special Logistics Group",
    "Everything SLG handles as a licensed NVOCC: drayage, warehousing, bonded cargo, export clearance, ocean bookings, insurance and destination documents such as ECTN and CNCA.","Services"),
  "about":("/about/","About Us | Special Logistics Group, Elkhart, Indiana",

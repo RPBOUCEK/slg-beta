@@ -7,8 +7,10 @@ Indiana. It is a static site served by GitHub Pages from the `main` branch of th
   `/contact/`, `/privacy/`)
 - **Old domain:** https://speciallogistics.net now forwards to shipslg.com (see
   [Domains](#domains-and-dns)). Email on @speciallogistics.net is unchanged.
-- **Owner of record for the site:** Corbin Boucek, General Manager (corbin@speciallogistics.net).
-  Built by Robertson Boucek, who is available as a consultant.
+- **Owner of record for the site:** Corbin Boucek, General Manager (corbin@speciallogistics.net),
+  a collaborator on this repo. Built by Robertson Boucek, who is available as a consultant.
+- **Weekly health check:** a scheduled Claude task checks the pages, redirects, deploys and
+  mail/DNS records every Monday morning and sends a push notification (see the handoff).
 
 If you only read one section, read [Making a change](#making-a-change).
 

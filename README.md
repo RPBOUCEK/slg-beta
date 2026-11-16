@@ -100,13 +100,16 @@ invited to it as a Super Administrator.
   - TXT `_github-pages-challenge-rpboucek` (GitHub domain verification, leave it)
 - The `CNAME` file in this repo and these records must agree. Deleting either takes the site
   offline. Enforce HTTPS is on in the repo's Settings > Pages.
-- **No email yet on @shipslg.com.** Mail to corbin@shipslg.com bounces until shipslg.com is
-  added in Microsoft 365 (see the handoff).
+- **Email on @shipslg.com** (Microsoft 365, added Nov 15, 2026), all DNS only:
+  MX `@` 0 `shipslg-com.mail.protection.outlook.com`; TXT `@`
+  `v=spf1 include:spf.protection.outlook.com -all` and `MS=ms83220173`; CNAME `autodiscover`
+  to `autodiscover.outlook.com`; TXT `_dmarc` `v=DMARC1; p=none`. Nine people have an
+  @shipslg.com alias on their existing mailbox (list in the handoff). Never delete these.
 
 ### speciallogistics.net (email, and the old website address)
 
 - Registered at **Squarespace Domains** (renews Apr 8, 2027, auto-renew on).
-- Its nameservers point at Cloudflare (`ashton.ns.cloudflare.com`, `hadlee.ns.cloudflare.com`),
+- Since Nov 15, 2026 its nameservers point at Cloudflare (`ashton.ns.cloudflare.com`, `hadlee.ns.cloudflare.com`),
   so its DNS lives in the same Cloudflare account. Every record from Squarespace was copied
   over unchanged, including all email records:
   - MX `@` 0 `speciallogistics-net.mail.protection.outlook.com` (Microsoft 365)
